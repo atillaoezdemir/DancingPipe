@@ -1,0 +1,104 @@
+\documentclass[]{article}
+
+\usepackage{geometry}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{indentfirst}
+\usepackage{multirow}
+
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+
+%opening
+\title{ \textbf{Dancing Pipes} \vspace{2em} \\ Programmierprojekt \\ Sommersemester 2024}
+
+
+\author{ Atilla Özdemir \and Kirill Dedov \and Matsvei Tsiareshka \and Toni Kostov}
+
+\begin{document}
+
+\maketitle
+ \thispagestyle{empty}
+\newpage
+
+\setcounter{page}{1}
+
+\section{So macht man eine Section}
+Hier kann man text schreiben.
+
+So macht man eine neue Zeile.
+So kann man Code im Text schreiben: zum Beispiel \texttt{int a = 5;}.
+
+\subsection{So macht man eine Subsection}
+
+Wenn man mehrere Zeilen Code schreiben will nutzt man das:
+
+\begin{lstlisting}[language=Java]
+	public static void changeChord() {
+		sequencer.stop();
+		sequencer.setSequence(sequence);
+		sequencer.start();
+	}
+\end{lstlisting}
+
+\subsection*{So macht man eine Subsection ohne abzählen}
+Tabellen kann man auch machen:
+\begin{center}
+	\begin{longtable}{|l|l|}
+		\textbf{Spalte1} & 
+		\textbf{Spalte 2} \\
+		\hline
+		
+		hier kann man text schreiben & und hier auch \\
+		\hline
+		
+		noch Text schreiben & 
+		und hier auch mehr text  \\
+		\hline
+		
+		\multicolumn{2}{|l|}{Spalten kann man auch so mergen} \\
+		\hline
+		
+		und hier & weiter machen \\
+		\hline
+		\hline
+		
+		\multirow[c]{1}{*}{Zeilen kann man auch mergen} & das geht so  \\
+	
+		& und dann so \\ 
+		\hline
+		
+		danach & einfach weiter machen \\
+		\hline
+		
+	\end{longtable}
+\end{center}
+
+Wenn man eine Liste machen will, macht man das so:
+
+\begin{itemize}
+	\item Element 1
+	\item Element 2
+	\item Element 3
+	\item Element 4
+\end{itemize}
+
+Viel Spaß :)
+
+
+
+\subsubsection{Man kann sogar Subsubsection machen}
+
+	
+\section{Kamera}
+
+\section{MIDI}
+
+\section{Server}
+
+\end{document}

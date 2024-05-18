@@ -1,6 +1,10 @@
 import javax.sound.midi.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
+import com.google.gson.Gson;
 
 
 public class Main {
@@ -24,6 +28,38 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        //OrganSequencer organSequencer = new OrganSequencer("sounds");
+
+        FileMapper fileMapper = new FileMapper(new File("sounds/I - C.mid"), 1, 5);
+        String filename = "mapper.json";
+
+        try
+        {
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            // Method for serialization of object
+            out.writeChars(new Gson().toJSON(fileMapper));
+
+            out.close();
+            file.close();
+
+            System.out.println("Object has been serialized");
+
+        }
+
+        catch(IOException ex)
+        {
+            System.out.println("IOException is caught");
+        }
+
+
+
+
+
+        /*
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter STOP to stop");
         boolean playing = true;
@@ -50,11 +86,12 @@ public class Main {
 
                 //make different sequences for different chords
                 Sequence[]  sequences  = new Sequence[5];
-                sequences[0] = MidiSystem.getSequence(new File("I - C.mid"));
+                sequences[0] = MidiSystem.getSequence(new File("sounds/I - C.mid"));
                 sequences[1] = MidiSystem.getSequence(new File("IV - F.mid"));
                 sequences[2] = MidiSystem.getSequence(new File("V - G.mid"));
                 sequences[3] = MidiSystem.getSequence(new File("vi - Am.mid"));
                 sequences[4] = MidiSystem.getSequence(new File("iii - Em.mid"));
+
 
                 sequencer.setSequence(sequences[0]);
                 sequencer.setTempoInBPM(70);
@@ -92,5 +129,10 @@ public class Main {
                 e.printStackTrace();
             }
         }
+
+         */
     }
+
+
+
 }

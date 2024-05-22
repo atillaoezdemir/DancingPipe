@@ -122,6 +122,33 @@ The project initially explored the use of the Microsoft Kinect device for captur
 \noindent\underline{Outcome and Decision:} \\
 Due to the accessibility limitations for both the development team and potential users, the team decided to investigate more modern, dynamic, and user-friendly solutions for capturing and interpreting movements.\\
 
+\subsubsection{Leveraging Machine Learning: Webcam-based Pose Estimation with MoveNet}
+
+Following the exploration of the Kinect device, the project pivoted towards investigating the capabilities of artificial intelligence-supported models for capturing and interpreting movements. This shift offered several advantages:
+
+\begin{itemize}
+\item Accessibility: Webcams are readily available on most personal computers, eliminating the need for additional sensors or specialized equipment. This significantly reduces barriers to both development and user adoption.
+\item Cross-platform Compatibility: Webcam functionality is inherent to most operating systems, ensuring broader compatibility compared to the Windows-specific Kinect.
+\item Development Efficiency: The widespread availability of webcams allows each team member to conduct independent testing and development cycles, accelerating the iterative process.
+Given these advantages, the team decided to explore MoveNet's Lightning model as the first approach. This selection leveraged the TensorFlow and OpenPose libraries, offering a well-established framework for pose estimation tasks.
+\end{itemize}
+
+While the initial tests with MoveNet demonstrated promising results in detecting the movements of a seated user, the model exhibited limitations:
+
+\begin{itemize}
+\item Limited Posture Recognition: MoveNet struggled to accurately perceive the movements of a standing person with the same efficacy as those in a seated position. Extensive testing across various environments (lighting conditions, background variations) and user demographics (gender, height, skin tone) failed to yield significant improvements in this area.
+\item Performance Issues with Speed: The model's processing speed proved to be a bottleneck, particularly when dealing with fast movements or movements performed at low angles. These situations resulted in stuttering, slowdowns, and instances of missed detections.
+\end{itemize}
+
+\noindent Due to these limitations, the project team decided to pursue alternative models. The primary focus shifted towards finding a model that offered:
+
+\begin{itemize}
+\item Lightweight Architecture: A smaller, more efficient model would improve processing speed and address the performance issues encountered with MoveNet.
+\item Posture Agnostic Detection: The chosen model should be capable of accurately detecting and interpreting human movements regardless of the user's posture (standing or sitting).
+\end{itemize}
+By addressing these shortcomings, the team aimed to establish a more robust and versatile solution for capturing and interpreting user movements.
+
+
 \subsection{Transmission of Motion Data to Digital Pipe Organ as MIDI Signal}
 
 The identified movements will be mapped to corresponding MIDI messages. This mapping assigns specific movements to control various musical parameters like pitch, volume, and timbre (organ stop selection). \\

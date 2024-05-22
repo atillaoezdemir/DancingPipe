@@ -90,15 +90,41 @@ Wenn man eine Liste machen will, macht man das so:
 
 Viel Spaß :)
 
+\newpage
+\section{Introduction}
 
+This document outlines a project that explores the intersection of human movement and musical expression. The primary objective is to develop an interactive system that translates a user's physical movements into musical notes played on a digital pipe organ. This project can be broadly divided into two key stages:
 
-\subsubsection{Man kann sogar Subsubsection machen}
+\begin{itemize}
+	\item Capturing and Interpreting of Movements
+	\item Transmission of Motion Data to Digital Pipe Organ as MIDI Signal
+\end{itemize}
 
-	
-\section{Kamera}
+\section{Elaboration on Stages}
 
-\section{MIDI}
+\subsection{Capturing and Interpreting of Movements}
 
-\section{Server}
+\subsubsection{Kinect}
+
+The project initially explored the use of the Microsoft Kinect device for capturing and interpreting user movements. The Kinect offered several advantages:
+
+\begin{itemize} 
+\item 3D Data Capture: The Kinect's dual camera system and various sensors allowed for capturing 3D positional data of the user's body, providing rich information for movement analysis.
+\end{itemize}
+
+\noindent However, significant challenges arose during development:
+\begin{itemize}
+
+\item Limited Compatibility: The Kinect device's reliance on Windows operating systems posed an obstacle for team members using different platforms.
+\item Accessibility Issues: The discontinuation of Kinect production made acquiring the device difficult. The team faced limitations in providing device support for concurrent testing across multiple team members. This significantly hampered development speed.
+\end{itemize}
+
+\noindent\underline{Outcome and Decision:} \\
+Due to the accessibility limitations for both the development team and potential users, the team decided to investigate more modern, dynamic, and user-friendly solutions for capturing and interpreting movements.\\
+
+\subsection{Transmission of Motion Data to Digital Pipe Organ as MIDI Signal}
+
+The identified movements will be mapped to corresponding MIDI messages. This mapping assigns specific movements to control various musical parameters like pitch, volume, and timbre (organ stop selection). \\
+A software application will be developed to translate the interpreted movements into MIDI signals in real-time. This software will act as an intermediary, receiving movement data from the sensors and transmitting the corresponding MIDI messages to the digital pipe organ.
 
 \end{document}

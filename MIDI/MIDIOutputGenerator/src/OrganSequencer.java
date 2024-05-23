@@ -2,12 +2,15 @@ import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.nio.file.Files.probeContentType;
 
 public class OrganSequencer {
     private final File directoryPath; // path to folder with midi files
+    private final Map<String, Sequence> midiFilesMap = new HashMap<>();
     private final List<Sequence> midiFiles;
     private MidiDevice outPort;
     private Sequencer sequencer;
@@ -18,7 +21,8 @@ public class OrganSequencer {
         this.directoryPath = new File(path);
         midiFiles = new ArrayList<Sequence>();
         try {
-            addMidiFilesToSequenceArray();
+            //addMidiFilesToSequenceArray();
+            addMidiFilesToSequenceMap();
 
         } catch (IOException e) {
             System.out.println("IOException thrown when reading the MIDI files.\nPlease make sure that the folder with the MIDI files is not empty and the MIDI files are not damaged.");
@@ -57,6 +61,28 @@ public class OrganSequencer {
             System.out.println("No MIDI files in directory " + directoryPath.getAbsolutePath());
         }
 
+    }
+
+    private void addMidiFilesToSequenceMap() throws InvalidMidiDataException, IOException {
+        final File[] filesInDirectory = directoryPath.listFiles();
+        boolean directoryContainsMidiFiles = false;
+        if (filesInDirectory != null) {
+            for (File file : filesInDirectory) {
+                if (isMidiFile(file)) {
+                    directoryContainsMidiFiles = true;
+                    Sequence fileAsSequence = MidiSystem.getSequence(file);
+                    midiFilesMap.put(file.getName(), fileAsSequence);
+                }
+            }
+
+        }
+        else {
+            System.out.println("No files in directory " + directoryPath.getAbsolutePath());
+            return;
+        }
+        if (!directoryContainsMidiFiles) {
+            System.out.println("No MIDI files in directory " + directoryPath.getAbsolutePath());
+        }
     }
 
 

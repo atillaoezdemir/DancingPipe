@@ -25,7 +25,7 @@ public class RandomSequenceGenerator {
                     );
                     String newSequence = randomSequenceGenerator();
                     organSequencer.changeSequence(newSequence);
-                    System.out.println(newSequence);
+//                    System.out.println(newSequence);
                 }
 
                 catch(InterruptedException e) {

@@ -102,7 +102,7 @@ This document outlines a project that explores the intersection of human movemen
 
 \section{Elaboration on Stages}
 
-\subsection{Capturing and Interpreting of Movements}
+\subsection{Model Selection for Capturing and Interpreting of Movements}
 
 \subsubsection{Kinect}
 
@@ -119,10 +119,9 @@ The project initially explored the use of the Microsoft Kinect device for captur
 \item Accessibility Issues: The discontinuation of Kinect production made acquiring the device difficult. The team faced limitations in providing device support for concurrent testing across multiple team members. This significantly hampered development speed.
 \end{itemize}
 
-\noindent\underline{Outcome and Decision:} \\
-Due to the accessibility limitations for both the development team and potential users, the team decided to investigate more modern, dynamic, and user-friendly solutions for capturing and interpreting movements.\\
+\noindent Due to the accessibility limitations for both the development team and potential users, the team decided to investigate more modern, dynamic, and user-friendly solutions for capturing and interpreting movements.\\
 
-\subsubsection{Leveraging Machine Learning: Webcam-based Pose Estimation with MoveNet}
+\subsubsection{Webcam-Based Pose Estimation with MoveNet Using Machine Learning}
 
 Following the exploration of the Kinect device, the project pivoted towards investigating the capabilities of artificial intelligence-supported models for capturing and interpreting movements. This shift offered several advantages:
 
@@ -148,6 +147,22 @@ While the initial tests with MoveNet demonstrated promising results in detecting
 \end{itemize}
 By addressing these shortcomings, the team aimed to establish a more robust and versatile solution for capturing and interpreting user movements.
 
+\subsubsection{Webcam-Based Pose Estimation with MediaPipe Using Machine Learning}
+
+Following the limitations encountered with MoveNet, the project explored MediaPipe as a potential alternative for capturing and interpreting user movements. MediaPipe shares some similarities with MoveNet in its model architecture, but offers distinct advantages:
+
+\begin{itemize}
+\item Simplified Installation: MediaPipe boasts a streamlined installation process compared to MoveNet, reducing development setup time and streamlining project workflow.
+\item Enhanced Performance: Our evaluation revealed that MediaPipe outperformed MoveNet in terms of processing speed, frame capture rate, and overall detection accuracy. This translates to smoother user experience with minimal latency and improved responsiveness to user movements.
+\end{itemize}
+
+\noindent However, during the evaluation process, one potential drawback of MediaPipe was identified:
+
+\begin{itemize}
+\item Limited Customization: While MediaPipe offers pre-built solutions for various tasks, its customizability for highly specialized applications might be less extensive compared to frameworks like TensorFlow.
+\end{itemize}
+
+\noindent Considering the project's time constraints and the positive results from the performance evaluation, MediaPipe was chosen as the preferred model for further development. However, the project acknowledges the need for potential future adjustments to address any limitations in customization or potential biases within the model.
 
 \subsection{Transmission of Motion Data to Digital Pipe Organ as MIDI Signal}
 

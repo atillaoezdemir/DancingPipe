@@ -1,0 +1,13 @@
+package com.example.loginapp.model;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class ToConsumerDTO {
+    private int keyboardsInUse;
+    private String command;
+}

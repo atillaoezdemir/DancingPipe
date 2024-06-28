@@ -10,4 +10,5 @@ import lombok.AllArgsConstructor;
 public class ToConsumerDTO {
     private int keyboardsInUse;
     private String command;
+    private int currentTempo;
 }

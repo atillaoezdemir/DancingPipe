@@ -73,6 +73,16 @@ public class ConsumerTestClient {
             case "minKeyboards":
                 //todo add organ sequencer logic.
                 break;
+            case "incrementTempo":
+                //todo add organ sequencer logic.
+                break;
+                case "decrementTempo":
+                //todo add organ sequencer logic.
+                break;
+                case "defaultTempo":
+                //todo add organ sequencer logic.
+                break;
+
             default:
                 //todo add organ sequencer logic.
                 System.out.println("Unhandled command: " + command);

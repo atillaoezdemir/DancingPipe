@@ -4,6 +4,7 @@ import com.example.loginapp.model.ToConsumerDTO;
 import com.example.loginapp.model.WebClientDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 @Service
 public class OrganSettingsService {
 
@@ -19,9 +21,13 @@ public class OrganSettingsService {
     @Setter(AccessLevel.NONE)
     private int maxAvailableKeyboards = 0;
     private boolean startCommandReceived = false;
+    private final EmitterService emitterService;
+    private int minTempo = 1;
+    private int maxTempo = 5;
+    private int currentTempo =0;
+    private int defaultTempo = 0;
 
-    @Autowired
-    private EmitterService emitterService;
+
 
     public void setKeyboardsInUse(int keyboards) {
         if (emitterService.hasActiveConsumerEmitters()) {
@@ -41,6 +47,7 @@ public class OrganSettingsService {
 
     public ToConsumerDTO sendStartCommand() {
         if (!startCommandReceived) {
+            setCurrentTempo(3);
             startCommandReceived = true;
             return getCurrentValuesConsumer("start");
         }
@@ -94,10 +101,34 @@ public class OrganSettingsService {
         }
         return null;
     }
+    public ToConsumerDTO incrementTempo() {
+        if(startCommandReceived){
+            if(currentTempo<maxTempo){
+                currentTempo++;
+            }
+        }
+        return getCurrentValuesConsumer("incrementTempo");
+    }
+    public ToConsumerDTO decrementTempo() {
+        if(startCommandReceived){
+            if(currentTempo>minTempo){
+                currentTempo--;
+            }
+        }
+        return getCurrentValuesConsumer("decrementTempo");
+    }
+    public ToConsumerDTO defaultTempo() {
+        if (startCommandReceived) {
+            if(currentTempo!=defaultTempo){
+                currentTempo = defaultTempo;
+            }
+        }
+        return getCurrentValuesConsumer("defaultTempo");
+    }
 
 
     private ToConsumerDTO getCurrentValuesConsumer(String command) {
-        return new ToConsumerDTO(keyboardsInUse, command);
+        return new ToConsumerDTO(getKeyboardsInUse(), command,getCurrentTempo());
     }
 
     private void broadcastSettings() {

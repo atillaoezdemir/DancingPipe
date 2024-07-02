@@ -1,7 +1,7 @@
 package com.example.loginapp.services;
 
 import com.example.loginapp.model.ToConsumerDTO;
-import com.example.loginapp.model.ToWebClientDTO;
+import com.example.loginapp.model.WebClientDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class EmitterService {
     private SseEmitter consumerEmitter;
     private SseEmitter webClientEmitter;
-//    private SseEmitter settingsEmitter;
+    private SseEmitter settingsEmitter;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public SseEmitter addConsumerEmitter() {
@@ -20,30 +20,22 @@ public class EmitterService {
         consumerEmitter.onError(e -> consumerEmitter = null);
         return consumerEmitter;
     }
-    public SseEmitter addWebClientEmitter1() {
+
+    public SseEmitter addWebClientEmitter() {
         webClientEmitter = new SseEmitter(Long.MAX_VALUE);
         webClientEmitter.onCompletion(() -> webClientEmitter = null);
         webClientEmitter.onTimeout(() -> webClientEmitter = null);
         webClientEmitter.onError(e -> webClientEmitter = null);
         return webClientEmitter;
     }
-
-//    public SseEmitter addWebClientEmitter() {
-//        webClientEmitter = new SseEmitter(Long.MAX_VALUE);
-//        webClientEmitter.onCompletion(() -> webClientEmitter = null);
-//        webClientEmitter.onTimeout(() -> webClientEmitter = null);
-//        webClientEmitter.onError(e -> webClientEmitter = null);
-//        return webClientEmitter;
-//    }
-//    public SseEmitter addSettingsEmitter() {
-//        System.out.println("SettingsEmitter created");
-//        settingsEmitter = new SseEmitter(Long.MAX_VALUE);
-//        settingsEmitter.onCompletion(() -> settingsEmitter = null);
-//        settingsEmitter.onTimeout(() -> settingsEmitter = null);
-//        settingsEmitter.onError(e -> settingsEmitter = null);
-//        return settingsEmitter;
-//    }
-    //todo try to extract this
+    public SseEmitter addSettingsEmitter() {
+        System.out.println("SettingsEmitter created");
+        settingsEmitter = new SseEmitter(Long.MAX_VALUE);
+        settingsEmitter.onCompletion(() -> settingsEmitter = null);
+        settingsEmitter.onTimeout(() -> settingsEmitter = null);
+        settingsEmitter.onError(e -> settingsEmitter = null);
+        return settingsEmitter;
+    }
 //    private void setupEmitter(SseEmitter emitter) {
 //        emitter.onCompletion(() -> emitter = null);
 //        emitter.onTimeout(() -> emitter = null);
@@ -61,23 +53,25 @@ public class EmitterService {
         }
     }
 
-    public void sendToWebClient1(ToWebClientDTO message) {
+
+    public void sendToWebClient(String message) {
         try {
             webClientEmitter.send(SseEmitter.event().data(message));
         } catch (Exception e) {
             webClientEmitter = null;
         }
     }
-//    public void sendToSettings(WebClientDTO message) {
-//        if (settingsEmitter != null) {
-//            try {
-//                String jsonMessage = objectMapper.writeValueAsString(message);
-//                settingsEmitter.send(SseEmitter.event().data(jsonMessage));
-//            } catch (Exception e) {
-//                settingsEmitter = null;
-//            }
-//        }
-//    }
+    public void sendToSettings(WebClientDTO message) {
+        if (settingsEmitter != null) {
+            try {
+                System.out.println("sendToSettings");
+                String jsonMessage = objectMapper.writeValueAsString(message);
+                settingsEmitter.send(SseEmitter.event().data(jsonMessage));
+            } catch (Exception e) {
+                settingsEmitter = null;
+            }
+        }
+    }
 
     public boolean hasActiveConsumerEmitters() {
         return consumerEmitter != null;

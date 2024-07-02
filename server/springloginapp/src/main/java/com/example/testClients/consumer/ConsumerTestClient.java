@@ -10,7 +10,8 @@ import java.util.Random;
 
 public class ConsumerTestClient {
     private static final String SERVER_URI = "http://localhost:8080";
-    private static final String SERVER_ENDPOINT = "/consumer";
+    private static final String CONFIG_ENDPOINT = "/special/config";
+    private static final String SPECIAL_ENDPOINT = "/special";
     private static final Random random = new Random();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -21,13 +22,13 @@ public class ConsumerTestClient {
 
     private static void listenToServer(HttpClient client) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(SERVER_URI + SERVER_ENDPOINT))
+                .uri(URI.create(SERVER_URI + SPECIAL_ENDPOINT))
                 .header("Accept", "text/event-stream")
                 .build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
                 .thenAccept(httpResponse -> httpResponse.body().forEach(ConsumerTestClient::processLine))
-                .join();
+                .join(); // Wait for all operations to complete
     }
 
     private static void processLine(String line) {
@@ -41,9 +42,8 @@ public class ConsumerTestClient {
         try {
             ConsumerDataInDTO commandData = objectMapper.readValue(json, ConsumerDataInDTO.class);
             handleCommand(commandData.getCommand());
-            System.out.println("Received:\n command: " + commandData.getCommand() +
-                    "\n Current tempo: "+ commandData.getCurrentTempo()+
-                    "\nKeyboards in use: " + commandData.getKeyboardsInUse());
+            System.out.println("Received command: " + commandData.getCommand() +
+                    "\nReceived: Keyboards in use = " + commandData.getKeyboardsInUse());
 
         } catch (Exception e) {
             System.err.println("Error parsing JSON: " + e.getMessage());
@@ -54,7 +54,7 @@ public class ConsumerTestClient {
         switch (command) {
             case "start":
                 //todo add organ sequencer logic.
-                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1);
+                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1); // Randomly 3 or 4 max keyboards
                 break;
             case "stop":
                 //todo add organ sequencer logic.
@@ -96,7 +96,7 @@ public class ConsumerTestClient {
             String jsonPayload = objectMapper.writeValueAsString(config);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(SERVER_URI + SERVER_ENDPOINT))
+                    .uri(URI.create(SERVER_URI + CONFIG_ENDPOINT))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();

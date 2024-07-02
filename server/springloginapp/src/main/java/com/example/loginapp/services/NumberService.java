@@ -1,9 +1,9 @@
 package com.example.loginapp.services;
 
+import com.example.loginapp.model.DTOWrapper;
 import com.example.loginapp.model.FromConsumerDTO;
 import com.example.loginapp.model.ToConsumerDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,8 @@ public class NumberService {
     private final OrganSettingsService organSettingsService;
 
     public void sendNumber(int number) {
-        emitterService.sendToWebClient(String.valueOf(number));
 
-        ToConsumerDTO message = switch (number) {
+        DTOWrapper message = switch (number) {
             case 1 -> organSettingsService.incrementKeyboards();
             case 2 -> organSettingsService.decrementKeyboards();
             case 3 -> organSettingsService.useAllKeyboards();
@@ -30,8 +29,13 @@ public class NumberService {
         };
 
         if (message != null) {
-            emitterService.sendToConsumer(message);
+            if(emitterService.hasActiveConsumerEmitters()){
+                emitterService.sendToConsumer(message.getToConsumerDTO());
+            }
+
+            emitterService.sendToWebClient1(message.getToWebClientDTO());
         }
+
     }
     public ResponseEntity<ToConsumerDTO> getResponse(FromConsumerDTO config) {
         organSettingsService.setMaxAvailableKeyboards(config.getKeyboardsMax());

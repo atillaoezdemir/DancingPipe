@@ -7,7 +7,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
 public class ProducerTestClient {
-    private static final String SERVER_URL = "http://localhost:8080/gestures";
+    private static final String SERVER_URL = "http://localhost:8080/producer";
     private static final int DELAY_MIN_VALUE = 500;
     private static final int DELAY_MAX_VALUE = 1500;
     private static final int NUMBER_CAP = 255;
@@ -16,7 +16,7 @@ public class ProducerTestClient {
     public static void main(String[] args) {
         HttpClient client = HttpClient.newHttpClient();
         if (MODE.equals("sequence")) {
-            int[] sequence = {99, 1,1,1, 100};
+            int[] sequence = {99,1,1,1,1,2,2,2,2,2,5,5,5,6,6,6,6,6,6,99, 100};
             sendNumbers(client, sequence);
         } else {
             sendRandomNumbers(client);

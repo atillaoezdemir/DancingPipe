@@ -1,0 +1,11 @@
+<div class="number-display-content">
+  <h1 class="centered">Commands Execution Status</h1>
+  <button (click)="clearData()" class="action-button clear-button">Clear All</button>
+  <div class="y-scrollable">
+    <ul>
+      <li *ngFor="let data of webClientData">
+        Command: {{ data.command }}, Executed: {{ data.wasCommandExecuted ? 'Yes' : 'No' }}
+      </li>
+    </ul>
+  </div>
+</div>

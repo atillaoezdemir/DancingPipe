@@ -13,4 +13,7 @@ public class ConsumerDataInDTO {
     @JsonProperty("command")
     private String command;
 
+    @JsonProperty("currentTempo")
+    private int currentTempo;
+
 }

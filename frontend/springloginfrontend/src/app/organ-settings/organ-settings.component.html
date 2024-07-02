@@ -1,0 +1,17 @@
+<div id="consumer-status" [ngClass]="isOnline ? 'online' : 'offline'">
+  {{ isOnline ? 'Consumer is connected' : 'Consumer is disconnected. All commands will be ignored!' }}
+</div>
+
+
+<h1 class="centered">Organ Settings</h1>
+<h2>Keyboards</h2>
+<div class="keyboards-display">
+  <ng-container *ngFor="let keyboard of keyboards; let i = index">
+    <img [src]="getKeyboardImage(i)" alt="Keyboard" class="keyboard-image">
+  </ng-container>
+</div>
+
+<div class="tempo-pace-container">
+  <label><h2>Tempo Pace: {{ selectedTempoLabel }}</h2></label>
+</div>
+

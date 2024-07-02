@@ -1,0 +1,24 @@
+<div class="login-form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div id="inputArea">
+      <mat-form-field appearance="outline">
+        <mat-label>Login</mat-label>
+        <input matInput formControlName="login" placeholder="Enter login.." autocomplete="username"/>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input [type]="hide ? 'password' : 'text'" matInput formControlName="password" placeholder="Enter password.."
+               autocomplete="current-password">
+        <button type="button" mat-icon-button matSuffix (click)="toggleVisibility()">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <div *ngIf="isAuthenticatedFailed" class="error-message">
+        Invalid login or password.<br> Please try again.<br><br>
+      </div>
+    </div>
+    <div id="submitArea">
+      <button mat-raised-button color="primary" type="submit">Log in</button>
+    </div>
+  </form>
+</div>

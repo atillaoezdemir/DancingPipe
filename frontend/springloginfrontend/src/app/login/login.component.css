@@ -1,0 +1,16 @@
+.login-form {
+  display: flex;
+  justify-content: center;
+  margin: 10% 30%;
+
+}
+#inputArea {
+  display: flex;
+  flex-direction: column;
+}
+
+#submitArea {
+  display: flex;
+  justify-content: center;
+}
+

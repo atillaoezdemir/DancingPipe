@@ -1,15 +1,16 @@
 package com.example.loginapp.controller;
 
-import com.example.loginapp.model.FromProducerDTO;
 import com.example.loginapp.model.FromConsumerDTO;
+import com.example.loginapp.model.FromProducerDTO;
 import com.example.loginapp.model.ToConsumerDTO;
 import com.example.loginapp.services.EmitterService;
 import com.example.loginapp.services.NumberService;
-import com.example.loginapp.services.OrganSettingsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RequiredArgsConstructor
@@ -19,9 +20,8 @@ public class NumberController {
 
     private final EmitterService emitterService;
     private final NumberService numberService;
-    private final OrganSettingsService organSettingsService;
 
-    @PostMapping("/gestures")
+    @PostMapping("/producer")
     public ResponseEntity<String> handleNumber(@RequestBody FromProducerDTO body) {
         try {
             numberService.sendNumber(body.number());
@@ -31,7 +31,7 @@ public class NumberController {
         }
     }
 
-    @GetMapping("/special")
+    @GetMapping("/consumer")
     public SseEmitter streamSpecial() {
         try {
             return emitterService.addConsumerEmitter();
@@ -42,10 +42,10 @@ public class NumberController {
         }
     }
 
-    @GetMapping("/numbers")
+    @GetMapping("/web")
     public SseEmitter streamWebNumbers() {
         try {
-            return emitterService.addWebClientEmitter();
+            return emitterService.addWebClientEmitter1();
         } catch (Exception e) {
             SseEmitter emitter = new SseEmitter();
             emitter.completeWithError(e);
@@ -53,20 +53,15 @@ public class NumberController {
         }
     }
 
-    @PostMapping("/special/config")
+
+    @PostMapping("/consumer")
     public ResponseEntity<ToConsumerDTO> configureMaxKeyboards(@RequestBody FromConsumerDTO config) {
         System.out.println("MAX= " + config.getKeyboardsMax() + " DEFAULT= " + config.getDefaultKeyboards());
         try {
             return numberService.getResponse(config);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ToConsumerDTO(-1, "Error: " + e.getMessage(),-1));
+            return ResponseEntity.badRequest().body(new ToConsumerDTO(-1, "Error: " + e.getMessage(), -1));
         }
     }
 
-
-
-    @GetMapping("/settings-stream")
-    public SseEmitter streamSettings() {
-        return emitterService.addSettingsEmitter();
-    }
 }

@@ -1,8 +1,8 @@
 
 [
-  {"lowerBorder": 1.0, "upperBorder": 50.0, "filepath": "sounds/I - C.mid"},
-  {"lowerBorder": 51.0, "upperBorder": 100.0, "filepath": "sounds/iii - Em.mid"},
-  {"lowerBorder": 101.0, "upperBorder": 150.0, "filepath": "sounds/IV - F.mid"},
-  {"lowerBorder": 151.0, "upperBorder": 200.0, "filepath": "sounds/V - G.mid"},
-  {"lowerBorder": 201.0, "upperBorder": 255.0, "filepath": "sounds/vi - Am.mid"}
+  {"lowerBorder": 1.0, "upperBorder": 50.0, "filepath": "I - C.mid"},
+  {"lowerBorder": 51.0, "upperBorder": 100.0, "filepath": "iii - Em.mid"},
+  {"lowerBorder": 101.0, "upperBorder": 150.0, "filepath": "IV - F.mid"},
+  {"lowerBorder": 151.0, "upperBorder": 200.0, "filepath": "V - G.mid"},
+  {"lowerBorder": 201.0, "upperBorder": 255.0, "filepath": "vi - Am.mid"}
 ]

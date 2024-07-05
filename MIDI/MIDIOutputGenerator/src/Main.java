@@ -1,8 +1,5 @@
 import javax.sound.midi.*;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -103,9 +100,11 @@ public class Main {
                 sequences[3] = MidiSystem.getSequence(new File("sounds/vi - Am.mid"));
                 sequences[4] = MidiSystem.getSequence(new File("sounds/iii - Em.mid"));
 
+                Track[] tracks = sequences[4].getTracks();
+                sequences[4].
 
                 sequencer.setSequence(sequences[0]);
-                sequencer.setTempoInBPM(70);
+                sequencer.setTempoInBPM(250);
                 sequencer.setLoopCount(1000);
                 sequencer.start();
 
@@ -113,7 +112,8 @@ public class Main {
 
                 while (sequencer.isRunning()) {
                     try {
-                        Thread.sleep(randomMsGenerator());
+                        //Thread.sleep(randomMsGenerator());
+                        Thread.sleep(1000);
 
                         int num = randomNumberGenerator(prev);
                         switchChord(sequencer, sequences[num-1]);

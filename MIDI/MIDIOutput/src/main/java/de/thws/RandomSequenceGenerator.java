@@ -25,7 +25,7 @@ public class RandomSequenceGenerator {
                     );
                     String newSequence = randomSequenceGenerator();
                     organSequencer.changeSequence(newSequence);
-//                    System.out.println(newSequence);
+                    System.out.println(newSequence);
                 }
 
                 catch(InterruptedException e) {
@@ -72,6 +72,6 @@ public class RandomSequenceGenerator {
 
     private static int randomMsGenerator() {
         //return 500;
-        return (int) (Math.random() * 1500 + 250);
+        return (int) (Math.random() * 5000 + 250);
     }
 }

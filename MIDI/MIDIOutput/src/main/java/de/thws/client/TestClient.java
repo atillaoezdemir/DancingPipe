@@ -23,6 +23,7 @@ public class TestClient {
                 System.out.println("Sent: " + number);
 
                 int delay = DELAY_MIN_VALUE + random.nextInt(DELAY_MAX_VALUE-DELAY_MIN_VALUE);
+                //int delay = 1500;
                 Thread.sleep(delay);
             }
         } catch (IOException | InterruptedException e) {

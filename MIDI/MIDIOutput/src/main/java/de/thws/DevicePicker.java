@@ -59,4 +59,14 @@ public class DevicePicker {
         return outputDevice;
     }
 
+    public static void main(String[] args) {
+        /*
+        final MidiDevice.Info[] midiDevicesInfo = MidiSystem.getMidiDeviceInfo(); // list of available MIDI devices
+        MidiDevice.Info device = midiDevicesInfo[4];
+        MidiDevice outputDevice = MidiSystem.getMidiDevice(device);
+
+         */
+
+    }
+
 }

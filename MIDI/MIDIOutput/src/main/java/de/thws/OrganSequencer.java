@@ -87,13 +87,10 @@ public class OrganSequencer {
                 return false;
             }
             if (sequencer.isRunning()) {
-
                 if (sequencer.getSequence().equals(newSequence)) {
                     return false;
                 }
                 sequencer.stop();
-
-
             }
 
             try {

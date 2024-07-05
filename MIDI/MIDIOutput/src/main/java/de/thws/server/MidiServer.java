@@ -1,13 +1,21 @@
 package de.thws.server;
 
+import de.thws.OrganSequencer;
+import de.thws.OrganSequencerException;
+import de.thws.RandomSequenceGenerator;
 import de.thws.midi.MidiPlayer;
 import de.thws.mapper.FileMapper;
 
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -43,7 +51,32 @@ public class MidiServer {
                             int digit = Integer.parseInt(inputLine);
                             String filepath = midiMap.get(digit);
                             if (filepath != null) {
-                                MidiPlayer.playMidiFile(filepath);
+                                MidiDevice outputDevice = null;
+                                try {
+                                    final MidiDevice.Info[] midiDevicesInfo = MidiSystem.getMidiDeviceInfo(); // list of available MIDI devices
+                                    MidiDevice.Info device = midiDevicesInfo[2];
+                                    outputDevice = MidiSystem.getMidiDevice(device);
+                                }
+
+                                catch (MidiUnavailableException e) {
+                                    e.printStackTrace();
+                                }
+
+                                try {
+                                    OrganSequencer sequencer = new OrganSequencer("sounds", outputDevice);
+                                    sequencer.open();
+                                    //String filename = filepath.substring(7, filepath.length());
+
+                                    sequencer.changeSequence(filepath);
+                                    //
+                                }
+                                catch (OrganSequencerException e) {
+                                    System.out.println(e.getMessage());
+                                    System.err.println("ERROR. Please restart the program.");
+                                    System.exit(1);
+                                }
+
+                                //MidiPlayer.playMidiFile(filepath);
                             } else {
                                 LOGGER.warning("No MIDI file mapped for digit: " + digit);
                             }

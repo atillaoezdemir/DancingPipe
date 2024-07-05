@@ -10,7 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class EmitterService {
     private SseEmitter consumerEmitter;
     private SseEmitter webClientEmitter;
-//    private SseEmitter settingsEmitter;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public SseEmitter addConsumerEmitter() {
@@ -28,27 +27,6 @@ public class EmitterService {
         return webClientEmitter;
     }
 
-//    public SseEmitter addWebClientEmitter() {
-//        webClientEmitter = new SseEmitter(Long.MAX_VALUE);
-//        webClientEmitter.onCompletion(() -> webClientEmitter = null);
-//        webClientEmitter.onTimeout(() -> webClientEmitter = null);
-//        webClientEmitter.onError(e -> webClientEmitter = null);
-//        return webClientEmitter;
-//    }
-//    public SseEmitter addSettingsEmitter() {
-//        System.out.println("SettingsEmitter created");
-//        settingsEmitter = new SseEmitter(Long.MAX_VALUE);
-//        settingsEmitter.onCompletion(() -> settingsEmitter = null);
-//        settingsEmitter.onTimeout(() -> settingsEmitter = null);
-//        settingsEmitter.onError(e -> settingsEmitter = null);
-//        return settingsEmitter;
-//    }
-    //todo try to extract this
-//    private void setupEmitter(SseEmitter emitter) {
-//        emitter.onCompletion(() -> emitter = null);
-//        emitter.onTimeout(() -> emitter = null);
-//        emitter.onError(e -> emitter = null);
-//    }
 
     public void sendToConsumer(ToConsumerDTO message) {
         if (consumerEmitter != null) {
@@ -61,30 +39,19 @@ public class EmitterService {
         }
     }
 
-    public void sendToWebClient1(ToWebClientDTO message) {
+    public void sendToWebClient(ToWebClientDTO message) {
         try {
             webClientEmitter.send(SseEmitter.event().data(message));
         } catch (Exception e) {
             webClientEmitter = null;
         }
     }
-//    public void sendToSettings(WebClientDTO message) {
-//        if (settingsEmitter != null) {
-//            try {
-//                String jsonMessage = objectMapper.writeValueAsString(message);
-//                settingsEmitter.send(SseEmitter.event().data(jsonMessage));
-//            } catch (Exception e) {
-//                settingsEmitter = null;
-//            }
-//        }
-//    }
+
 
     public boolean hasActiveConsumerEmitters() {
+//        System.out.println(consumerEmitter==null);
         return consumerEmitter != null;
     }
 
-    public boolean hasActiveWebClientEmitters() {
-        return webClientEmitter != null;
-    }
 
 }

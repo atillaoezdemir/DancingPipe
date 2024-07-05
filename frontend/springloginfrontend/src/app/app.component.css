@@ -18,4 +18,9 @@
   margin: 0;
   font-size: 24px;
 }
-
+.user-name {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+}

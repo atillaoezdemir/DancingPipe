@@ -1,49 +1,51 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SseService } from '../service/sse.service';
-import { WebClientDTO } from '../model/web-client-dto';
-import { MatSlider, MatSliderThumb } from "@angular/material/slider";
-import {NgClass, NgForOf} from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {SseService} from '../service/sse.service';
+import {WebClientDTO} from '../model/web-client-dto';
+import {MatSlider, MatSliderThumb} from '@angular/material/slider';
+import {NgClass, NgForOf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatDivider} from '@angular/material/divider';
+import {TempoLabels} from '../model/enums';
+import {TempoPipe} from '../pipes/TempoPipe';
 
 @Component({
   selector: 'app-organ-settings',
   templateUrl: './organ-settings.component.html',
   styleUrls: ['./organ-settings.component.css'],
-  imports: [
-    MatSlider,
-    MatSliderThumb,
-    NgForOf,
-    FormsModule,
-    NgClass
-  ],
-  standalone: true
+  imports: [MatSlider, MatSliderThumb, NgForOf, FormsModule, NgClass, MatDivider, TempoPipe],
+  standalone: true,
 })
 export class OrganSettingsComponent implements OnInit, OnDestroy {
   webClientData: WebClientDTO | undefined;
   keyboards: any[] = Array(5).fill('disabled');
-  selectedTempoLabel: string = 'Normal';
+  selectedTempoLabel: number = TempoLabels.NORMAL;
   private subscription: Subscription | undefined;
-  isOnline: boolean = false;
+  consumerIsConnected: boolean = false;
+  startCommandReceived: boolean = false;
 
-  tempoLabels: { [key: number]: string } = {
-    1: 'Very Slow',
-    2: 'Slow',
-    3: 'Normal',
-    4: 'Fast',
-    5: 'Very Fast'
-  };
-
-  constructor(private sseService: SseService) {}
+  constructor(
+    private ngZone: NgZone,
+    private sseService: SseService,
+  ) {}
 
   ngOnInit(): void {
     this.subscription = this.sseService.getWebClientData().subscribe({
       next: (data: WebClientDTO) => {
-        this.webClientData = data;
-        this.updateKeyboards();
-        this.selectedTempoLabel = this.tempoLabels[data.currentTempo] || 'Normal';
+        this.ngZone.run(() => {
+          this.webClientData = data;
+          this.consumerIsConnected = data.consumerIsConnected;
+          this.selectedTempoLabel = data.currentTempo;
+          this.updateKeyboards();
+          if (data.command == 'start' && data.consumerIsConnected) {
+            this.startCommandReceived = true;
+          }
+          if ((data.command == 'stop' && data.consumerIsConnected) || !data.consumerIsConnected) {
+            this.startCommandReceived = false;
+          }
+        });
       },
-      error: (error) => console.error('Error receiving SSE data:', error)
+      error: (error) => console.error('Error receiving SSE loginData:', error),
     });
   }
 
@@ -57,12 +59,14 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
     this.keyboards = Array(5).fill('disabled');
 
     if (this.webClientData) {
-      for (let i = 0; i < this.webClientData.maxAvailableKeyboards; i++) {
-        this.keyboards[i] = 'inactive';
+      let max: number = this.webClientData.maxAvailableKeyboards < 0 ? 0 : this.webClientData.maxAvailableKeyboards;
+      let inUse: number = this.webClientData.keyboardsInUse < 0 ? 0 : this.webClientData.keyboardsInUse;
+      for (let i = 0; i < inUse; i++) {
+        this.keyboards[i] = 'active';
       }
 
-      for (let i = 0; i < this.webClientData.keyboardsInUse; i++) {
-        this.keyboards[i] = 'active';
+      for (let i = inUse; i < max; i++) {
+        this.keyboards[i] = 'inactive';
       }
     }
   }

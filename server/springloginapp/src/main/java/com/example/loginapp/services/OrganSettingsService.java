@@ -23,7 +23,7 @@ public class OrganSettingsService {
     private final EmitterService emitterService;
     private int minTempo = 1;
     private int maxTempo = 5;
-    private int currentTempo = 0;
+    private int currentTempo = -1;
     private int defaultTempo = 3;
 
 
@@ -52,6 +52,9 @@ public class OrganSettingsService {
 
     public DTOWrapper sendStopCommand() {
         if (startCommandReceived) {
+            setCurrentTempo(3);
+            setKeyboardsInUse(0);
+            setMaxAvailableKeyboards(0);
             startCommandReceived = false;
             return getCurrentValues("stop", true);
         }
@@ -131,10 +134,10 @@ public class OrganSettingsService {
 
     private DTOWrapper getCurrentValues(String command, boolean wasCommandExecuted) {
         ToWebClientDTO toWebClientDTO;
-        if (!emitterService.hasActiveConsumerEmitters()) {
-            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, false);
+        if (emitterService.hasActiveConsumerEmitters()) {
+            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, false,true);
         } else {
-            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, wasCommandExecuted);
+            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, wasCommandExecuted,false);
         }
         ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), command, getCurrentTempo());
 

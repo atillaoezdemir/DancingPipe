@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   private isAuthenticated = new BehaviorSubject<boolean>(false);
-  data = this.isAuthenticated.asObservable();
-  private title = new BehaviorSubject<string>('Login');
-  titleData = this.title.asObservable();
+  private username = new BehaviorSubject<string>('');
+
+  loginData = this.isAuthenticated.asObservable();
+  username$ = this.username.asObservable();
 
   updateAuthentication(data: boolean) {
     this.isAuthenticated.next(data);
   }
 
-  updateTitle(data: string) {
-    this.title.next(data);
-  }
-
-  getTitle(): Observable<string> {
-    return this.titleData;
+  updateUsername(newUsername: string) {
+    this.username.next(newUsername);
   }
 }

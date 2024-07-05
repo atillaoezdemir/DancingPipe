@@ -1,16 +1,15 @@
-  import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NumberDisplayComponent } from './number-display.component';
 
-describe('NumberDisplazComponent', () => {
+describe('NumberDisplayComponent', () => {
   let component: NumberDisplayComponent;
   let fixture: ComponentFixture<NumberDisplayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NumberDisplayComponent]
-    })
-    .compileComponents();
+      imports: [NumberDisplayComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NumberDisplayComponent);
     component = fixture.componentInstance;

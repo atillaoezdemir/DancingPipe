@@ -56,7 +56,6 @@ public class NumberController {
 
     @PostMapping("/consumer")
     public ResponseEntity<ToConsumerDTO> configureMaxKeyboards(@RequestBody FromConsumerDTO config) {
-        System.out.println("MAX= " + config.getKeyboardsMax() + " DEFAULT= " + config.getDefaultKeyboards());
         try {
             return numberService.getResponse(config);
         } catch (Exception e) {

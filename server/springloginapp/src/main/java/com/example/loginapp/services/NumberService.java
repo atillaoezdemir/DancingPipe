@@ -33,7 +33,7 @@ public class NumberService {
                 emitterService.sendToConsumer(message.getToConsumerDTO());
             }
 
-            emitterService.sendToWebClient1(message.getToWebClientDTO());
+            emitterService.sendToWebClient(message.getToWebClientDTO());
         }
 
     }

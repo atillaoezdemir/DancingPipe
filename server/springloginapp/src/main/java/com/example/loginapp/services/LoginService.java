@@ -1,33 +1,49 @@
 package com.example.loginapp.services;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
-
 @Service
 public class LoginService {
-    private final List<String> loggedInUsers = new ArrayList<>();
+    private final Map<String, String> users = new HashMap<>();
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final Map<String, String> users = Map.of(
-            "admin", passwordEncoder.encode("password1"),
-            "guest", passwordEncoder.encode("guest1")
-    );
+
+    @PostConstruct
+    public void init() {
+        loadCredentialsFromFile();
+    }
+
+    private void loadCredentialsFromFile() {
+        try {
+            ClassPathResource resource = new ClassPathResource("credentials.txt");
+            InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
+            String fileContent = FileCopyUtils.copyToString(reader);
+
+            String[] lines = fileContent.split("\\r?\\n");
+
+            for (String line : lines) {
+                String[] parts = line.split("=");
+                if (parts.length == 2) {
+                    String username = parts[0].trim();
+                    String password = parts[1].trim();
+                    users.put(username, passwordEncoder.encode(password));
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load credentials from file", e);
+        }
+    }
 
     public boolean login(String username, String password) {
         String storedPassword = users.get(username);
-        if (users.containsKey(username) && passwordEncoder.matches(password, storedPassword)) {
-            if (!loggedInUsers.contains(username)) {
-                loggedInUsers.add(username);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isLoggedIn(String username) {
-        return loggedInUsers.contains(username);
+        return storedPassword != null && passwordEncoder.matches(password, storedPassword);
     }
 }

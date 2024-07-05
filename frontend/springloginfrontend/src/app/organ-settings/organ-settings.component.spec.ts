@@ -8,10 +8,9 @@ describe('OrganSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OrganSettingsComponent]
-    })
-    .compileComponents();
-    
+      imports: [OrganSettingsComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(OrganSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

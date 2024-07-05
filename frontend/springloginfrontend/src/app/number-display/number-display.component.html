@@ -1,10 +1,22 @@
 <div class="number-display-content">
   <h1 class="centered">Commands Execution Status</h1>
-  <button (click)="clearData()" class="action-button clear-button">Clear All</button>
+  <div class="button-container">
+    <button mat-raised-button
+            (click)="toggleView()" class="action-button">
+      {{ showAll ? 'Show Less' : 'Show More' }}
+    </button>
+    <button mat-raised-button
+            (click)="clearData()" class="action-button">
+      Clear All
+    </button>
+
+  </div>
+
   <div class="y-scrollable">
     <ul>
-      <li *ngFor="let data of webClientData">
-        Command: {{ data.command }}, Executed: {{ data.wasCommandExecuted ? 'Yes' : 'No' }}
+      <li *ngFor="let data of displayedData"
+          [ngClass]="{'executed': data.wasCommandExecuted, 'not-executed': !data.wasCommandExecuted, 'flying-in': true}">
+        {{ data.command }}
       </li>
     </ul>
   </div>

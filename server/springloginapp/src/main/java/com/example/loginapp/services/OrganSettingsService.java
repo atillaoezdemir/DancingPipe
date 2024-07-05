@@ -135,9 +135,9 @@ public class OrganSettingsService {
     private DTOWrapper getCurrentValues(String command, boolean wasCommandExecuted) {
         ToWebClientDTO toWebClientDTO;
         if (emitterService.hasActiveConsumerEmitters()) {
-            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, false,true);
+            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, wasCommandExecuted,true);
         } else {
-            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, wasCommandExecuted,false);
+            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, false,false);
         }
         ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), command, getCurrentTempo());
 

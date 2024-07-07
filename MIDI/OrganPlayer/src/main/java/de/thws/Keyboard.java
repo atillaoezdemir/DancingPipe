@@ -4,17 +4,24 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.Getter;
+
+@Getter
 public class Keyboard {
     private final List<Pattern> keyboardPatterns;
     private final int numberOfPatterns;
     private final long lastTick;
     private boolean active;
+    private final String keyboardName;
+    private List<Integer> notesOn; // list of all notes, that are currently playing in the sequence
 
     Keyboard(File keyboardDirectory) {
+        keyboardName = keyboardDirectory.getName();
         active = false;
         if (!keyboardDirectory.isDirectory() || keyboardDirectory.listFiles() == null) {
             keyboardPatterns = null;
@@ -44,8 +51,17 @@ public class Keyboard {
             temp += pattern.getMidiEvent(numberOfMidiEvents - 1).getTick();
         }
         lastTick = temp;
+        notesOn = new ArrayList<Integer>();
     }
 
+    public List<OrganSequence> getSequences() {
+        return keyboardPatterns
+                .stream()
+                .map(Pattern::getOrganSequence)
+                .collect(Collectors.toList());
+    }
+
+    /*
     public List<Sequence> getSequences() {
         return keyboardPatterns
                 .stream()
@@ -53,9 +69,14 @@ public class Keyboard {
                 .collect(Collectors.toList());
     }
 
+     */
+
+    /*
     public Track getFirstTrack() {
         return getSequences().getFirst().getTracks()[0];
     }
+
+
 
     public int getFirstTrackNumberOfEvents() {
         return getFirstTrack().size();
@@ -68,21 +89,27 @@ public class Keyboard {
                 .collect(Collectors.toList());
     }
 
+ */
 
-    public List<Pattern> getKeyboardPatterns() {
-        return keyboardPatterns;
+    void addNoteToNotesOn(int note) {
+        notesOn.add(note);
     }
 
-    public int getNumberOfPatterns() {
-        return numberOfPatterns;
-    }
+    public int getResolution() throws OrganSequencerException {
+        List<Integer> resolutionsList = keyboardPatterns
+                .stream()
+                .map(pattern -> pattern.getOrganSequence().getResolution())
+               // .map(p -> p.getPatternSequence().getResolution())
+                .collect(Collectors.toList());
 
-    public long getLastTick() {
-        return lastTick;
-    }
+        int firstResolution = resolutionsList.getFirst();
+        for(int i=0; i<resolutionsList.size(); i++ ) {
+            if(resolutionsList.get(i) != firstResolution) {
+                throw new OrganSequencerException("Error in Pattern" + keyboardPatterns.get(i).getPatternName() + "!\nAll patterns in the Keyboard should have the same resolution!");
+            }
+        }
+        return firstResolution;
 
-    public boolean isActive() {
-        return active;
     }
 
     public void makeActive() {

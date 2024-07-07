@@ -3,6 +3,7 @@ package de.thws.client.v2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thws.KeyboardPool;
 import de.thws.OrganSequencer;
+import de.thws.OrganSequencerException;
 
 import java.io.File;
 import java.net.URI;
@@ -17,7 +18,7 @@ public class ConsumerTestClient {
     private static final Random random = new Random();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws OrganSequencerException {
         HttpClient client = HttpClient.newHttpClient();
 
         KeyboardPool pool = new KeyboardPool(new File("sounds/new"));

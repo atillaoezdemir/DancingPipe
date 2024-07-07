@@ -27,6 +27,14 @@ public class InputTest extends Thread {
                         System.out.println("Entered ++");
                         pool.keyboards.get(2).makeActive();
                     }
+                    if (stringInput.equals("-")) {
+                        System.out.println("Entered -");
+                        pool.keyboards.get(1).makeInactive();
+                    }
+                    if (stringInput.equals("--")) {
+                        System.out.println("Entered --");
+                        pool.keyboards.get(2).makeInactive();
+                    }
 
                     // todo when making inactive all notes off or keep active until next noteoff event
                 }

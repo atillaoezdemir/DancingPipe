@@ -25,7 +25,7 @@ public class OrganSequencer extends Thread {
             Synthesizer synth = MidiSystem.getSynthesizer();
             Receiver receiver = synth.getReceiver();
 
-            int beatLengthInTicks = keyboards.getKeyboards().getFirst().getSequences().getFirst().getResolution() * 4;
+            long beatLengthInTicks = keyboards.getBeatLengthInTicks();
 
             int numberOfKeyboards = keyboards.getKeyboards().size();
             int[] currentPatternIndex = new int[numberOfKeyboards];
@@ -43,11 +43,18 @@ public class OrganSequencer extends Thread {
                     .max().orElseThrow(NoSuchElementException::new);
 
 
+            // previous condition of the keyboard
+            // all of the keyboards except the first one have previous condition inactive
+            boolean[] previousCondition = new boolean[numberOfKeyboards];
+            previousCondition[0] = true;
+
             // int patternIndex = 0;
             // int currentEventIndex = 0;
             long ticks = 0;
             long ticksSum = 0;
             while (isPlaying) {
+                // synchronized ()
+                // todo try with synchronized
                 Thread.sleep(1);
 
                 if (ticksSum >= maxTicksForKeyboard && ticksSum >= beatLengthInTicks * 5L + 500) //todo change to generic
@@ -71,8 +78,17 @@ public class OrganSequencer extends Thread {
                 for (int keyboardIndex = 0; keyboardIndex < keyboards.getKeyboards().size(); keyboardIndex++) {
                     Keyboard currentKeyboard = keyboards.getKeyboards().get(keyboardIndex);
                     if (!currentKeyboard.isActive()) {
+                        if(previousCondition[keyboardIndex]) {
+                            // if keyboard was active, make all notes on the keyboard off
+                            for (int note : currentKeyboard.getNotesOn()) {
+                                ShortMessage sm = new ShortMessage(ShortMessage.NOTE_ON, note, 0);
+                                receiver.send(sm, ticksSum);
+                                previousCondition[keyboardIndex] = false;
+                            }
+                        }
                         continue;
                     }
+                    previousCondition[keyboardIndex] = true;
                     if (currentPatternIndex[keyboardIndex] != -1) {
                         Pattern currentPattern = currentKeyboard
                                 .getKeyboardPatterns()
@@ -82,7 +98,14 @@ public class OrganSequencer extends Thread {
                                 .getTick() <= ticks
                                 && currentEventIndex[keyboardIndex] < currentPattern.getNumberOfMidiEvents() - 1) {
 
-                            MidiEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
+                            OrganEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
+                            //MidiEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
+                            if(currentEvent.getMessage() instanceof ShortMessage sm) {
+                                if(sm.getCommand() == ShortMessage.NOTE_ON) {
+                                    keyboards.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
+                                    System.out.println(sm.getData1());
+                                }
+                            }
                             receiver.send(currentEvent.getMessage(), currentEvent.getTick());
 
                             currentEventIndex[keyboardIndex]++;

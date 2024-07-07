@@ -4,8 +4,6 @@ import lombok.Getter;
 
 import javax.sound.midi.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.Map;
 
 @Getter
 public class Pattern {
@@ -34,7 +32,7 @@ public class Pattern {
         this.numberOfMidiEvents = organSequence.getEvents().size();
     }
 
-    public OrganEvent getMidiEvent(int index) {
+    public OrganEvent getOrganEvent(int index) {
         return organSequence.getEvents().get(index);
     }
 
@@ -48,6 +46,10 @@ public class Pattern {
     }
 
      */
+
+    public void setEvent(int index, OrganEvent event) {
+        organSequence.getEvents().set(index, event);
+    }
 
 
 }

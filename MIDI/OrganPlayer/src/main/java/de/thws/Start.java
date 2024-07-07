@@ -10,6 +10,7 @@ public class Start {
     public static void main(String[] args) throws Exception {
 
         KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
+        pool.setTempo(KeyboardPool.VERY_FAST);
         pool.getKeyboards().getFirst().makeActive();
         OrganSequencer sequencer = new OrganSequencer(pool);
         sequencer.start();

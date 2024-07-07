@@ -2,10 +2,7 @@ package de.thws;
 
 import javax.sound.midi.*;
 import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class OrganSequencer extends Thread {
     KeyboardPool keyboards;
@@ -25,7 +22,7 @@ public class OrganSequencer extends Thread {
             Synthesizer synth = MidiSystem.getSynthesizer();
             Receiver receiver = synth.getReceiver();
 
-            long beatLengthInTicks = keyboards.getBeatLengthInTicks();
+            long beatLengthInTicks = (long) (keyboards.getBeatLengthInTicks() * keyboards.getTempoFactor());
 
             int numberOfKeyboards = keyboards.getKeyboards().size();
             int[] currentPatternIndex = new int[numberOfKeyboards];
@@ -36,7 +33,7 @@ public class OrganSequencer extends Thread {
 
             long maxTicksForKeyboard = keyboards.getKeyboards()
                     .stream()
-                    .map(Keyboard::getLastTick)
+                    .map(keyboard -> (long) (keyboard.getLastTick() * keyboards.getTempoFactor())) // todo this should not happen here
                     .toList()
                     .stream()
                     .mapToLong(value -> value)
@@ -57,8 +54,16 @@ public class OrganSequencer extends Thread {
                 // todo try with synchronized
                 Thread.sleep(1);
 
-                if (ticksSum >= maxTicksForKeyboard && ticksSum >= beatLengthInTicks * 5L + 500) //todo change to generic
+                if (ticksSum >= maxTicksForKeyboard
+                       // && ticksSum >= (beatLengthInTicks * 5L) * keyboards.getTempoFactor()
+                ) //todo change to generic and fix continuing by slower tempo factor
                 {
+                    for (Keyboard keyboard : keyboards.getKeyboards()) {
+                        for(int note : keyboard.getNotesOn()) {
+                            ShortMessage sm = new ShortMessage(ShortMessage.NOTE_ON, note, 0);
+                            receiver.send(sm, ticksSum);
+                        }
+                    }
                     isPlaying = false;
                 }
                 if (ticks >= beatLengthInTicks) {
@@ -94,11 +99,11 @@ public class OrganSequencer extends Thread {
                                 .getKeyboardPatterns()
                                 .get(currentPatternIndex[keyboardIndex]);
                         if (currentPattern
-                                .getMidiEvent(currentEventIndex[keyboardIndex])
+                                .getOrganEvent(currentEventIndex[keyboardIndex])
                                 .getTick() <= ticks
                                 && currentEventIndex[keyboardIndex] < currentPattern.getNumberOfMidiEvents() - 1) {
 
-                            OrganEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
+                            OrganEvent currentEvent = currentPattern.getOrganEvent(currentEventIndex[keyboardIndex]);
                             //MidiEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
                             if(currentEvent.getMessage() instanceof ShortMessage sm) {
                                 if(sm.getCommand() == ShortMessage.NOTE_ON) {

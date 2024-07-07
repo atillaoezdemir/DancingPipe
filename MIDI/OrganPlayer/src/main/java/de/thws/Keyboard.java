@@ -1,8 +1,5 @@
 package de.thws;
 
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Track;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +45,7 @@ public class Keyboard {
         temp = 0;
         for(Pattern pattern : keyboardPatterns) {
             int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
-            temp += pattern.getMidiEvent(numberOfMidiEvents - 1).getTick();
+            temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
         }
         lastTick = temp;
         notesOn = new ArrayList<Integer>();

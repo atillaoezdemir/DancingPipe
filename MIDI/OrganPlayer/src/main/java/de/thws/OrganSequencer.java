@@ -22,7 +22,7 @@ public class OrganSequencer extends Thread {
             Synthesizer synth = MidiSystem.getSynthesizer();
             Receiver receiver = synth.getReceiver();
 
-            long beatLengthInTicks = (long) (keyboards.getBeatLengthInTicks() * keyboards.getTempoFactor());
+            long beatLengthInTicks = (long) (keyboards.getBeatLengthInTicks() * keyboards.getTempoFactor().getValue());
 
             int numberOfKeyboards = keyboards.getKeyboards().size();
             int[] currentPatternIndex = new int[numberOfKeyboards];
@@ -31,13 +31,7 @@ public class OrganSequencer extends Thread {
 
             synth.open();
 
-            long maxTicksForKeyboard = keyboards.getKeyboards()
-                    .stream()
-                    .map(keyboard -> (long) (keyboard.getLastTick() * keyboards.getTempoFactor())) // todo this should not happen here
-                    .toList()
-                    .stream()
-                    .mapToLong(value -> value)
-                    .max().orElseThrow(NoSuchElementException::new);
+            long maxTicksForKeyboard = getMaxTicksForKeyboardAfterTempoChange(0);
 
 
             // previous condition of the keyboard
@@ -47,6 +41,7 @@ public class OrganSequencer extends Thread {
 
             // int patternIndex = 0;
             // int currentEventIndex = 0;
+            Tempo previousTempoFactor = keyboards.getTempoFactor();
             long ticks = 0;
             long ticksSum = 0;
             while (isPlaying) {
@@ -67,6 +62,7 @@ public class OrganSequencer extends Thread {
                     isPlaying = false;
                 }
                 if (ticks >= beatLengthInTicks) {
+                    // reset ticks to 0 and go to next pattern
                     ticks = 0;
                     Arrays.fill(currentEventIndex, 0);
                     for (int i = 0; i < currentPatternIndex.length; i++) {
@@ -79,6 +75,25 @@ public class OrganSequencer extends Thread {
                         }
                     }
 
+                }
+                if(previousTempoFactor != keyboards.getTempoFactor()) {
+                    System.out.println("tempo change");
+                    // tempo was changed
+
+                    maxTicksForKeyboard = getMaxTicksForKeyboardAfterTempoChange(ticksSum);
+                    if(previousTempoFactor.getValue() < keyboards.getTempoFactor().getValue()) {
+                        // tempo was decreased
+                        keyboards.setTempoForPatterns(currentPatternIndex[0], false); // todo current pattern index should be the same for all
+                        beatLengthInTicks = (long) (beatLengthInTicks * 1.25f);
+                    }
+                    else {
+                        keyboards.setTempoForPatterns(currentPatternIndex[0], true);
+                        beatLengthInTicks = (long) (beatLengthInTicks * 0.75f);
+                    }
+
+                    // todo funktioniert noch nicht bei wenn man die Gesamtanzahl von beats berechnen muss
+                    // todo mache, dass es erst im neuen pattern in Kraft tritt
+                    previousTempoFactor = keyboards.getTempoFactor();
                 }
                 for (int keyboardIndex = 0; keyboardIndex < keyboards.getKeyboards().size(); keyboardIndex++) {
                     Keyboard currentKeyboard = keyboards.getKeyboards().get(keyboardIndex);
@@ -139,9 +154,39 @@ public class OrganSequencer extends Thread {
         }
     }
 
-
-
     public void stopPLaying() {
         isPlaying = false;
     }
+
+    long getMaxTicksForKeyboardAfterTempoChange(long currentTick) {
+        long oldMaxTick = keyboards.getKeyboards()
+                .stream()
+                .map(Keyboard::getLastTick) // todo this should be in a separate variable //todo not general last tick but current last tick
+                .toList()
+                .stream()
+                .mapToLong(value -> value)
+                .max().orElseThrow(NoSuchElementException::new);
+
+        Tempo tempoFactor = keyboards.getTempoFactor();
+
+        long newMaxTick = keyboards.getKeyboards()
+                .stream()
+                .map(keyboard -> (long) (keyboard.getLastTick() * tempoFactor.getValue())) //todo not general last tick but current last tick
+                .toList()
+                .stream()
+                .mapToLong(value -> value)
+                .max().orElseThrow(NoSuchElementException::new);
+
+        // how much of the whole sequence is elapsed
+        float percentElapsed = (currentTick * 100f) /oldMaxTick;
+        // if the whole sequence was in the new tempo, on which tick it would be now
+        long currentTickInNewTempo = (long) (newMaxTick*percentElapsed/100);
+        System.out.println(currentTick);
+        System.out.println(currentTickInNewTempo);
+        long remainingTicksInNewTempo = newMaxTick - currentTickInNewTempo;
+
+        return currentTick + remainingTicksInNewTempo;
+    }
+
+
 }

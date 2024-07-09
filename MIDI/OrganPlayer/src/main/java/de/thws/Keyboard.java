@@ -12,7 +12,7 @@ import lombok.Getter;
 public class Keyboard {
     private final List<Pattern> keyboardPatterns;
     private final int numberOfPatterns;
-    private final long lastTick;
+    private long lastTick;
     private boolean active;
     private final String keyboardName;
     private List<Integer> notesOn; // list of all notes, that are currently playing in the sequence
@@ -115,5 +115,16 @@ public class Keyboard {
 
     public void makeInactive()  {
         active = false;
+    }
+
+    public long updateLastTick() {
+        long temp;
+        temp = 0;
+        for(Pattern pattern : keyboardPatterns) {
+            int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
+            temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
+        }
+        this.lastTick = temp;
+        return this.lastTick;
     }
 }

@@ -22,7 +22,7 @@ public class InputTest extends Thread {
                     if (stringInput.equals("+")) {
                         System.out.println("Entered +");
                         //pool.keyboards.get(1).makeActive();
-                        pool.increaseTempo();
+                        sequencer.increaseTempo();
                     }
                     if (stringInput.equals("++")) {
                         System.out.println("Entered ++");
@@ -32,7 +32,7 @@ public class InputTest extends Thread {
                         System.out.println("Entered -");
                         //pool.keyboards.get(1).makeInactive();
                         //pool.setTempoFactor(KeyboardPool.SLOWER);
-                        pool.decreaseTempo();
+                        sequencer.decreaseTempo();
 
                     }
                     if (stringInput.equals("--")) {

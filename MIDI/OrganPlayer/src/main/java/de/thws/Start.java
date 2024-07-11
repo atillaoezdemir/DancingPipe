@@ -1,7 +1,10 @@
 package de.thws;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.sound.midi.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,10 +12,20 @@ import java.util.Scanner;
 public class Start {
     public static void main(String[] args) throws Exception {
 
+
+        Configurator configurator = Configurator.loadFromFile("sounds/config.json");
+
+
+        System.out.println("Playing " + configurator.getPieceName());
+
         KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
         //pool.setTempo(KeyboardPool.FASTER);
-        pool.getKeyboards().getFirst().makeActive();
+
+        pool.getKeyboards().get(0).makeActive();
         pool.getKeyboards().get(1).makeActive();
+        pool.getKeyboards().get(2).makeActive();
+
+
         OrganSequencer sequencer = new OrganSequencer(pool);
         sequencer.start();
         InputTest test = new InputTest(pool, sequencer);

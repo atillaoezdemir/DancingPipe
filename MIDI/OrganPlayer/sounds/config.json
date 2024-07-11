@@ -1,0 +1,10 @@
+{
+  "pieceName": "Demo Song",
+  "pieceComposer": "thws",
+  "pieceFolderPath": "new",
+  "numberOfPatternsPerKeyboard": 5,
+  "lengthOfPatternInBars": 1,
+  "lengthOfPieceInBars": 5,
+  "numberOfKeyboards": 5,
+  "tempoFactor": 0.25
+}

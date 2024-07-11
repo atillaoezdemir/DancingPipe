@@ -3,6 +3,7 @@ package de.thws;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class Keyboard {
 
         keyboardPatterns = files
                 .stream()
+                .sorted(Comparator.comparing(File::getName))
                 .map(f -> {
                     try {
                         return new Pattern(f.getAbsoluteFile());

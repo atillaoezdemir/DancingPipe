@@ -57,5 +57,9 @@ public class KeyboardPool {
     // todo this should be in OrganSequencer
 
 
+    public void buildFromConfiguration(Configurator configurator) {
+
+
+    }
 
 }

@@ -23,9 +23,25 @@ public class OrganSequencer extends Thread {
     public void run() {
         isPlaying = true;
 
+        int[] channels = {1, 2, 3};
+
         try {
-            Synthesizer synth = MidiSystem.getSynthesizer();
+
+
+
+            MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(4);
+            MidiDevice virtualOutPort = MidiSystem.getMidiDevice(outputDevice); //out
+
+            virtualOutPort.open();
+
+            Receiver receiver = virtualOutPort.getReceiver();
+
+
+
+            /*
+            Synthesizer synth = MidiSystem.getSynthesizer(); if you use that again don't forget synth.open and synth.close
             Receiver receiver = synth.getReceiver();
+             */
 
             //long beatLengthInTicks = (long) (keyboards.getBeatLengthInTicks() * keyboards.getTempoFactor().getValue());
 
@@ -33,7 +49,7 @@ public class OrganSequencer extends Thread {
             int[] currentPatternIndex = new int[numberOfKeyboards];
             int[] currentEventIndex = new int[numberOfKeyboards];
 
-            synth.open();
+            //synth.open();
 
             long maxTicksForKeyboard = getMaxTicksForKeyboardAfterTempoChange(0);
 
@@ -56,11 +72,15 @@ public class OrganSequencer extends Thread {
                     // && ticksSum >= (beatLengthInTicks * 5L) * keyboards.getTempoFactor()
                 ) //todo change to generic and fix continuing by slower tempo factor
                 {
+                    int channelIndex = 0;
                     for (Keyboard keyboard : keyboards.getKeyboards()) {
+
                         for (int note : keyboard.getNotesOn()) {
-                            ShortMessage sm = new ShortMessage(ShortMessage.NOTE_ON, note, 0);
+                            //ShortMessage sm = new ShortMessage(ShortMessage.NOTE_ON, note, 0);
+                            ShortMessage sm = new ShortMessage(ShortMessage.NOTE_OFF, channels[channelIndex], note, 0); // short message with chanels
                             receiver.send(sm, ticksSum);
                         }
+                        channelIndex++;
                     }
                     isPlaying = false;
                 }
@@ -124,11 +144,20 @@ public class OrganSequencer extends Thread {
                             //MidiEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
                             if (currentEvent.getMessage() instanceof ShortMessage sm) {
                                 if (sm.getCommand() == ShortMessage.NOTE_ON) {
-                                    keyboards.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
-                                    System.out.println(sm.getData1());
+                                    if(sm.getData2() == 0) {
+                                        sm.setMessage(ShortMessage.NOTE_OFF, channels[keyboardIndex], sm.getData1(), sm.getData2());
+
+                                    }
+                                    else {
+                                        sm.setMessage(ShortMessage.NOTE_ON, channels[keyboardIndex], sm.getData1(), sm.getData2());
+                                        keyboards.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
+
+                                    }
+                                    System.out.println(sm.getChannel());
+                                    receiver.send(currentEvent.getMessage(), currentEvent.getTick());
+
                                 }
                             }
-                            receiver.send(currentEvent.getMessage(), currentEvent.getTick());
 
                             currentEventIndex[keyboardIndex]++;
                         }
@@ -140,7 +169,7 @@ public class OrganSequencer extends Thread {
                 ticks++;
                 ticksSum++;
             }
-            synth.close();
+            //synth.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

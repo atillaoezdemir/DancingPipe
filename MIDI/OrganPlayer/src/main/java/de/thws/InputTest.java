@@ -21,8 +21,9 @@ public class InputTest extends Thread {
                     String stringInput = sc.nextLine();
                     if (stringInput.equals("+")) {
                         System.out.println("Entered +");
+                        sequencer.incrementKeyboards();
                         //pool.keyboards.get(1).makeActive();
-                        sequencer.increaseTempo();
+                        //equencer.increaseTempo();
                     }
                     if (stringInput.equals("++")) {
                         System.out.println("Entered ++");
@@ -32,8 +33,8 @@ public class InputTest extends Thread {
                         System.out.println("Entered -");
                         //pool.keyboards.get(1).makeInactive();
                         //pool.setTempoFactor(KeyboardPool.SLOWER);
-                        sequencer.decreaseTempo();
-
+                        //sequencer.decreaseTempo();
+                        sequencer.decrementKeyboards();
                     }
                     if (stringInput.equals("--")) {
                         System.out.println("Entered --");

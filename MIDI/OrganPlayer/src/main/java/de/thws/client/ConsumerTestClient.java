@@ -5,6 +5,7 @@ import de.thws.KeyboardPool;
 import de.thws.OrganSequencer;
 import de.thws.OrganSequencerException;
 
+import javax.sound.midi.Receiver;
 import java.io.File;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,7 +25,8 @@ public class ConsumerTestClient {
 
         KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
         pool.getKeyboards().getFirst().makeActive();
-        OrganSequencer sequencer = new OrganSequencer(pool);
+        Receiver receiver = null;
+        OrganSequencer sequencer = new OrganSequencer(pool, receiver);
 
         listenToServer(client, sequencer);
     }

@@ -1,34 +1,36 @@
 package de.thws.client.v2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.KeyboardPool;
 import de.thws.OrganSequencer;
-import de.thws.OrganSequencerException;
 
-import java.io.File;
+import javax.sound.midi.InvalidMidiDataException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Random;
 
-public class ConsumerTestClient {
-    private static final String SERVER_URI = "http://localhost:8080";
+public class ConsumerTestClient extends Thread {
+    private static final String SERVER_URI = "http://10.10.35.129:8080";
     private static final String SERVER_ENDPOINT = "/consumer";
     private static final Random random = new Random();
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    OrganSequencer sequencer;
 
-    public static void main(String[] args) throws OrganSequencerException {
+    public ConsumerTestClient(OrganSequencer sequencer) {
+        this.sequencer = sequencer;
+    }
+    public void run() {
         HttpClient client = HttpClient.newHttpClient();
 
-        KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
-        pool.getKeyboards().getFirst().makeActive();
-        OrganSequencer sequencer = new OrganSequencer(pool);
+        //KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
+        //pool.getKeyboards().getFirst().makeActive();
+        //OrganSequencer sequencer = new OrganSequencer(pool);
 
         listenToServer(client, sequencer);
     }
 
-    private static void listenToServer(HttpClient client,  OrganSequencer sequencer) {
+    private void listenToServer(HttpClient client, OrganSequencer sequencer) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(SERVER_URI + SERVER_ENDPOINT))
                 .header("Accept", "text/event-stream")
@@ -39,19 +41,19 @@ public class ConsumerTestClient {
                 .join();
     }
 
-    private static void processLine(String line,OrganSequencer sequencer) {
+    private void processLine(String line, OrganSequencer sequencer) {
         if (line.startsWith("data:")) {
             String json = line.substring(5).trim();
             parseAndHandleCommand(json, sequencer);
         }
     }
 
-    private static void parseAndHandleCommand(String json, OrganSequencer sequencer) {
+    private void parseAndHandleCommand(String json, OrganSequencer sequencer) {
         try {
             ConsumerDataInDTO commandData = objectMapper.readValue(json, ConsumerDataInDTO.class);
             handleCommand(commandData.getCommand(), sequencer);
             System.out.println("Received:\n command: " + commandData.getCommand() +
-                    "\n Current tempo: "+ commandData.getCurrentTempo()+
+                    "\n Current tempo: " + commandData.getCurrentTempo() +
                     "\nKeyboards in use: " + commandData.getKeyboardsInUse());
 
         } catch (Exception e) {
@@ -59,43 +61,50 @@ public class ConsumerTestClient {
         }
     }
 
-    private static void handleCommand(String command, OrganSequencer sequencer) {
+    private void handleCommand(String command, OrganSequencer sequencer) {
         switch (command) {
             case "start":
                 try {
                     sequencer.start();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.err.println("Error starting sequencer: " + e.getMessage());
                 }
                 //todo add organ sequencer logic.
-                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1);
+                sendConfiguration(sequencer.getNumberOfKeyboards(), sequencer.getNumberOfKeyboards());
                 break;
             case "stop":
-                //todo add organ sequencer logic.
+                try {
+                    sequencer.stopPlaying();
+                } catch (InvalidMidiDataException e) {
+                    throw new RuntimeException(e);
+                }
                 System.out.println("Received stop command. Waiting for next start.");
                 sendConfiguration(0, 0);
                 break;
             case "incrementKeyboards":
+                sequencer.incrementKeyboards();
                 //todo add organ sequencer logic.
                 break;
             case "decrementKeyboards":
+                sequencer.decrementKeyboards();
                 //todo add organ sequencer logic.
                 break;
             case "maxKeyboards":
+                sequencer.setKeyboardsToMax();
                 //todo add organ sequencer logic.
                 break;
             case "minKeyboards":
+                sequencer.setKeyboardsToMin();
                 //todo add organ sequencer logic.
                 break;
             case "incrementTempo":
-                //todo add organ sequencer logic.
+                sequencer.increaseTempo();
                 break;
-                case "decrementTempo":
-                //todo add organ sequencer logic.
+            case "decrementTempo":
+                sequencer.decreaseTempo();
                 break;
-                case "defaultTempo":
-                //todo add organ sequencer logic.
+            case "defaultTempo":
+                sequencer.setTempoDoDefault();
                 break;
 
             default:

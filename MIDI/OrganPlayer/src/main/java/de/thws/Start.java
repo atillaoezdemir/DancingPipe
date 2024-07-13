@@ -1,17 +1,26 @@
 package de.thws;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thws.client.v2.ConsumerTestClient;
 
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class Start {
     public static void main(String[] args) throws Exception {
 
+
+        MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(4);
+        MidiDevice virtualOutPort = MidiSystem.getMidiDevice(outputDevice); //out
+
+        virtualOutPort.open();
+
+        Receiver receiver = virtualOutPort.getReceiver();
 
         Configurator configurator = Configurator.loadFromFile("sounds/config.json");
 
@@ -21,15 +30,21 @@ public class Start {
         KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
         //pool.setTempo(KeyboardPool.FASTER);
 
-        pool.getKeyboards().get(0).makeActive();
-        pool.getKeyboards().get(1).makeActive();
-        pool.getKeyboards().get(2).makeActive();
+        pool.getKeyboards().getFirst().makeActive();
+      //  pool.getKeyboards().get(1).makeActive();
+      //  pool.getKeyboards().get(2).makeActive();
 
 
-        OrganSequencer sequencer = new OrganSequencer(pool);
+        OrganSequencer sequencer = new OrganSequencer(pool, receiver);
+        /*
         sequencer.start();
         InputTest test = new InputTest(pool, sequencer);
         test.start();
+
+ */
+
+        ConsumerTestClient client = new ConsumerTestClient(sequencer);
+        client.start();
 
 
         /*

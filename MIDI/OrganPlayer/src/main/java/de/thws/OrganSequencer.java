@@ -3,8 +3,7 @@ package de.thws;
 import lombok.Getter;
 
 import javax.sound.midi.*;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class OrganSequencer extends Thread {
     KeyboardPool keyboards;
@@ -157,11 +156,13 @@ public class OrganSequencer extends Thread {
                 break;
             }
         }
+        if(keyboardIndex < keyboards.getKeyboards().size()) {
             keyboards.keyboards.get(keyboardIndex).makeActive();
+        }
     }
 
     public void decrementKeyboards() {
-        int keyboardIndex = 0;
+        int keyboardIndex;
         for(keyboardIndex = 0; keyboardIndex < keyboards.getKeyboards().size(); keyboardIndex++) {
             if(!keyboards.getKeyboards().get(keyboardIndex).isActive()) {
                 break;
@@ -169,7 +170,7 @@ public class OrganSequencer extends Thread {
         }
         if(keyboardIndex != 1) {
             keyboardIndex--;
-            keyboards.keyboards.get(keyboardIndex).makeInactive();
+            keyboards.getKeyboards().get(keyboardIndex).makeInactive();
         }
 
     }
@@ -188,9 +189,7 @@ public class OrganSequencer extends Thread {
 
     public void startPlaying() {
         isPlaying = true;
-
         int[] channels = {1, 2, 3};
-
         try {
 
 
@@ -279,7 +278,10 @@ public class OrganSequencer extends Thread {
                     if (!currentKeyboard.isActive()) {
                         if (previousCondition[keyboardIndex]) {
                             // if keyboard was active, make all notes on the keyboard off
+
                             sendNoteOffToAllPlayingNotesOnKeyboard(keyboardIndex);
+
+                            previousCondition[keyboardIndex] = false;
                         }
                         continue;
                     }
@@ -306,7 +308,6 @@ public class OrganSequencer extends Thread {
                                         keyboards.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
 
                                     }
-                                    System.out.println(sm.getChannel());
                                     receiver.send(currentEvent.getMessage(), currentEvent.getTick());
 
                                 }
@@ -355,6 +356,10 @@ public class OrganSequencer extends Thread {
 
          */
 
+    }
+
+    private void resetFields() {
+        tempoFactor = Tempo.NORMAL;
     }
 
 

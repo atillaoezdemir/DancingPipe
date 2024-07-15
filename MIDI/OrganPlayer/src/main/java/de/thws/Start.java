@@ -15,7 +15,7 @@ public class Start {
     public static void main(String[] args) throws Exception {
 
 
-        MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(4);
+        MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(2);
         MidiDevice virtualOutPort = MidiSystem.getMidiDevice(outputDevice); //out
 
         virtualOutPort.open();
@@ -38,16 +38,17 @@ public class Start {
         OrganSequencer sequencer = new OrganSequencer(pool, receiver);
         /*
         sequencer.start();
-        InputTest test = new InputTest(pool, sequencer);
+         */
+        InputTest test = new InputTest(pool, receiver);
         test.start();
 
- */
 
+/*
         ConsumerTestClient client = new ConsumerTestClient(sequencer);
         client.start();
 
 
-        /*
+
         Scanner sc = new Scanner(System.in);
 
 

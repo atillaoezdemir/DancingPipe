@@ -1,7 +1,7 @@
 package com.example.loginapp.services;
 
-import com.example.loginapp.model.ToConsumerDTO;
-import com.example.loginapp.model.ToWebClientDTO;
+import com.example.loginapp.models.ToConsumerDTO;
+import com.example.loginapp.models.ToWebClientDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -28,6 +28,7 @@ public class EmitterService {
     }
 
 
+
     public void sendToConsumer(ToConsumerDTO message) {
         if (consumerEmitter != null) {
             try {
@@ -49,7 +50,6 @@ public class EmitterService {
 
 
     public boolean hasActiveConsumerEmitters() {
-//        System.out.println(consumerEmitter==null);
         return consumerEmitter != null;
     }
 

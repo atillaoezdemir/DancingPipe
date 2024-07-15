@@ -1,8 +1,8 @@
 package com.example.loginapp.services;
 
-import com.example.loginapp.model.DTOWrapper;
-import com.example.loginapp.model.ToConsumerDTO;
-import com.example.loginapp.model.ToWebClientDTO;
+import com.example.loginapp.models.DTOWrapper;
+import com.example.loginapp.models.ToConsumerDTO;
+import com.example.loginapp.models.ToWebClientDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

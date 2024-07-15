@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class ProducerTestClient {
     private static final String SERVER_URL = "http://localhost:8080/producer";
     private static final int DELAY_MIN_VALUE = 500;
-    private static final int DELAY_MAX_VALUE = 1500;
+    private static final int DELAY_MAX_VALUE = 1000;
     private static final int NUMBER_CAP = 255;
     private static final String MODE = "sequence"; // "random" or "sequence"
 

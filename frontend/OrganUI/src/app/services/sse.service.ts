@@ -15,7 +15,11 @@ export class SseService implements OnDestroy {
     currentTempo: -1,
     wasCommandExecuted: false,
     consumerConnected: false,
-    startCommandReceived:false
+    startCommandReceived:false,
+    barLength: -1,
+    title: 'stopped',
+    composerName: 'stopped'
+
   });
 
   constructor(private zone: NgZone) {
@@ -46,7 +50,10 @@ export class SseService implements OnDestroy {
           keyboardsInUse: -1,
           maxAvailableKeyboards: -1,
           consumerConnected: false,
-          startCommandReceived: false
+          startCommandReceived: false,
+          barLength: -1,
+          title: 'stopped',
+          composerName: 'stopped'
         });
       });
     };

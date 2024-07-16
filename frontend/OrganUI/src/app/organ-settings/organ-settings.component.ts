@@ -23,6 +23,9 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
   private subscription: Subscription | undefined;
   consumerIsConnected: boolean = false;
   startCommandReceived: boolean = false;
+  barLength:number= -1;
+  title:string= 'stopped';
+  composerName:string = 'stopped';
 
   constructor(
     private ngZone: NgZone,
@@ -38,6 +41,12 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
           this.selectedTempoLabel = data.currentTempo;
           this.updateKeyboards();
           this.startCommandReceived=data.startCommandReceived;
+          this.barLength=data.barLength;
+          console.log(this.barLength,data.barLength)
+          this.title=data.title;
+          console.log(this.title,data.title)
+          this.composerName=data.composerName;
+          console.log(this.composerName,data.composerName)
           // if (data.command == 'start' && data.consumerConnected) {
           //   this.startCommandReceived = true;
           // }

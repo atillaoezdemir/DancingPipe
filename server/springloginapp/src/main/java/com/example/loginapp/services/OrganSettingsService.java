@@ -25,6 +25,10 @@ public class OrganSettingsService {
     private int maxTempo = 5;
     private int currentTempo = -1;
     private int defaultTempo = 3;
+    private int barLength = -1;
+    private String title = "stopped";
+    private String composerName = "stopped";
+
 
 
     public void setKeyboardsInUse(int keyboards) {
@@ -135,9 +139,13 @@ public class OrganSettingsService {
     private DTOWrapper getCurrentValues(String command, boolean wasCommandExecuted) {
         ToWebClientDTO toWebClientDTO;
         if (emitterService.hasActiveConsumerEmitters()) {
-            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, wasCommandExecuted,true, isStartCommandReceived());
+            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(),
+                    command, wasCommandExecuted,true, isStartCommandReceived(),getBarLength(),
+                    getTitle(), getComposerName());
         } else {
-            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(), command, false,false, isStartCommandReceived());
+            toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(),
+                    command, false,false, isStartCommandReceived(),getBarLength(),
+                    getTitle(), getComposerName());
         }
         ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), command, getCurrentTempo());
 

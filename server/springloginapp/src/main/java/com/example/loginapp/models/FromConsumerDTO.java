@@ -11,4 +11,10 @@ public class FromConsumerDTO {
     public int keyboardsMax;
     @JsonProperty("defaultKeyboards")
     private int defaultKeyboards;
+    @JsonProperty("barLength")
+    private int barLength;
+    @JsonProperty("compositionTitle")
+    private String Title;
+    @JsonProperty("composerName")
+    private String composerName;
 }

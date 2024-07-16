@@ -6,4 +6,7 @@ export interface WebClientDTO {
   wasCommandExecuted: boolean;
   consumerConnected: boolean;
   startCommandReceived: boolean;
+  barLength: number;
+  title: string;
+  composerName: string;
 }

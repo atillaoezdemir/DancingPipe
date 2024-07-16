@@ -54,12 +54,12 @@ public class ConsumerTestClient {
         switch (command) {
             case "start":
                 //todo add organ sequencer logic.
-                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1);
+                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1,100,"Title placeholder","Composer name placeholder");
                 break;
             case "stop":
                 //todo add organ sequencer logic.
                 System.out.println("Received stop command. Waiting for next start.");
-                sendConfiguration(0, 0);
+                sendConfiguration(0, 0,0,"Title placeholder11","Composer name placeholder11");
                 break;
             case "incrementKeyboards":
                 //todo add organ sequencer logic.
@@ -90,9 +90,9 @@ public class ConsumerTestClient {
         }
     }
 
-    private static void sendConfiguration(int keyboardsMax, int keyboardsInUse) {
+    private static void sendConfiguration(int keyboardsMax, int keyboardsInUse,int barLength,String title,String composerName) {
         try {
-            ConsumerDataOutDTO config = new ConsumerDataOutDTO(keyboardsMax, keyboardsInUse);
+            ConsumerDataOutDTO config = new ConsumerDataOutDTO(keyboardsMax, keyboardsInUse, barLength, title, composerName);
             String jsonPayload = objectMapper.writeValueAsString(config);
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -105,6 +105,9 @@ public class ConsumerTestClient {
                     .thenAccept(response -> {
                         System.out.println("Configuration status: " + response.statusCode());
                         System.out.println("Response body: " + response.body());
+//                        System.out.println("Length in bars: " + response.body());
+//                        System.out.println("Title: " + response.body());
+//                        System.out.println("Composer name: " + response.body());
                     })
                     .join();
         } catch (Exception e) {

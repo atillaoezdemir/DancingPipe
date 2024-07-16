@@ -1,6 +1,5 @@
 package com.example.loginapp.controllers;
 
-import com.example.loginapp.models.ConnectionStatusToWebClientDTO;
 
 import com.example.loginapp.models.UserCredentialsDTO;
 import com.example.loginapp.services.EmitterService;
@@ -29,11 +28,6 @@ public class WebController {
         }
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<ConnectionStatusToWebClientDTO> getConnectionStatus() {
-        ConnectionStatusToWebClientDTO defaultWebClientDTO = new ConnectionStatusToWebClientDTO(false, false);
-        return ResponseEntity.ok().body(defaultWebClientDTO);
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody UserCredentialsDTO credentials) {

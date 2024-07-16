@@ -1,16 +1,7 @@
-<div class="status-bar" [ngClass]="consumerIsConnected ? 'online' : 'offline'">
-  {{ consumerIsConnected ? "Consumer is connected" : "Consumer is disconnected. All commands will be ignored!" }}
-</div>
-<div class="status-bar" [ngClass]="startCommandReceived ? 'online' : 'offline'">
-  {{
-  startCommandReceived
-    ? "Start command received"
-    : "Waiting for command to start. All other commands will be ignored!"
-  }}
-</div>
-
-<h1 class="centered">Organ Settings</h1>
-<h2>Currently playing: TODO</h2>
+<h1 class="centered">Composition Details</h1>
+<h2>Title: {{title}}</h2>
+<h2>Composer: {{composerName}}</h2>
+<h2>Number of Bars: {{barLength}}</h2>
 <mat-divider></mat-divider>
 <h2>Keyboards management:</h2>
 <div class="keyboards-display">
@@ -21,4 +12,15 @@
 <mat-divider></mat-divider>
 <div class="tempo-pace-container">
   <h2>Tempo Pace: {{ selectedTempoLabel | tempo }}</h2>
+</div>
+
+<div class="status-bar" [ngClass]="consumerIsConnected ? 'online' : 'offline'">
+  {{ consumerIsConnected ? "Consumer is connected" : "Consumer is disconnected. All commands will be ignored!" }}
+</div>
+<div class="status-bar" [ngClass]="startCommandReceived ? 'online' : 'offline'">
+  {{
+  startCommandReceived
+    ? "Start command received"
+    : "Waiting for command to start. All other commands will be ignored!"
+  }}
 </div>

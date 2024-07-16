@@ -40,7 +40,10 @@ public class NumberService {
     public ResponseEntity<ToConsumerDTO> getResponse(FromConsumerDTO config) {
         organSettingsService.setMaxAvailableKeyboards(config.getKeyboardsMax());
         organSettingsService.setKeyboardsInUse(config.getDefaultKeyboards());
-        ToConsumerDTO toConsumerDTO = new ToConsumerDTO(organSettingsService.getKeyboardsInUse(), "configureMax", organSettingsService.getCurrentTempo());
+        organSettingsService.setTitle(config.getTitle());
+        organSettingsService.setBarLength(config.getBarLength());
+        organSettingsService.setComposerName(config.getComposerName());
+        ToConsumerDTO toConsumerDTO = new ToConsumerDTO(organSettingsService.getKeyboardsInUse(), "configurationResponse", organSettingsService.getCurrentTempo());
         return ResponseEntity.ok(toConsumerDTO);
     }
 }

@@ -14,7 +14,8 @@ export class SseService implements OnDestroy {
     command: '',
     currentTempo: -1,
     wasCommandExecuted: false,
-    consumerIsConnected: false,
+    consumerConnected: false,
+    startCommandReceived:false
   });
 
   constructor(private zone: NgZone) {
@@ -44,7 +45,8 @@ export class SseService implements OnDestroy {
           wasCommandExecuted: false,
           keyboardsInUse: -1,
           maxAvailableKeyboards: -1,
-          consumerIsConnected: false,
+          consumerConnected: false,
+          startCommandReceived: false
         });
       });
     };

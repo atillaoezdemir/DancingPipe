@@ -4,5 +4,6 @@ export interface WebClientDTO {
   currentTempo: number;
   command: string;
   wasCommandExecuted: boolean;
-  consumerIsConnected: boolean;
+  consumerConnected: boolean;
+  startCommandReceived: boolean;
 }

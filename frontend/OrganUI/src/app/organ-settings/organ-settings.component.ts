@@ -34,15 +34,16 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
       next: (data: WebClientDTO) => {
         this.ngZone.run(() => {
           this.webClientData = data;
-          this.consumerIsConnected = data.consumerIsConnected;
+          this.consumerIsConnected = data.consumerConnected;
           this.selectedTempoLabel = data.currentTempo;
           this.updateKeyboards();
-          if (data.command == 'start' && data.consumerIsConnected) {
-            this.startCommandReceived = true;
-          }
-          if ((data.command == 'stop' && data.consumerIsConnected) || !data.consumerIsConnected) {
-            this.startCommandReceived = false;
-          }
+          this.startCommandReceived=data.startCommandReceived;
+          // if (data.command == 'start' && data.consumerConnected) {
+          //   this.startCommandReceived = true;
+          // }
+          // if ((data.command == 'stop' && data.consumerConnected) || !data.consumerConnected) {
+          //   this.startCommandReceived = false;
+          // }
         });
       },
       error: (error) => console.error('Error receiving SSE loginData:', error),

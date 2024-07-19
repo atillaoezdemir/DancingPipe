@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Start {
     public static void main(String[] args) throws Exception {
 
@@ -27,7 +28,7 @@ public class Start {
 
         System.out.println("Playing " + configurator.getPieceName());
 
-        KeyboardPool pool = new KeyboardPool(new File("sounds/new"));
+        KeyboardPool pool = new KeyboardPool(new File("sounds/bwv525"));
         //pool.setTempo(KeyboardPool.FASTER);
 
         pool.getKeyboards().getFirst().makeActive();

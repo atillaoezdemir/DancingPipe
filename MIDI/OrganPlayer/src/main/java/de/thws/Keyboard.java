@@ -4,9 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import de.thws.configurators.KeyboardConfigurator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.thws.configurators.PatternConfigurator;
+import de.thws.helpers.ConfiguratorHelper;
 import lombok.Getter;
 
 @Getter
@@ -15,8 +18,42 @@ public class Keyboard {
     private final int numberOfPatterns;
     private long lastTick;
     private boolean active;
-    private final String keyboardName;
+    private final KeyboardName keyboardName;
     private List<Integer> notesOn; // list of all notes, that are currently playing in the sequence
+
+
+    /**
+     * Creates a keyboard object from KeyboardConfigurator object.
+     * @param configurator KeyboardConfigurator object to be used
+     * @throws OrganSequencerException
+     * @throws ConfiguratorException if the keyboard name in the configurator object is invalid
+     */
+    public Keyboard(KeyboardConfigurator configurator) throws OrganSequencerException, ConfiguratorException {
+        this.keyboardPatterns = new ArrayList<>();
+
+        PatternConfigurator[] patternConfigurators  = configurator.getPatternConfigurators();
+        for(PatternConfigurator patternConfigurator : patternConfigurators) {
+            this.keyboardPatterns.add(patternConfigurator.convertToPattern());
+        }
+        this.numberOfPatterns = this.keyboardPatterns.size();
+
+        long temp;
+        temp = 0;
+        for(Pattern pattern : keyboardPatterns) {
+            int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
+            temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
+        }
+        lastTick = temp;
+        notesOn = new ArrayList<Integer>();
+        this.active = false;
+
+        this.keyboardName = ConfiguratorHelper.convertStringToKeyboardName(configurator.getKeyboardName());
+
+
+
+    }
+
+    /*
 
     Keyboard(File keyboardDirectory) {
         keyboardName = keyboardDirectory.getName();
@@ -52,6 +89,8 @@ public class Keyboard {
         lastTick = temp;
         notesOn = new ArrayList<Integer>();
     }
+
+     */
 
     public List<OrganSequence> getSequences() {
         return keyboardPatterns
@@ -99,7 +138,7 @@ public class Keyboard {
                 .stream()
                 .map(pattern -> pattern.getOrganSequence().getResolution())
                // .map(p -> p.getPatternSequence().getResolution())
-                .collect(Collectors.toList());
+                .toList();
 
         int firstResolution = resolutionsList.getFirst();
         for(int i=0; i<resolutionsList.size(); i++ ) {

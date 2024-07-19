@@ -33,6 +33,8 @@ public class InputTest extends Thread {
         boolean done = false;
         //sequencer.startPlaying();
         while (!done) {
+            if (!sequencer.isPlaying)
+                done = true;
             try {
                 if (System.in.available() > 0) {
                     String stringInput = sc.nextLine();

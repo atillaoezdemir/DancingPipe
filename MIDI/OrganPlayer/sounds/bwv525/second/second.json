@@ -1,0 +1,92 @@
+{
+  "keyboardName": "choir",
+  "patternConfigurators": [
+    {
+      "patternNumber": 1,
+      "patternFile": "second_bar_1.mid",
+      "beginsWithTie": false,
+      "endsWithTie": true,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 2,
+      "patternFile": "second_bar_2.mid",
+      "beginsWithTie": true,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 3,
+      "patternFile": "second_bar_3.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 4,
+      "patternFile": "second_bar_4.mid",
+      "beginsWithTie": false,
+      "endsWithTie": true,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 5,
+      "patternFile": "second_bar_5.mid",
+      "beginsWithTie": true,
+      "endsWithTie": true,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 6,
+      "patternFile": "second_bar_6.mid",
+      "beginsWithTie": true,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 7,
+      "patternFile": "second_bar_7.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 8,
+      "patternFile": "second_bar_8.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 9,
+      "patternFile": "second_bar_9.mid",
+      "beginsWithTie": false,
+      "endsWithTie": true,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 10,
+      "patternFile": "second_bar_10.mid",
+      "beginsWithTie": true,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 11,
+      "patternFile": "second_bar_11.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 12,
+      "patternFile": "second_bar_12.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    }
+  ]
+}

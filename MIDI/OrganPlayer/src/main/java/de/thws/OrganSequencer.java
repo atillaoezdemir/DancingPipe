@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import javax.sound.midi.*;
 import java.util.*;
+import de.thws.helpers.PatternHelper;
 
 public class OrganSequencer extends Thread {
     KeyboardPool keyboards;
@@ -188,6 +189,8 @@ public class OrganSequencer extends Thread {
     }
 
     public void startPlaying() {
+
+        //todo make copy of the sequences and change this values instead of the original ones
         isPlaying = true;
         int[] channels = {1, 2, 3};
         try {
@@ -298,10 +301,9 @@ public class OrganSequencer extends Thread {
                             OrganEvent currentEvent = currentPattern.getOrganEvent(currentEventIndex[keyboardIndex]);
                             //MidiEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
                             if (currentEvent.getMessage() instanceof ShortMessage sm) {
-                                if (sm.getCommand() == ShortMessage.NOTE_ON) {
-                                    if(sm.getData2() == 0) {
+                                if (PatternHelper.isNoteEvent(sm)) {
+                                    if(PatternHelper.isNoteOffEvent(sm)) {
                                         sm.setMessage(ShortMessage.NOTE_OFF, channels[keyboardIndex], sm.getData1(), sm.getData2());
-
                                     }
                                     else {
                                         sm.setMessage(ShortMessage.NOTE_ON, channels[keyboardIndex], sm.getData1(), sm.getData2());

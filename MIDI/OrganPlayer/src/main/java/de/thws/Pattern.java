@@ -1,19 +1,30 @@
 package de.thws;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.sound.midi.*;
 import java.io.File;
 
+@Setter
 @Getter
 public class Pattern {
+    private int patternIndex;
+    private boolean canBeInterrupted;
     //private Sequence patternSequence;
     private OrganSequence organSequence;
     //private Track patternTrack;
-    private final int numberOfMidiEvents;
+    private int numberOfMidiEvents;
     private final String patternName;
 
-    Pattern(File path) throws OrganSequencerException {
+    public Pattern() {
+        this.organSequence = null;
+        this.numberOfMidiEvents = 0;
+        this.patternName = "";
+
+    }
+
+    public Pattern(File path) throws OrganSequencerException {
         this.patternName = path.getName();
         try {
             this.organSequence = new OrganSequence(MidiSystem.getSequence(path));
@@ -25,6 +36,9 @@ public class Pattern {
             }
             else if (e.getClass().getName().equals("IOException")) {
                 throw new OrganSequencerException("IOException thrown when reading file '" + path.getAbsolutePath() + "'. \nPlease make sure that the folder with the MIDI files is not empty and the MIDI files are not damaged.");
+            }
+            else {
+                throw new OrganSequencerException("NullPointerException thrown when reading file '" + path.getAbsolutePath() + "'. \nPlease make sure that the right MIDI file is referenced or exists.");
             }
         }
         //patternTrack = patternSequence.getTracks()[0];

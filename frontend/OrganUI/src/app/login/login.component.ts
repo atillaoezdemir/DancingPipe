@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
   }
 
   submitCredentials(username: string, password: string): Observable<boolean> {
-    const url = 'http://localhost:8080/web/login';
+    const url = 'http://10.10.35.129:8080/web/login';
     const body = { username: username, password: password };
     return this.http.post<boolean>(url, body);
   }

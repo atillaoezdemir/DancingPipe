@@ -6,7 +6,7 @@ import { WebClientDTO } from '../models/web-client-dto';
   providedIn: 'root',
 })
 export class SseService implements OnDestroy {
-  private baseUrl = 'http://localhost:8080/web';
+  private baseUrl = 'http://10.10.35.129:8080/web';
   private eventSource: EventSource | null = null;
   private dataSubject: BehaviorSubject<WebClientDTO> = new BehaviorSubject<WebClientDTO>({
     keyboardsInUse: -1,

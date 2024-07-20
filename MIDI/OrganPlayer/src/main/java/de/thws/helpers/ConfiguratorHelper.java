@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thws.Configurator;
 import de.thws.ConfiguratorException;
 import de.thws.KeyboardName;
+import de.thws.configurators.CompositionConfigurator;
 import de.thws.configurators.KeyboardConfigurator;
 
 import java.io.File;
@@ -21,12 +22,16 @@ public class ConfiguratorHelper {
      */
     public static KeyboardConfigurator convertJsonFileToKeyboardConfigurator(String filepath) throws ConfiguratorException {
         File file = new File(filepath);
+        FileInputStream fis = readFileAsStream(file);
+        /*File file = new File(filepath);
         FileInputStream fis;
         try {
             fis = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             throw new ConfiguratorException("File " + file.getName() + " was not found");
         }
+
+         */
 
         String json;
         ObjectMapper mapper = new ObjectMapper();
@@ -40,8 +45,49 @@ public class ConfiguratorHelper {
         }
 
         return result;
-
     }
+
+    /**
+     * Reads the given JSON file and converts it to CompositionConfigurator object.
+     * @param filepath path to the JSON file to read
+     * @return The content of the file as KeyboardConfigurator object
+     * @throws ConfiguratorException if the file cannot be found or cannot be read
+     */
+    public static CompositionConfigurator convertJsonFileToCompositionConfigurator(String filepath) throws ConfiguratorException {
+        File file = new File(filepath);
+        FileInputStream fis = readFileAsStream(file); //todo see if that will work
+
+        String json;
+        ObjectMapper mapper = new ObjectMapper();
+        CompositionConfigurator result;
+        try {
+            json = new String(fis.readAllBytes());
+            result = mapper.readValue(json, CompositionConfigurator.class);
+            fis.close();
+        } catch (IOException e) {
+            throw new ConfiguratorException("File " + file.getName() + " could not be read");
+        }
+
+        return result;
+    }
+
+    /**
+     * Converts the given file to FileInputStream
+     * @param file file to be converted
+     * @return FileInputStream of the given file
+     * @throws ConfiguratorException if the file was not found
+     */
+    private static FileInputStream readFileAsStream(File file) throws ConfiguratorException {
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new ConfiguratorException("File " + file.getName() + " was not found");
+        }
+        return fis;
+    }
+
+
 
     /**
      * Counts the number of JSON files in the given directory.

@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class InputTest extends Thread {
-    KeyboardPool pool;
+    Composition composition;
     Receiver receiver;
     //OrganSequencer sequencer;
 
-    public InputTest(KeyboardPool pool, Receiver receiver) {
-        this.pool = pool;
+    public InputTest(Composition composition, Receiver receiver) {
+        this.composition = composition;
         this.receiver = receiver;
         //this.sequencer = sequencer;
     }
@@ -27,20 +27,22 @@ public class InputTest extends Thread {
     }
 
     private void getInput() throws InterruptedException {
-        OrganSequencer sequencer = new OrganSequencer(pool, receiver);
-        sequencer.start();
+        OrganSequencer sequencer = null;
         Scanner sc = new Scanner(System.in);
         boolean done = false;
         //sequencer.startPlaying();
         while (!done) {
-            if (!sequencer.isPlaying)
+            /* if (!sequencer.isPlaying)
                 done = true;
+
+             */
             try {
                 if (System.in.available() > 0) {
                     String stringInput = sc.nextLine();
                     if (stringInput.equals("start")) {
                         System.out.println("Entered start");
-
+                        sequencer = new OrganSequencer(composition, receiver);
+                        sequencer.start();
                         continue;
                     }
                     if (stringInput.equals("+")) {
@@ -67,6 +69,10 @@ public class InputTest extends Thread {
                         System.out.println("Entered stop");
                         sequencer.stopPlaying();
                         sequencer.join();
+                        System.out.println(sequencer.getState().toString());
+                        if(sequencer.isAlive()) {
+                            System.out.println("Thread is still alive");
+                        }
                         continue;
                     }
                     if (stringInput.equals("exit")) {

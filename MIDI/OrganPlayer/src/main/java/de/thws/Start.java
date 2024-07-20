@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class Start {
     public static void main(String[] args) throws Exception {
 
+        // todo test if empty bars work
 
         MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(2);
         MidiDevice virtualOutPort = MidiSystem.getMidiDevice(outputDevice); //out
@@ -25,6 +26,8 @@ public class Start {
 
         Configurator configurator = Configurator.loadFromFile("sounds/config.json");
 
+        Composition composition = new Composition("sounds/bwv525");
+        composition.print();
 
         System.out.println("Playing " + configurator.getPieceName());
 
@@ -32,15 +35,15 @@ public class Start {
         //pool.setTempo(KeyboardPool.FASTER);
 
         pool.getKeyboards().getFirst().makeActive();
-      //  pool.getKeyboards().get(1).makeActive();
-      //  pool.getKeyboards().get(2).makeActive();
+        pool.getKeyboards().get(1).makeActive();
+        pool.getKeyboards().get(2).makeActive();
 
 
-        OrganSequencer sequencer = new OrganSequencer(pool, receiver);
+        //OrganSequencer sequencer = new OrganSequencer(composition, receiver);
         /*
         sequencer.start();
          */
-        InputTest test = new InputTest(pool, receiver);
+        InputTest test = new InputTest(composition, receiver);
         test.start();
 
 

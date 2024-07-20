@@ -67,13 +67,13 @@ public class KeyboardPool {
                     this.keyboards.add(keyboard);
                 }
                 else {
-                    throw new ConfiguratorException("No JSON configuration file in " + file.getPath() + "!");
+                    throw new ConfiguratorException("No JSON configuration file in " + file.getAbsolutePath() + "!");
                 }
             }
         }
 
-        int resolution = KeyboardPoolHelper.getKeyboardPoolResolution(this.keyboards);
-        this.beatLengthInTicks = resolution * 4L;
+        int resolution = KeyboardPoolHelper.getKeyboardPoolResolution(this.keyboards); // resolution = number of ticks per quarter note
+        this.beatLengthInTicks = resolution * 4L; // only works for time signature 4/4!, improve on future versions
 
     }
 

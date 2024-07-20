@@ -16,7 +16,7 @@ import lombok.Getter;
 public class Keyboard {
     private final List<Pattern> keyboardPatterns;
     private final int numberOfPatterns;
-    private long lastTick;
+//    private long lastTick;
     private boolean active;
     private final KeyboardName keyboardName;
     private List<Integer> notesOn; // list of all notes, that are currently playing in the sequence
@@ -37,13 +37,17 @@ public class Keyboard {
         }
         this.numberOfPatterns = this.keyboardPatterns.size();
 
+        /*
         long temp;
         temp = 0;
         for(Pattern pattern : keyboardPatterns) {
+
             int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
             temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
         }
         lastTick = temp;
+
+         */
         notesOn = new ArrayList<Integer>();
         this.active = false;
 
@@ -133,21 +137,47 @@ public class Keyboard {
         notesOn.add(note);
     }
 
+    /**
+     * @return resolution for the keyboard
+     * @throws OrganSequencerException if some of the patterns in the keyboard has a different resolution from the other ones
+     */
     public int getResolution() throws OrganSequencerException {
         List<Integer> resolutionsList = keyboardPatterns
                 .stream()
-                .map(pattern -> pattern.getOrganSequence().getResolution())
+                .map(pattern -> {
+                    if(!pattern.isEmpty()) {
+                        return  pattern.getOrganSequence().getResolution();
+                    }
+                    return 0;
+                })
                // .map(p -> p.getPatternSequence().getResolution())
                 .toList();
 
+        return isResolutionSame(resolutionsList);
+    }
+
+    /**
+     * Checks if all the Patterns have the same resolution and returns it if so.
+     * @param resolutionsList list of resolutions for all patterns
+     * @return resolution for all patterns
+     * @throws OrganSequencerException if some of the patterns has a different resolution
+     */
+    private int isResolutionSame(List<Integer> resolutionsList) throws OrganSequencerException {
         int firstResolution = resolutionsList.getFirst();
-        for(int i=0; i<resolutionsList.size(); i++ ) {
-            if(resolutionsList.get(i) != firstResolution) {
-                throw new OrganSequencerException("Error in Pattern" + keyboardPatterns.get(i).getPatternName() + "!\nAll patterns in the Keyboard should have the same resolution!");
+        for(int i = 0; i< resolutionsList.size(); i++ ) {
+            if(firstResolution == 0) { // can be if the first pattern is empty
+                if(resolutionsList.get(i) != 0) {
+                    firstResolution = resolutionsList.get(i);
+                }
             }
+            else {
+                if(resolutionsList.get(i) != firstResolution && resolutionsList.get(i) != 0) {
+                    throw new OrganSequencerException("Error in Pattern" + keyboardPatterns.get(i).getPatternName() + "!\nAll patterns in the Keyboard should have the same resolution!");
+                }
+            }
+
         }
         return firstResolution;
-
     }
 
     public void makeActive() {
@@ -159,7 +189,8 @@ public class Keyboard {
     }
 
     public long updateLastTick() {
-        long temp;
+
+       /* long temp;
         temp = 0;
         for(Pattern pattern : keyboardPatterns) {
             int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
@@ -167,5 +198,9 @@ public class Keyboard {
         }
         this.lastTick = temp;
         return this.lastTick;
+
+
+        */
+        return keyboardPatterns.getLast().getOrganSequence().getEvents().getLast().getTick(); // todo not like this
     }
 }

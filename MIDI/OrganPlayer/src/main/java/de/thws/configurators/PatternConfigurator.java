@@ -33,7 +33,7 @@ public class PatternConfigurator implements Serializable {
      */
     public Pattern convertToPattern() throws OrganSequencerException {
         Pattern result;
-        if(this.patternFile.isEmpty()) {
+        if(!(this.patternFile.contains(".mid") || this.patternFile.contains(".midi"))) {
             // pattern is empty
             result = new Pattern();
         }

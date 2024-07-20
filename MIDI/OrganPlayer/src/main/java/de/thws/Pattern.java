@@ -16,8 +16,10 @@ public class Pattern {
     //private Track patternTrack;
     private int numberOfMidiEvents;
     private final String patternName;
+    private boolean isEmpty;
 
     public Pattern() {
+        this.isEmpty = true;
         this.organSequence = null;
         this.numberOfMidiEvents = 0;
         this.patternName = "";
@@ -44,6 +46,7 @@ public class Pattern {
         //patternTrack = patternSequence.getTracks()[0];
         //numberOfMidiEvents = patternTrack.size();
         this.numberOfMidiEvents = organSequence.getEvents().size();
+        this.isEmpty = false;
     }
 
     public OrganEvent getOrganEvent(int index) {

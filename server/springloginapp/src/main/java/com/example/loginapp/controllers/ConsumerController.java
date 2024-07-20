@@ -5,9 +5,12 @@ import com.example.loginapp.models.ToConsumerDTO;
 import com.example.loginapp.services.EmitterService;
 import com.example.loginapp.services.NumberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,22 +21,24 @@ public class ConsumerController {
     private final NumberService numberService;
 
     @GetMapping
-    public SseEmitter streamSpecial() {
+    public ResponseEntity<SseEmitter> consumer() {
         try {
-            return emitterService.addConsumerEmitter();
+            SseEmitter emitter = emitterService.addConsumerEmitter();
+            return ResponseEntity.ok(emitter);
         } catch (Exception e) {
             SseEmitter emitter = new SseEmitter();
             emitter.completeWithError(e);
-            return emitter;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emitter);
         }
     }
 
     @PostMapping
-    public ResponseEntity<ToConsumerDTO> configureMaxKeyboards(@RequestBody FromConsumerDTO config) {
+    public ResponseEntity<ToConsumerDTO> configureMaxKeyboards(@RequestBody @Valid FromConsumerDTO config) {
         try {
             return numberService.getResponse(config);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ToConsumerDTO(-1, "Error: " + e.getMessage(), -1));
+            return ResponseEntity.badRequest().body(new ToConsumerDTO(-1,
+                    "Error: " + e.getMessage(), -1));
         }
     }
 }

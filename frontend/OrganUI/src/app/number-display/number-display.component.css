@@ -82,3 +82,10 @@ li {
 .flying-in {
   animation: flyInFromLeft 0.5s ease-out forwards;
 }
+.placeholder{
+
+  padding: 1%;
+  margin-top: 5%;
+  border-style: dotted;
+  border-color: #3f51b5;
+}

@@ -1,5 +1,6 @@
 package com.example.loginapp.services;
 
+import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 @Service
 public class LoginService {
+    @Getter
     private final Map<String, String> users = new HashMap<>();
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private static final String CREDENTIALS_FILE = "credentials.txt";
@@ -44,6 +47,10 @@ public class LoginService {
     }
 
     public boolean login(String username, String password) {
+        if (username == null || password == null) {
+            return false;
+        }
         return users.containsKey(username) && passwordEncoder.matches(password, users.get(username));
     }
+
 }

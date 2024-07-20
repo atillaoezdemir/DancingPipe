@@ -20,7 +20,7 @@ public class WebController {
     @GetMapping
     public SseEmitter streamWebNumbers() {
         try {
-            return emitterService.addWebClientEmitter1();
+            return emitterService.addWebClientEmitter();
         } catch (Exception e) {
             SseEmitter emitter = new SseEmitter();
             emitter.completeWithError(e);

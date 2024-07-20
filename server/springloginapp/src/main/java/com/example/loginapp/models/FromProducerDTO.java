@@ -1,6 +1,10 @@
 package com.example.loginapp.models;
 
+
+import javax.validation.constraints.NotNull;
+
 public record FromProducerDTO(
-        int number
+        @NotNull
+        Integer number
 ) {
 }

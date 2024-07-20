@@ -2,17 +2,26 @@
 <h2>Title: {{title}}</h2>
 <h2>Composer: {{composerName}}</h2>
 <h2>Number of Bars: {{barLength}}</h2>
+<div class="tempo-container">
+  <h2>Pace: {{ selectedTempoLabel | tempo }}</h2>
+</div>
 <mat-divider></mat-divider>
-<h2>Keyboards management:</h2>
+<h1 class="centered">Manuals in use</h1>
 <div class="keyboards-display">
   <ng-container *ngFor="let keyboard of keyboards; let i = index">
-    <img [src]="getKeyboardImage(i)" alt="Keyboard" class="keyboard-image" />
+    <div class="keyboard-container">
+
+      <img [src]="getKeyboardImage(i)" alt="Manual" class="keyboard-image"/>
+
+      <div class="keyboard-name">
+        {{getKeyboardName(i)}}
+      </div>
+
+    </div>
   </ng-container>
 </div>
 <mat-divider></mat-divider>
-<div class="tempo-pace-container">
-  <h2>Tempo Pace: {{ selectedTempoLabel | tempo }}</h2>
-</div>
+
 
 <div class="status-bar" [ngClass]="consumerIsConnected ? 'online' : 'offline'">
   {{ consumerIsConnected ? "Consumer is connected" : "Consumer is disconnected. All commands will be ignored!" }}

@@ -1,20 +1,25 @@
 package com.example.loginapp.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+import javax.validation.constraints.NotNull;
+
 @Getter
+@Setter
 public class FromConsumerDTO {
-    @JsonProperty("keyboardsMax")
-    public int keyboardsMax;
-    @JsonProperty("defaultKeyboards")
-    private int defaultKeyboards;
-    @JsonProperty("barLength")
-    private int barLength;
-    @JsonProperty("compositionTitle")
-    private String Title;
-    @JsonProperty("composerName")
+    @NotNull(message = "KeyboardsMax cannot be null")
+    private Integer keyboardsMax;
+
+    @NotNull(message = "DefaultKeyboards cannot be null")
+    private Integer defaultKeyboards;
+
+    @NotNull(message = "BarLength cannot be null")
+    private Integer barLength;
+
+    @NotNull(message = "Title cannot be null")
+    private String title;
+
+    @NotNull(message = "ComposerName cannot be null")
     private String composerName;
 }

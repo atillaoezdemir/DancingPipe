@@ -3,10 +3,14 @@ package com.example.loginapp.services;
 import com.example.loginapp.models.ToConsumerDTO;
 import com.example.loginapp.models.ToWebClientDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Service
+@Getter
+@Setter
 public class EmitterService {
     private SseEmitter consumerEmitter;
     private SseEmitter webClientEmitter;
@@ -19,7 +23,7 @@ public class EmitterService {
         consumerEmitter.onError(e -> consumerEmitter = null);
         return consumerEmitter;
     }
-    public SseEmitter addWebClientEmitter1() {
+    public SseEmitter addWebClientEmitter() {
         webClientEmitter = new SseEmitter(Long.MAX_VALUE);
         webClientEmitter.onCompletion(() -> webClientEmitter = null);
         webClientEmitter.onTimeout(() -> webClientEmitter = null);

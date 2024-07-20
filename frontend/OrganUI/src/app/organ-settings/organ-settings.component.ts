@@ -23,14 +23,16 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
   private subscription: Subscription | undefined;
   consumerIsConnected: boolean = false;
   startCommandReceived: boolean = false;
-  barLength:number= -1;
-  title:string= 'stopped';
-  composerName:string = 'stopped';
+  barLength: number = -1;
+  title: string = 'stopped';
+  composerName: string = 'stopped';
+
 
   constructor(
     private ngZone: NgZone,
     private sseService: SseService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.subscription = this.sseService.getWebClientData().subscribe({
@@ -40,29 +42,17 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
           this.consumerIsConnected = data.consumerConnected;
           this.selectedTempoLabel = data.currentTempo;
           this.updateKeyboards();
-          this.startCommandReceived=data.startCommandReceived;
-          this.barLength=data.barLength;
-          console.log(this.barLength,data.barLength)
-          this.title=data.title;
-          console.log(this.title,data.title)
-          this.composerName=data.composerName;
-          console.log(this.composerName,data.composerName)
-          // if (data.command == 'start' && data.consumerConnected) {
-          //   this.startCommandReceived = true;
-          // }
-          // if ((data.command == 'stop' && data.consumerConnected) || !data.consumerConnected) {
-          //   this.startCommandReceived = false;
-          // }
+          this.startCommandReceived = data.startCommandReceived;
+          this.barLength = data.barLength;
+          console.log(this.barLength, data.barLength)
+          this.title = data.title;
+          console.log(this.title, data.title)
+          this.composerName = data.composerName;
+          console.log(this.composerName, data.composerName)
         });
       },
       error: (error) => console.error('Error receiving SSE loginData:', error),
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   updateKeyboards(): void {
@@ -90,6 +80,30 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
         return 'inactive keyboard.png';
       default:
         return 'disabled keyboard.png';
+    }
+
+  }
+
+  getKeyboardName(index: number): string {
+    switch (index) {
+      case 0:
+        return 'Choir';
+      case 1:
+        return 'Great';
+      case 2:
+        return 'Swell';
+      case 3:
+        return 'Solo/Echo';
+      case 4:
+        return 'Pedal';
+      default:
+        return 'Invalid index';
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

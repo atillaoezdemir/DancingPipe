@@ -1,3 +1,4 @@
+
 <div class="number-display-content">
   <h1 class="centered">Commands Execution Status</h1>
   <div class="button-container">
@@ -11,13 +12,38 @@
     </button>
 
   </div>
+  <div *ngIf="displayedData.length==0; else commandTable">
+    <div class="placeholder">
+      <p>Currently, no commands have been received from the camera, or information about the given commands has been deleted. As soon as you give the first command using the camera, they will appear here immediately.</p>
+      <p>Commands that appear here can be of two colors:</p>
+      <div class="executed centered">
+        This is successfully executed command!
+      </div>
+      Green indicates that the command was successfully executed and will take effect from the next bar of the performance
+      <div class="not-executed centered">
+        This is not executed command!
+      </div>
+      Red indicates that the command was given but will not be executed. There are several reasons why this might happen:
+          <ul>
+            <li>The sequencer is not connected to the server.</li>
+            <li>You are trying to issue other commands without first issuing a start command.</li>
+            <li>You are attempting to issue a start command again without first issuing a stop command to end the previous start command.</li>
+            <li>You are issuing a command that will not affect the operation of the organ. For example, if the number of manuals is already set to the minimum, attempting to decrease the number of manuals further will have no effect.</li>
+          </ul>
 
-  <div class="y-scrollable">
-    <ul>
-      <li *ngFor="let data of displayedData"
-          [ngClass]="{'executed': data.wasCommandExecuted, 'not-executed': !data.wasCommandExecuted, 'flying-in': true}">
-        {{ data.command }}
-      </li>
-    </ul>
+
+    </div>
   </div>
+  <ng-template #commandTable>
+    <div class="y-scrollable">
+
+      <ul>
+        <li *ngFor="let data of displayedData"
+            [ngClass]="{'executed': data.wasCommandExecuted, 'not-executed': !data.wasCommandExecuted, 'flying-in': true}">
+          {{ data.command }}
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+
 </div>

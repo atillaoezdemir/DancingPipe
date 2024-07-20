@@ -44,13 +44,21 @@
 .keyboards-display {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding: 10px 0;
+
+}
+
+.keyboard-container {
+  min-width: 20%;
 }
 
 .keyboard-image {
 
-  max-width: 18%;
-  height: auto;
-  padding: 0 1%;
+  max-width: 100%;
+
+}
+
+.keyboard-name {
+  text-align: center;
+  overflow: hidden;
+  overflow-wrap: break-word;
 }

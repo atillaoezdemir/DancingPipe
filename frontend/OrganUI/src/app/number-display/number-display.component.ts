@@ -1,14 +1,14 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { SseService } from '../services/sse.service';
 import { WebClientDTO } from '../models/web-client-dto';
-import { NgClass, NgForOf } from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-number-display',
   templateUrl: './number-display.component.html',
   styleUrls: ['./number-display.component.css'],
-  imports: [NgClass, MatButton, NgForOf],
+  imports: [NgClass, MatButton, NgForOf, NgIf],
   standalone: true,
 })
 export class NumberDisplayComponent implements OnInit {

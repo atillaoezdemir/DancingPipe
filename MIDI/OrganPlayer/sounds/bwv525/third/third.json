@@ -1,0 +1,90 @@
+{
+  "keyboardName": "great",
+  "patternConfigurators": [
+    {
+      "patternNumber": 1,
+      "patternFile": "",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 2,
+      "patternFile": "",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 3,
+      "patternFile": "third_bar_3.mid",
+      "beginsWithTie": false,
+      "endsWithTie": true,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 4,
+      "patternFile": "third_bar_4.mid",
+      "beginsWithTie": true,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 5,
+      "patternFile": "third_bar_5.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 6,
+      "patternFile": "third_bar_6.mid",
+      "beginsWithTie": false,
+      "endsWithTie": true,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 7,
+      "patternFile": "third_bar_7.mid",
+      "beginsWithTie": true,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 8,
+      "patternFile": "third_bar_8.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 9,
+      "patternFile": "third_bar_9.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 10,
+      "patternFile": "third_bar_10.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 11,
+      "patternFile": "third_bar_11.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 12,
+      "patternFile": "third_bar_12.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    }
+  ]
+}

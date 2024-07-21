@@ -2,6 +2,8 @@ package de.thws;
 
 import de.thws.configurators.KeyboardConfigurator;
 import de.thws.configurators.KeyboardConfiguratorWithPath;
+import de.thws.exceptions.ConfiguratorException;
+import de.thws.exceptions.OrganSequencerException;
 import de.thws.helpers.ConfiguratorHelper;
 import de.thws.helpers.KeyboardPoolHelper;
 import lombok.Getter;

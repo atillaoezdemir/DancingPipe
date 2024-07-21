@@ -1,18 +1,20 @@
-package de.thws.client;
+package de.thws.pickers;
 
-import de.thws.Composition;
-import de.thws.ConfiguratorException;
-import de.thws.OrganSequencerException;
+import com.diogonunes.jcolor.Attribute;
+import de.thws.exceptions.ConfiguratorException;
 import de.thws.configurators.CompositionConfigurator;
-import de.thws.configurators.KeyboardConfigurator;
+import de.thws.exceptions.MenuExitException;
 import de.thws.helpers.ConfiguratorHelper;
+import de.thws.helpers.MenuHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 public class CompositionPicker {
-    private String soundsPath;
+    private final String soundsPath;
 
     public CompositionPicker (String soundsPath) {
         this.soundsPath = soundsPath;
@@ -21,9 +23,10 @@ public class CompositionPicker {
 
     /**
      * Lists all available compositions and let the user pick one.
-     * @return path to the chosen composition or empty string if no compositions were found or an error occurred
+     * @return path to folder the chosen composition as {@link String} or empty string if no compositions were found or an error occurred
+     * @throws MenuExitException if the user entered an exit command
      */
-    public String pickComposition() {
+    public String pickComposition() throws MenuExitException {
         Map<File, CompositionConfigurator> configuratorMap = null;
         try {
             configuratorMap = getListOfCompositions();
@@ -41,9 +44,10 @@ public class CompositionPicker {
             return "";
         }
 
-        System.out.println("Pick a composition to play:");
+        System.out.println(colorize("Pick a composition to play:", Attribute.BOLD()));
         for(int i=0; i<configuratorMap.size(); i++) {
-            System.out.println("[" + i + "] " + configuratorMap.values().stream().toList().get(i).toString());
+            System.out.print(colorize("[" + i + "] ", Attribute.BRIGHT_GREEN_TEXT()));
+            System.out.println(configuratorMap.values().stream().toList().get(i).toString());
         }
 
         String picked = "";
@@ -52,18 +56,19 @@ public class CompositionPicker {
         int input = Integer.MAX_VALUE;
         boolean isInputValid = false;
         while(!isInputValid) {
-            System.out.println("Enter a composition number: ");
+            System.out.print("Enter a composition number: ");
             try {
                 input = sc.nextInt();
             }
             catch (InputMismatchException e) {
-                System.out.println("Invalid Composition Number! Please try again.");
+                MenuHelper.checkIfExitEntered(sc);
+                System.out.println(colorize("Invalid Composition Number! Please try again.", Attribute.BLACK_TEXT(), Attribute.BRIGHT_GREEN_BACK()));
                 sc.nextLine();
                 continue;
             }
 
             if(input >= configuratorMap.size() || input < 0) {
-                System.out.println("ERROR: MIDI Device number out of bonds! Please try again.");
+                System.out.println(colorize("ERROR: Composition number out of bonds! Please try again.", Attribute.RED_BACK(), Attribute.BLACK_TEXT()));
             }
             else {
                 isInputValid = true;
@@ -74,9 +79,9 @@ public class CompositionPicker {
     }
 
     /**
-     * Searches for composition configuration files in the sounds path and returns them as a map of path and CompositionConfigurator object.
-     * @return Map of pairs of CompositionConfigurator objects and the path to the associated config.json files in the subfolders
-     * @throws ConfiguratorException if any of the config.json files cannot be read or found
+     * Searches for composition configuration files in the sounds path and returns them as a map of path as {@link File} object and {@link CompositionConfigurator} object.
+     * @return {@link Map} of pairs of {@link CompositionConfigurator} objects and the path to the associated {@code config.json} files in the subfolders as {@link File} object
+     * @throws ConfiguratorException if any of the {@code config.json} files cannot be read or found
      * @throws FileNotFoundException if the sounds path is invalid
      */
     private Map<File, CompositionConfigurator> getListOfCompositions () throws ConfiguratorException, FileNotFoundException {
@@ -100,10 +105,10 @@ public class CompositionPicker {
 
 
     /**
-     * Looks for config.json file in the folder and returns a CompositionConfigurator object from the JSON file.
+     * Looks for {@code config.json} file in the {@code folder} and returns a {@link CompositionConfigurator} object from the JSON file.
      * If no JSON file was found in the folder returns null.
-     * @param folder folder to look config.json in
-     * @return CompositionConfigurator object from the config.json file or null
+     * @param folder folder to look {@code config.json} in
+     * @return {@link CompositionConfigurator} object from the {@code config.json} file or null
      * @throws ConfiguratorException if the file cannot be read or found
      */
     private CompositionConfigurator getConfigFileFromFolder(File folder) throws ConfiguratorException {

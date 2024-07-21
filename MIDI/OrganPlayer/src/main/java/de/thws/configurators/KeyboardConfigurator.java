@@ -1,11 +1,7 @@
 package de.thws.configurators;
-import de.thws.ConfiguratorException;
-import de.thws.helpers.ConfiguratorHelper;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ConcurrentModificationException;
 
 @Getter
 public class KeyboardConfigurator implements Serializable {

@@ -1,10 +1,10 @@
 package de.thws.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.ConfiguratorException;
+import de.thws.exceptions.ConfiguratorException;
 import de.thws.KeyboardPool;
 import de.thws.OrganSequencer;
-import de.thws.OrganSequencerException;
+import de.thws.exceptions.OrganSequencerException;
 
 import javax.sound.midi.Receiver;
 import java.io.File;

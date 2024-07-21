@@ -3,6 +3,7 @@ package de.thws;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.thws.exceptions.OrganSequencerException;
 import lombok.Getter;
 
 import javax.sound.midi.Sequence;

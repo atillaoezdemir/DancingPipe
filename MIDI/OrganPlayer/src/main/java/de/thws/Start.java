@@ -1,37 +1,64 @@
 package de.thws;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.client.CompositionPicker;
 import de.thws.client.v2.ConsumerTestClient;
+import de.thws.exceptions.MenuExitException;
+import de.thws.helpers.MenuHelper;
+import de.thws.pickers.CompositionPicker;
+import de.thws.pickers.OutputDevicePicker;
 
 import javax.sound.midi.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
 
 public class Start {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws MidiUnavailableException { // todo handle exception
 
         // todo test if empty bars work
 
-        MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(2);
+        Menu.displayMenu();
+
+        try {
+            final MidiDevice.Info outputDeviceInfo = OutputDevicePicker.chooseDevice();
+            MidiDevice outputDevice = null;
+            try {
+                outputDevice = MidiSystem.getMidiDevice(outputDeviceInfo);
+            } catch (MidiUnavailableException e) {
+                System.out.println("Device " + outputDeviceInfo.getName() + " not available. This device could be currently in use by another application:");
+            }
+
+            if (outputDevice != null) {
+                outputDevice.open();
+                Receiver receiver = outputDevice.getReceiver();
+
+                CompositionPicker cp = new CompositionPicker("sounds");
+
+                    String compositionPath = cp.pickComposition();
+                    if(!compositionPath.isEmpty()) {
+                        ConsumerTestClient client = new ConsumerTestClient(receiver, compositionPath);
+                        client.start();
+                    }
+                    else throw new MenuExitException("");
+                }
+
+            }
+
+        catch (MenuExitException e) {
+            MenuHelper.displayEndMessage();
+            return;
+        }
+
+
+
+        /* MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(2);
         MidiDevice virtualOutPort = MidiSystem.getMidiDevice(outputDevice); //out
 
         virtualOutPort.open();
 
         Receiver receiver = virtualOutPort.getReceiver();
 
-        CompositionPicker cp = new CompositionPicker("sounds");
-        String compositionPath = cp.pickComposition();
-        if(!compositionPath.isEmpty()) {
-            ConsumerTestClient client = new ConsumerTestClient(receiver, compositionPath);
-            client.start();
-        }
-        else return;
+
+
+
 
 
 

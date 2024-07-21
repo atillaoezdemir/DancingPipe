@@ -21,7 +21,6 @@ public class OrganSequencer extends Thread {
     int numberOfKeyboards;
     long ticksSum;
     Receiver receiver;
-    int[] channels = {1, 2, 3};
 
 
     public OrganSequencer(KeyboardPool keyboards, Receiver receiver) { // currently not in use
@@ -39,7 +38,7 @@ public class OrganSequencer extends Thread {
     /**
      * Constructor to use when creating a copy of the object
      */
-    private OrganSequencer(KeyboardPool keyboards, long beatLengthInTicks, long lengthInTicks, Tempo currentTempo, float tempoFactor, boolean isPlaying, int numberOfKeyboards, long ticksSum, Receiver receiver, int[] channels) {
+    private OrganSequencer(KeyboardPool keyboards, long beatLengthInTicks, long lengthInTicks, Tempo currentTempo, float tempoFactor, boolean isPlaying, int numberOfKeyboards, long ticksSum, Receiver receiver) {
         super("OrganSequencer");
         this.keyboards = keyboards;
         this.beatLengthInTicks = beatLengthInTicks;
@@ -50,7 +49,6 @@ public class OrganSequencer extends Thread {
         this.numberOfKeyboards = numberOfKeyboards;
         this.ticksSum = ticksSum;
         this.receiver = receiver;
-        this.channels = channels;
     }
 
     public OrganSequencer(Composition composition, Receiver receiver) {
@@ -75,7 +73,7 @@ public class OrganSequencer extends Thread {
     }
 
     private OrganSequencer copy() {
-        return new OrganSequencer(this.keyboards, this.beatLengthInTicks, this.lengthInTicks, this.currentTempo, this.tempoFactor, this.isPlaying, this.numberOfKeyboards, this.ticksSum, this.receiver, this.channels);
+        return new OrganSequencer(this.keyboards, this.beatLengthInTicks, this.lengthInTicks, this.currentTempo, this.tempoFactor, this.isPlaying, this.numberOfKeyboards, this.ticksSum, this.receiver);
     }
 
     @Override
@@ -339,7 +337,7 @@ public class OrganSequencer extends Thread {
                         if (previousCondition[keyboardIndex]) {
                             // if keyboard was active, make all notes on the keyboard off
 
-                            sendNoteOffToAllPlayingNotesOnKeyboard(currentKeyboard, keyboardIndex);
+                            sendNoteOffToAllPlayingNotesOnKeyboard(currentKeyboard);
 
                             previousCondition[keyboardIndex] = false;
                         }
@@ -360,10 +358,10 @@ public class OrganSequencer extends Thread {
                             if (currentEvent.getMessage() instanceof ShortMessage sm) {
                                 if (PatternHelper.isNoteEvent(sm)) {
                                     if(PatternHelper.isNoteOffEvent(sm)) {
-                                        sm.setMessage(ShortMessage.NOTE_OFF, channels[keyboardIndex], sm.getData1(), sm.getData2());
+                                        sm.setMessage(ShortMessage.NOTE_OFF, currentKeyboard.getKeyboardName().getChannelNumber(), sm.getData1(), sm.getData2());
                                     }
                                     else {
-                                        sm.setMessage(ShortMessage.NOTE_ON, channels[keyboardIndex], sm.getData1(), sm.getData2());
+                                        sm.setMessage(ShortMessage.NOTE_ON, currentKeyboard.getKeyboardName().getChannelNumber(), sm.getData1(), sm.getData2());
                                         keyboardPoolToUse.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
 
                                     }
@@ -390,9 +388,9 @@ public class OrganSequencer extends Thread {
         // todo try with wait and sleep for the thread
     }
 
-    private void sendNoteOffToAllPlayingNotesOnKeyboard(Keyboard keyboard, int keyboardIndex) throws InvalidMidiDataException { // todo each keyboard to save the channel in the Keyboard class, here keyboardIndex will be obsolete
+    private void sendNoteOffToAllPlayingNotesOnKeyboard(Keyboard keyboard) throws InvalidMidiDataException {
         for(int note : keyboard.getNotesOn()) {
-            ShortMessage sm = new ShortMessage(ShortMessage.NOTE_OFF, channels[keyboardIndex], note, 0); // short message with chanels
+            ShortMessage sm = new ShortMessage(ShortMessage.NOTE_OFF, keyboard.getKeyboardName().getChannelNumber(), note, 0); // short message with channels
             receiver.send(sm, ticksSum);
 
         }
@@ -402,7 +400,7 @@ public class OrganSequencer extends Thread {
 
     private void sendNoteOffToAllPlayingNotes() throws InvalidMidiDataException {
         for(int i=0; i<keyboards.getKeyboards().size(); i++) {
-            sendNoteOffToAllPlayingNotesOnKeyboard(keyboards.getKeyboards().get(i), i);
+            sendNoteOffToAllPlayingNotesOnKeyboard(keyboards.getKeyboards().get(i));
         }
     }
 

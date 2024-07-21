@@ -1,10 +1,9 @@
 package de.thws.configurators;
-import de.thws.OrganSequencerException;
+import de.thws.exceptions.OrganSequencerException;
 import de.thws.Pattern;
 import de.thws.helpers.PatternHelper;
 import lombok.Getter;
 
-import javax.naming.ConfigurationException;
 import java.io.File;
 import java.io.Serializable;
 

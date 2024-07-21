@@ -1,0 +1,6 @@
+{
+  "appName": "Dancing Pipes",
+  "appVersion": "1.0",
+  "appAuthors": ["Toni Kostov", "Kirill Dedov", "Atilla Özdemir", "Matsvei Tsiareshka"],
+  "appDescription": "This Client is part of the Dancing Pipes project. You can connect the organ to your Computer, choose a composition to play and then connect to the server.\nThe project was  was developed as part of the portfolio exam for the subject \"Programming project\" at the Technical University of Applied Sciences Würzburg-Schweinfurt. "
+}

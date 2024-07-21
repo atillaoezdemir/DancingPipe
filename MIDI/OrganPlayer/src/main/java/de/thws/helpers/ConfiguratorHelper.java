@@ -1,8 +1,7 @@
 package de.thws.helpers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.Configurator;
-import de.thws.ConfiguratorException;
+import de.thws.exceptions.ConfiguratorException;
 import de.thws.KeyboardName;
 import de.thws.configurators.CompositionConfigurator;
 import de.thws.configurators.KeyboardConfigurator;
@@ -77,7 +76,7 @@ public class ConfiguratorHelper {
      * @return FileInputStream of the given file
      * @throws ConfiguratorException if the file was not found
      */
-    private static FileInputStream readFileAsStream(File file) throws ConfiguratorException {
+    public static FileInputStream readFileAsStream(File file) throws ConfiguratorException {
         FileInputStream fis;
         try {
             fis = new FileInputStream(file);

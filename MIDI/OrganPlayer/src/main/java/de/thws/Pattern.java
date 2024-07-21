@@ -1,5 +1,6 @@
 package de.thws;
 
+import de.thws.exceptions.OrganSequencerException;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,9 +2,9 @@ package de.thws.client.v2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thws.Composition;
-import de.thws.ConfiguratorException;
+import de.thws.exceptions.ConfiguratorException;
 import de.thws.OrganSequencer;
-import de.thws.OrganSequencerException;
+import de.thws.exceptions.OrganSequencerException;
 
 import javax.sound.midi.InvalidMidiDataException;
 import java.net.URI;
@@ -17,8 +17,8 @@ import javax.sound.midi.*;
 public class ConsumerTestClient extends Thread {
     private static final String SERVER_URI = "http://10.10.35.129:8080";
     private static final String SERVER_ENDPOINT = "/consumer";
-    private static final Random random = new Random();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Random random = new Random(); // todo delete that
+    private static final ObjectMapper objectMapper = new ObjectMapper(); // deserializes JSON
     private String pathToComposition;
     Receiver receiver;
     OrganSequencer sequencer;
@@ -95,11 +95,11 @@ public class ConsumerTestClient extends Thread {
                     sequencer.join();
                 } catch (InvalidMidiDataException | InterruptedException e) {
                     System.err.println("Error when stopping the sequencer: " + e.getMessage());
-                    sendConfiguration(0, 0,lengthInBars,title,composer); // todo from Kirill
+                    sendConfiguration(0, 0, lengthInBars, title, composer); // todo from Kirill
                     return;
                 }
                 System.out.println("Received stop command. Waiting for next start.");
-                sendConfiguration(0, 0,lengthInBars,title,composer); // todo from Kirill
+                sendConfiguration(0, 0,lengthInBars, title, composer); // todo from Kirill
                 break;
             case "incrementKeyboards":
                 sequencer.incrementKeyboards();
@@ -149,13 +149,10 @@ public class ConsumerTestClient extends Thread {
                     .thenAccept(response -> {
                         System.out.println("Configuration status: " + response.statusCode());
                         System.out.println("Response body: " + response.body());
-//                        System.out.println("Length in bars: " + response.body());
-//                        System.out.println("Title: " + response.body());
-//                        System.out.println("Composer name: " + response.body());
                     })
                     .join();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error when sending message to the server: " + e.getMessage());
         }
     }
 

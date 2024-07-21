@@ -1,7 +1,7 @@
 package de.thws.helpers;
 
 import de.thws.Keyboard;
-import de.thws.OrganSequencerException;
+import de.thws.exceptions.OrganSequencerException;
 
 import java.util.List;
 

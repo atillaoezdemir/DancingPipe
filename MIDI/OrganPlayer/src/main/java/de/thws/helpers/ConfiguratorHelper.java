@@ -55,7 +55,7 @@ public class ConfiguratorHelper {
      */
     public static CompositionConfigurator convertJsonFileToCompositionConfigurator(String filepath) throws ConfiguratorException {
         File file = new File(filepath);
-        FileInputStream fis = readFileAsStream(file); //todo see if that will work
+        FileInputStream fis = readFileAsStream(file);
 
         String json;
         ObjectMapper mapper = new ObjectMapper();

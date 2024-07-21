@@ -1,6 +1,7 @@
 package de.thws;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thws.client.CompositionPicker;
 import de.thws.client.v2.ConsumerTestClient;
 
 import javax.sound.midi.*;
@@ -24,13 +25,27 @@ public class Start {
 
         Receiver receiver = virtualOutPort.getReceiver();
 
+        CompositionPicker cp = new CompositionPicker("sounds");
+        String compositionPath = cp.pickComposition();
+        if(!compositionPath.isEmpty()) {
+            ConsumerTestClient client = new ConsumerTestClient(receiver, compositionPath);
+            client.start();
+        }
+        else return;
+
+
+
+
+
+
         Configurator configurator = Configurator.loadFromFile("sounds/config.json");
 
-        Composition composition = new Composition("sounds/bwv525");
-        composition.print();
+        //Composition composition = new Composition("sounds/bwv525");
+        //composition.print();
 
-        System.out.println("Playing " + configurator.getPieceName());
+        //System.out.println("Playing " + configurator.getPieceName());
 
+        /*
         KeyboardPool pool = new KeyboardPool(new File("sounds/bwv525"));
         //pool.setTempo(KeyboardPool.FASTER);
 
@@ -39,19 +54,20 @@ public class Start {
         pool.getKeyboards().get(2).makeActive();
 
 
+
+         */
         //OrganSequencer sequencer = new OrganSequencer(composition, receiver);
         /*
         sequencer.start();
-         */
+
         InputTest test = new InputTest(composition, receiver);
         test.start();
 
+*/
+
+
 
 /*
-        ConsumerTestClient client = new ConsumerTestClient(sequencer);
-        client.start();
-
-
 
         Scanner sc = new Scanner(System.in);
 

@@ -17,4 +17,8 @@ public class CompositionConfigurator implements Serializable {
     private float tempoFactor;
 
     CompositionConfigurator() {}
+
+    public String toString() {
+        return this.compositionName + " by " + this.composer + " (Length in bars: " + this.lengthInBars + ").";
+    }
 }

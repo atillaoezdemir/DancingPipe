@@ -37,17 +37,6 @@ public class Keyboard {
         }
         this.numberOfPatterns = this.keyboardPatterns.size();
 
-        /*
-        long temp;
-        temp = 0;
-        for(Pattern pattern : keyboardPatterns) {
-
-            int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
-            temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
-        }
-        lastTick = temp;
-
-         */
         notesOn = new ArrayList<Integer>();
         this.active = false;
 

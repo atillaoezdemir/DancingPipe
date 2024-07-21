@@ -10,4 +10,8 @@ import lombok.Setter;
 public class ConsumerDataOutDTO {
     private int keyboardsMax;
     private int defaultKeyboards;
+    private long barLength;
+    private String compositionTitle;
+    private String composerName;
+
 }

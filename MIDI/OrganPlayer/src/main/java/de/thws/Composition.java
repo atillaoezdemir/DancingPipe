@@ -14,7 +14,14 @@ public class Composition {
     private final float tempoFactor;
     private final KeyboardPool keyboardPool;
 
-    Composition(String compositionPath) throws ConfiguratorException, OrganSequencerException {
+
+    /**
+     * Constructs a Composition object from the config.json file in the composition path.
+     * @param compositionPath path to the composition folder
+     * @throws ConfiguratorException if the path does not exist or is not a directory
+     * @throws OrganSequencerException
+     */
+    public Composition(String compositionPath) throws ConfiguratorException, OrganSequencerException {
         File pathAsFile = new File(compositionPath);
         if (!pathAsFile.exists() && !pathAsFile.isDirectory()) {
             throw new ConfiguratorException("Path " + compositionPath + " does not exist or is not a directory");
@@ -30,7 +37,7 @@ public class Composition {
     }
 
     /**
-     * Finds the path to the JSON Configuration file in the given directory
+     * Finds the path to the JSON Configuration file in the given directory.
      * @param path path to the parent directory
      * @return path to the JSON Configuration file (if exists) as String
      * @throws ConfiguratorException
@@ -53,9 +60,6 @@ public class Composition {
         return jsonFilePath;
     }
 
-    public void print() {
-        System.out.println("Composition: " + this.name + "\nComposer: " + this.composer);
-    }
 
 
 }

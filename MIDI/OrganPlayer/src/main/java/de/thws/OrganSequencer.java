@@ -55,8 +55,9 @@ public class OrganSequencer extends Thread {
 
     public OrganSequencer(Composition composition, Receiver receiver) {
         super("OrganSequencer");
-        this.keyboards = composition.getKeyboardPool();
-        this.keyboardPoolToUse = null;
+        this.keyboards = new KeyboardPool(composition.getKeyboardPool());
+        this.keyboardPoolToUse = new KeyboardPool(this.keyboards);
+
         this.numberOfKeyboards = keyboards.keyboards.size();
 
         this.currentTempo = Tempo.NORMAL;
@@ -234,7 +235,7 @@ public class OrganSequencer extends Thread {
 
         // create copies of some of the class members, so that the originals can remain unchanged
         // for the next time the sequencer is started
-        this.keyboardPoolToUse = this.keyboards;
+        //this.keyboardPoolToUse = new KeyboardPool(this.keyboards);
         long currSeqLenInTicks = this.lengthInTicks;
         long currBeatLenInTicks = this.beatLengthInTicks;
 

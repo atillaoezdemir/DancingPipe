@@ -3,12 +3,13 @@ import { SseService } from '../services/sse.service';
 import { WebClientDTO } from '../models/web-client-dto';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import {CommandDisplayNamePipe} from "../pipes/command-display-name.pipe";
 
 @Component({
   selector: 'app-number-display',
   templateUrl: './number-display.component.html',
   styleUrls: ['./number-display.component.css'],
-  imports: [NgClass, MatButton, NgForOf, NgIf],
+  imports: [NgClass, MatButton, NgForOf, NgIf,CommandDisplayNamePipe],
   standalone: true,
 })
 export class NumberDisplayComponent implements OnInit {

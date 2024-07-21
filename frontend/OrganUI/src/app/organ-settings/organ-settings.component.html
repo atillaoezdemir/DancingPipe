@@ -1,4 +1,4 @@
-<h1 class="centered">Composition Details</h1>
+<h1 class="centered margin-top">Composition Details</h1>
 <h2>Title: {{title}}</h2>
 <h2>Composer: {{composerName}}</h2>
 <h2>Number of Bars: {{barLength}}</h2>
@@ -6,7 +6,8 @@
   <h2>Pace: {{ selectedTempoLabel | tempo }}</h2>
 </div>
 <mat-divider></mat-divider>
-<h1 class="centered">Manuals in use</h1>
+<h1 class="centered margin-top">Manuals Details</h1>
+<h2>Manuals in use: {{this.webClientData?.keyboardsInUse}}</h2>
 <div class="keyboards-display">
   <ng-container *ngFor="let keyboard of keyboards; let i = index">
     <div class="keyboard-container">
@@ -22,14 +23,15 @@
 </div>
 <mat-divider></mat-divider>
 
-
+<h1 class="centered margin-top">Last Command Details</h1>
 <div class="status-bar" [ngClass]="consumerIsConnected ? 'online' : 'offline'">
-  {{ consumerIsConnected ? "Consumer is connected" : "Consumer is disconnected. All commands will be ignored!" }}
+  {{ consumerIsConnected ? "Organ Sequencer was connected" : "Organ Sequencer was disconnected. Commands ignored!" }}
 </div>
 <div class="status-bar" [ngClass]="startCommandReceived ? 'online' : 'offline'">
   {{
   startCommandReceived
-    ? "Start command received"
-    : "Waiting for command to start. All other commands will be ignored!"
+    ? "\"Start\" command received"
+    : "Waiting for \"Start\" command. Other commands ignored!"
   }}
 </div>
+

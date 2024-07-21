@@ -1,12 +1,13 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WebClientDTO } from '../models/web-client-dto';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class SseService implements OnDestroy {
-  private baseUrl = 'http://localhost:8080/web';
+  private baseUrl = `${environment.apiUrl}/web`;
   private eventSource: EventSource | null = null;
   private dataSubject: BehaviorSubject<WebClientDTO> = new BehaviorSubject<WebClientDTO>({
     keyboardsInUse: -1,

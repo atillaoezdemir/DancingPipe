@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   isAuthenticatedFailed: boolean = false;
   hide = true;
+  apiUrl = environment.apiUrl;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -81,7 +83,7 @@ export class LoginComponent implements OnInit {
   }
 
   submitCredentials(username: string, password: string): Observable<boolean> {
-    const url = 'http://localhost:8080/web/login';
+    const url = `${this.apiUrl}/web/login`;
     const body = { username: username, password: password };
     return this.http.post<boolean>(url, body);
   }

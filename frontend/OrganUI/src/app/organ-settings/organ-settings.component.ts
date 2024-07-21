@@ -18,9 +18,11 @@ import {TempoPipe} from '../pipes/tempo-pipe.pipe';
 })
 export class OrganSettingsComponent implements OnInit, OnDestroy {
   webClientData: WebClientDTO | undefined;
+  // Array length represents number of actual keyboards that Organ has.
+  // If u want to change it -> change getKeyboardName() also!
   keyboards: any[] = Array(5).fill('disabled');
   selectedTempoLabel: number = TempoLabels.NORMAL;
-  private subscription: Subscription | undefined;
+  subscription: Subscription | undefined;
   consumerIsConnected: boolean = false;
   startCommandReceived: boolean = false;
   barLength: number = -1;
@@ -87,15 +89,16 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
   getKeyboardName(index: number): string {
     switch (index) {
       case 0:
-        return 'Choir';
-      case 1:
-        return 'Great';
-      case 2:
-        return 'Swell';
-      case 3:
-        return 'Solo/Echo';
-      case 4:
         return 'Pedal';
+      case 1:
+        return 'Choir';
+      case 2:
+        return 'Great';
+      case 3:
+        return 'Swell';
+      case 4:
+        return 'Solo/Echo';
+
       default:
         return 'Invalid index';
     }

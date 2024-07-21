@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.linkText = this.router.isActive('/dashboard', true) ? 'Log out' : '';
-      this.title = this.router.isActive('/dashboard', true) ? 'Organ view' : 'Organ login';
+      this.title = this.router.isActive('/dashboard', true) ? 'Dancing Pipes' : 'Login';
       this.updateGreeting();
     });
   }

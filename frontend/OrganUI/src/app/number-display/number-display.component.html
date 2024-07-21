@@ -1,6 +1,6 @@
 
 <div class="number-display-content">
-  <h1 class="centered">Commands Execution Status</h1>
+  <h1 class="centered margin-top">Commands</h1>
   <div class="button-container">
     <button mat-raised-button
             (click)="toggleView()" class="action-button">
@@ -40,7 +40,7 @@
       <ul>
         <li *ngFor="let data of displayedData"
             [ngClass]="{'executed': data.wasCommandExecuted, 'not-executed': !data.wasCommandExecuted, 'flying-in': true}">
-          {{ data.command }}
+          {{ data.command | commandDisplayName }}
         </li>
       </ul>
     </div>

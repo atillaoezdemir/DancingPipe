@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+// This controller handles incoming HTTP requests related to frontend.
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/web")
@@ -17,18 +18,19 @@ public class WebController {
     private final LoginService loginService;
     private final EmitterService emitterService;
 
+    //This HTTP method is used to send actual information to the frontend.
+    //streamWebNumbers() attempts to create a new SseEmitter object via the EmitterService and returns it in the response.
     @GetMapping
-    public SseEmitter streamWebNumbers() {
+    public ResponseEntity<SseEmitter> streamWebNumbers() {
         try {
-            return emitterService.addWebClientEmitter();
+            SseEmitter emitter = emitterService.addWebClientEmitter();
+            return ResponseEntity.ok(emitter);
         } catch (Exception e) {
-            SseEmitter emitter = new SseEmitter();
-            emitter.completeWithError(e);
-            return emitter;
+            return ResponseEntity.internalServerError().body(null);
         }
     }
 
-
+    //This HTTP method is used to check user credentials.
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody UserCredentialsDTO credentials) {
         boolean loginSuccess = loginService.login(credentials.getUsername(), credentials.getPassword());

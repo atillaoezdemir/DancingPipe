@@ -55,7 +55,7 @@ public class ConsumerControllerTest {
     }
 
     @Test
-    public void configureMaxKeyboards_ShouldReturnResponseEntity_WhenValidRequest() throws Exception {
+    public void adjustConfiguration_ShouldReturnResponseEntity_WhenValidRequest() throws Exception {
         FromConsumerDTO fromConsumerDTO = new FromConsumerDTO();
         fromConsumerDTO.setKeyboardsMax(10);
         fromConsumerDTO.setDefaultKeyboards(5);
@@ -76,7 +76,7 @@ public class ConsumerControllerTest {
     }
 
     @Test
-    public void configureMaxKeyboards_ShouldReturnBadRequest_WhenServiceThrowsException() throws Exception {
+    public void adjustConfiguration_ShouldReturnBadRequest_WhenServiceThrowsException() throws Exception {
         FromConsumerDTO fromConsumerDTO = new FromConsumerDTO();
         fromConsumerDTO.setKeyboardsMax(10);
         fromConsumerDTO.setDefaultKeyboards(5);
@@ -96,7 +96,7 @@ public class ConsumerControllerTest {
     }
 
     @Test
-    public void configureMaxKeyboards_ThrowsConstraintViolationException_ShouldReturnBadRequest() throws Exception {
+    public void adjustConfiguration_ThrowsConstraintViolationException_ShouldReturnBadRequest() throws Exception {
         FromConsumerDTO fromConsumerDTO = new FromConsumerDTO();
         fromConsumerDTO.setKeyboardsMax(5);
         fromConsumerDTO.setDefaultKeyboards(5);

@@ -16,7 +16,7 @@ public class ProducerTestClient {
     public static void main(String[] args) {
         HttpClient client = HttpClient.newHttpClient();
         if (MODE.equals("sequence")) {
-            int[] sequence = {26,26,26,26,0,3,3,2,2,2,2,5,0,0,26};
+            int[] sequence = {111,1111,26,26,26,26,0,3,3,2,2,2,2,5,0,0,26};
             sendNumbers(client, sequence);
         } else {
             sendRandomNumbers(client);

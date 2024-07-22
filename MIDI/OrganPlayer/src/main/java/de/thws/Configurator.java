@@ -29,7 +29,7 @@ public class Configurator implements Serializable {
         this.numberOfKeyboards = configurator.numberOfKeyboards;
         this.tempoFactor = configurator.tempoFactor;
     }
-    public static Configurator loadFromFile(String filePath) throws IOException, FileNotFoundException, ClassNotFoundException {
+    public static Configurator loadFromFile(String filePath) throws IOException {
         File file = new File(filePath);
 
         FileInputStream fis = new FileInputStream(file);
@@ -49,7 +49,7 @@ public class Configurator implements Serializable {
         config.pieceName = "test";
 
         FileOutputStream file = new FileOutputStream
-                ("test.json");
+                ("server-config.json");
         ObjectOutputStream out = new ObjectOutputStream
                 (file);
 

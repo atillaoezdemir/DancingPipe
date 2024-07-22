@@ -1,43 +1,51 @@
 package de.thws.client.v2;
 
+import com.diogonunes.jcolor.Attribute;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.Composition;
+import de.thws.components.Composition;
 import de.thws.exceptions.ConfiguratorException;
 import de.thws.OrganSequencer;
 import de.thws.exceptions.OrganSequencerException;
 
 import javax.sound.midi.InvalidMidiDataException;
-import java.net.URI;
+import java.io.IOException;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Random;
 import javax.sound.midi.*;
 
-public class ConsumerTestClient extends Thread {
-    private static final String SERVER_URI = "http://10.10.35.129:8080";
+import static com.diogonunes.jcolor.Ansi.colorize;
+
+/**
+ *
+ */
+public class ConsumerClient extends Thread {
+    //private static String serverURI = "http://localhost:8080";
+    private static String serverURI = "http://10.10.35.129:8080";
     private static final String SERVER_ENDPOINT = "/consumer";
-    private static final Random random = new Random(); // todo delete that
     private static final ObjectMapper objectMapper = new ObjectMapper(); // deserializes JSON
     private String pathToComposition;
     Receiver receiver;
     OrganSequencer sequencer;
 
-    public ConsumerTestClient(Receiver receiver, String pathToComposition) {
-       // super(name);
+    public ConsumerClient(Receiver receiver, String pathToComposition, String serverURI) {
         this.pathToComposition = pathToComposition;
         this.receiver = receiver;
+        ConsumerClient.serverURI = serverURI;
     }
 
     public void run() {
+        System.out.println(colorize("Connecting server on " + serverURI + " ...", Attribute.YELLOW_TEXT(), Attribute.BOLD()));
+
         HttpClient client = HttpClient.newHttpClient();
         listenToServer(client);
-        System.out.println("Starting client...");
     }
 
     private void listenToServer(HttpClient client) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(SERVER_URI + SERVER_ENDPOINT))
+                .uri(URI.create(serverURI + SERVER_ENDPOINT))
                 .header("Accept", "text/event-stream")
                 .build();
 
@@ -47,6 +55,7 @@ public class ConsumerTestClient extends Thread {
     }
 
     private void processLine(String line) {
+
         if (line.startsWith("data:")) {
             String json = line.substring(5).trim();
             parseAndHandleCommand(json);
@@ -87,7 +96,6 @@ public class ConsumerTestClient extends Thread {
 
                 sendConfiguration(3, 3, lengthInBars, title, composer);
 
-                //todo add organ sequencer logic.
                 break;
             case "stop":
                 try {
@@ -140,7 +148,7 @@ public class ConsumerTestClient extends Thread {
             String jsonPayload = objectMapper.writeValueAsString(config);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(SERVER_URI + SERVER_ENDPOINT))
+                    .uri(URI.create(serverURI + SERVER_ENDPOINT))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();

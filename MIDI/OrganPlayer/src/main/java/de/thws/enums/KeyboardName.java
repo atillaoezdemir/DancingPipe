@@ -1,4 +1,4 @@
-package de.thws;
+package de.thws.enums;
 
 public enum KeyboardName {
     PEDAL(1),
@@ -9,7 +9,7 @@ public enum KeyboardName {
 
     KeyboardName(int channelNumber) {}
 
-    int getChannelNumber() {
+    public int getChannelNumber() {
         return ordinal();
     }
 }

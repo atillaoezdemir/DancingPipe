@@ -1,6 +1,9 @@
 package de.thws;
 
 import com.diogonunes.jcolor.Attribute;
+import de.thws.components.*;
+import de.thws.enums.Tempo;
+import de.thws.helpers.AppDetailsHelper;
 import lombok.Getter;
 
 import javax.sound.midi.*;
@@ -8,11 +11,34 @@ import java.util.*;
 import de.thws.helpers.PatternHelper;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
-
+/**
+ * This class represents a MIDI Sequencer for sequentially playing patterns on multiple keyboards. Users can add or remove patterns and keyboards, as well as change the sequence tempo.
+ * The sequencer is designed to play a single composition at a time and cannot be paused once it has started. If stopped, it can only be restarted from the beginning with the default tempo and number of keyboards.
+ *
+ * <p>This class extends {@link Thread}, enabling multithreading capabilities to allow real-time user input during sequence playback.</p>
+ *
+ * <p><strong>Class Members:</strong></p>
+ * <ul>
+ *     <li>{@code keyboards} - An instance of {@link KeyboardPool} that contains all the keyboards and their respective patterns.</li>
+ *     <li>{@code beatLengthInTicks} - The length of one beat in MIDI ticks, represented as a {@code long}. <i>More information on MIDI ticks can be found <a href="https://www.recordingblogs.com/wiki/midi-tick">here</a>.</i></li>
+ *     <li>{@code currentTempo} - The current tempo of the composition, represented as a {@link Tempo} value. Default tempo is {@code NORMAL}. Other possible values are {@code VERY_FAST}, {@code FAST}, {@code SLOW}, and {@code VERY_SLOW}.</li>
+ *     <li>{@code tempoFactor} - A {@code float} value representing the tempo factor used for changing the composition's tempo. <i>Typically, this value ranges between 0.1 and 0.5.</i></li>
+ *     <li>{@code tempoIncreaseFactor} - A factor used to multiply the MIDI events in the sequence when increasing the tempo. This value is calculated as {@code 1 - tempoFactor}.</li>
+ *     <li>{@code tempoDecreaseFactor} - A factor used to multiply the MIDI events in the sequence when decreasing the tempo. This value is calculated as {@code 1 + tempoFactor}.</li>
+ *     <li>{@code isPlaying} - A {@code boolean} indicating whether the sequencer is currently running. {@code true} if running, {@code false} otherwise.</li>
+ *     <li>{@code numberOfKeyboards} - An {@code int} representing the number of keyboards used in the sequence. This value is derived from the {@code keyboards} attribute.</li>
+ *     <li>{@code ticksSum} - The current number of ticks accumulated while the sequencer is running, used to determine the actual position in the sequence. The default value is {@code 0}.</li>
+ *     <li>{@code receiver} - The MIDI device to which the MIDI signals are sent, implementing the {@link Receiver} interface.</li>
+ * </ul>
+ *
+ * @see Receiver
+ * @see MidiDevice
+ * @see MidiMessage
+ * @see ShortMessage
+ */
 @Getter
 public class OrganSequencer extends Thread {
     KeyboardPool keyboards;
-    KeyboardPool keyboardPoolToUse;
     long beatLengthInTicks;
     long lengthInTicks;
     Tempo currentTempo;
@@ -25,41 +51,17 @@ public class OrganSequencer extends Thread {
     long ticksSum;
     Receiver receiver;
 
-
-    public OrganSequencer(KeyboardPool keyboards, Receiver receiver) { // currently not in use
-        super("OrganSequencer");
-        this.keyboards = keyboards;
-        isPlaying = false;
-        this.currentTempo = Tempo.NORMAL;
-        this.beatLengthInTicks = (long) (keyboards.getBeatLengthInTicks() * this.currentTempo.getValue());
-        this.numberOfKeyboards = keyboards.keyboards.size();
-        this.ticksSum = 0;
-        this.receiver = receiver;
-        this.lengthInTicks = keyboards.getKeyboards().getLast().getSequences().getLast().getEvents().getLast().getTick(); // todo not like this, read from file
-    }
-
     /**
-     * Constructor to use when creating a copy of the object
+     * Constructs an instance of {@link OrganSequencer} using the specified {@link Composition} and {@link Receiver}.
+     *
+     * @param composition The {@link Composition} object that provides the sequence of patterns to be played by the sequencer.
+     * @param receiver The {@link Receiver} object representing the MIDI device to which all MIDI signals will be sent.
      */
-    private OrganSequencer(KeyboardPool keyboards, long beatLengthInTicks, long lengthInTicks, Tempo currentTempo, float tempoFactor, boolean isPlaying, int numberOfKeyboards, long ticksSum, Receiver receiver) {
-        super("OrganSequencer");
-        this.keyboards = keyboards;
-        this.beatLengthInTicks = beatLengthInTicks;
-        this.lengthInTicks = lengthInTicks;
-        this.currentTempo = currentTempo;
-        this.tempoFactor = tempoFactor;
-        this.isPlaying = isPlaying;
-        this.numberOfKeyboards = numberOfKeyboards;
-        this.ticksSum = ticksSum;
-        this.receiver = receiver;
-    }
-
     public OrganSequencer(Composition composition, Receiver receiver) {
         super("OrganSequencer");
-        this.keyboards = new KeyboardPool(composition.getKeyboardPool());
-        this.keyboardPoolToUse = new KeyboardPool(this.keyboards);
+        this.keyboards = composition.getKeyboardPool();
 
-        this.numberOfKeyboards = keyboards.keyboards.size();
+        this.numberOfKeyboards = keyboards.getKeyboards().size();
 
         this.currentTempo = Tempo.NORMAL;
         this.tempoFactor = composition.getTempoFactor();
@@ -75,56 +77,26 @@ public class OrganSequencer extends Thread {
         this.isPlaying = false;
     }
 
-    private OrganSequencer copy() {
-        return new OrganSequencer(this.keyboards, this.beatLengthInTicks, this.lengthInTicks, this.currentTempo, this.tempoFactor, this.isPlaying, this.numberOfKeyboards, this.ticksSum, this.receiver);
-    }
-
     @Override
     public void run() {
         startPlaying();
         System.out.println(colorize("Sequencer stopped!", Attribute.BLUE_BACK(), Attribute.BLACK_TEXT()));
     }
 
-
-    public void setTempo(int tempo) {
-        if (isPlaying) {
-
-        }
-    }
-
     public void stopPlaying() throws InvalidMidiDataException {
         isPlaying = false;
         sendNoteOffToAllPlayingNotes();
-        //resetFields();
-        // todo reset everything
     }
 
-    long getMaxTicksForKeyboardAfterTempoChange(long currentTick) {
-
-        /*
-        // how much of the whole sequence is elapsed
-        float percentElapsed = (currentTick * 100f) / oldMaxTick;
-        // if the whole sequence was in the new tempo, on which tick it would be now
-        long currentTickInNewTempo = (long) (newMaxTick * percentElapsed / 100);
-        System.out.println(currentTick);
-        System.out.println(currentTickInNewTempo);
-        long remainingTicksInNewTempo = newMaxTick - currentTickInNewTempo;
-
-         */
-
-        //return currentTick + remainingTicksInNewTempo;
-        return keyboards.getKeyboards()
-                .stream()
-                .map(keyboard -> (long) (keyboard.updateLastTick())) //todo not general last tick but current last tick
-                .toList()
-                .stream()
-                .mapToLong(value -> value)
-                .max().orElseThrow(NoSuchElementException::new);
-    }
-
-
+    /**
+     * Adjusts the tempo for all MIDI patterns beginning from the specified index.
+     * The distance between MIDI messages in each pattern is altered to either increase or decrease the tempo.
+     *
+     * @param index The starting index in each keyboard's pattern list from which the tempo adjustment will begin.
+     * @param increase A boolean flag indicating whether to increase ({@code true}) or decrease ({@code false}) the tempo.
+     */
     public void setTempoForPatterns(int index, boolean increase) {
-        keyboards.keyboards.forEach(keyboard -> {
+        keyboards.getKeyboards().forEach(keyboard -> {
             for (int i = index; i < keyboard.getNumberOfPatterns(); i++) {
                 Pattern currentPattern = keyboard.getKeyboardPatterns().get(i);
                 for (int ii = 0; ii < currentPattern.getNumberOfMidiEvents(); ii++) {
@@ -136,51 +108,77 @@ public class OrganSequencer extends Thread {
 
             }
         });
-
-
     }
 
+
+    /**
+     * Increases the tempo of the sequencer and updates the {@code currentTempo} parameter accordingly.
+     * The tempo transitions through the following sequence:
+     * <ul>
+     *     <li>{@code VERY_SLOW} -> {@code SLOW}</li>
+     *     <li>{@code SLOW} -> {@code NORMAL}</li>
+     *     <li>{@code NORMAL} -> {@code FAST}</li>
+     *     <li>{@code FAST} -> {@code VERY_FAST}</li>
+     * </ul>
+     */
     public void increaseTempo() {
         switch (this.currentTempo) {
-            case FASTER -> {
+            case FAST -> {
+                this.currentTempo = Tempo.VERY_FAST;
+            }
+            case NORMAL -> {
                 this.currentTempo = Tempo.FAST;
             }
-            case NORMAL -> {
-                this.currentTempo = Tempo.FASTER;
-            }
-            case SLOWER -> {
-                this.currentTempo = Tempo.NORMAL;
-            }
             case SLOW -> {
-                this.currentTempo = Tempo.SLOWER;
-            }
-        }
-    }
-
-    public void decreaseTempo() {
-        switch (this.currentTempo) {
-            case FAST -> {
-                this.currentTempo = Tempo.FASTER;
-            }
-            case FASTER -> {
                 this.currentTempo = Tempo.NORMAL;
             }
-            case NORMAL -> {
-                this.currentTempo = Tempo.SLOWER;
-            }
-            case SLOWER -> {
+            case VERY_SLOW -> {
                 this.currentTempo = Tempo.SLOW;
             }
         }
     }
 
+    /**
+     * Decreases the tempo of the sequencer and updates the {@code currentTempo} parameter accordingly.
+     * The tempo transitions through the following sequence:
+     * <ul>
+     *     <li>{@code VERY_FAST} -> {@code FAST}</li>
+     *     <li>{@code FAST} -> {@code NORMAL}</li>
+     *     <li>{@code NORMAL} -> {@code SLOW}</li>
+     *     <li>{@code SLOW} -> {@code VERY_SLOW}</li>
+     * </ul>
+     */
+    public void decreaseTempo() {
+        switch (this.currentTempo) {
+            case VERY_FAST -> {
+                this.currentTempo = Tempo.FAST;
+            }
+            case FAST -> {
+                this.currentTempo = Tempo.NORMAL;
+            }
+            case NORMAL -> {
+                this.currentTempo = Tempo.SLOW;
+            }
+            case SLOW -> {
+                this.currentTempo = Tempo.VERY_SLOW;
+            }
+        }
+    }
+
+    /**
+     * Resets the tempo of the sequencer to the default value and sets the {@code currentTempo} parameter to {@code NORMAL}.
+     */
     public void setTempoToDefault() {
         this.currentTempo = Tempo.NORMAL;
     }
 
+    /**
+     * Counts the number of active keyboards in the sequencer.
+     * @return The number of active keyboards as an {@code int}.
+     */
     public int getKeyboardsInUse() {
         int result = 0;
-        for(Keyboard keyboard : this.keyboardPoolToUse.getKeyboards()) {
+        for(Keyboard keyboard : this.keyboards.getKeyboards()) {
             if(keyboard.isActive()) {
                 result++;
             }
@@ -188,44 +186,69 @@ public class OrganSequencer extends Thread {
         return result;
     }
 
+    /**
+     *  Activates the next first inactive keyboard if one exists.
+     *  If all keyboards are already active, the number of active keyboards remains unchanged.
+     */
     public void incrementKeyboards() {
         int keyboardIndex = 0;
-        for(keyboardIndex = 0; keyboardIndex < this.keyboardPoolToUse.getKeyboards().size(); keyboardIndex++) {
-            if(!this.keyboardPoolToUse.getKeyboards().get(keyboardIndex).isActive()) {
+        for(keyboardIndex = 0; keyboardIndex < this.keyboards.getKeyboards().size(); keyboardIndex++) {
+            if(!this.keyboards.getKeyboards().get(keyboardIndex).isActive()) {
                 break;
             }
         }
-        if(keyboardIndex < this.keyboardPoolToUse.getKeyboards().size()) {
-            this.keyboardPoolToUse.keyboards.get(keyboardIndex).makeActive();
+        if(keyboardIndex < this.keyboards.getKeyboards().size()) {
+            this.keyboards.getKeyboards().get(keyboardIndex).makeActive();
         }
     }
 
+    /**
+     *  Deactivates the next first active keyboard, except the first one.
+     *  If only the first keyboard is active, the number of active keyboards remains unchanged.
+     */
     public void decrementKeyboards() {
         int keyboardIndex;
-        for(keyboardIndex = 0; keyboardIndex < this.keyboardPoolToUse.getKeyboards().size(); keyboardIndex++) {
-            if(!this.keyboardPoolToUse.getKeyboards().get(keyboardIndex).isActive()) {
+        for(keyboardIndex = 0; keyboardIndex < this.keyboards.getKeyboards().size(); keyboardIndex++) {
+            if(!this.keyboards.getKeyboards().get(keyboardIndex).isActive()) {
                 break;
             }
         }
         if(keyboardIndex != 1) {
             keyboardIndex--;
-            this.keyboardPoolToUse.getKeyboards().get(keyboardIndex).makeInactive();
+            this.keyboards.getKeyboards().get(keyboardIndex).makeInactive();
         }
 
     }
 
+    /**
+     *  Activates all keyboards in the sequencer.
+     */
     public void setKeyboardsToMax() {
-        for(Keyboard keyboard : this.keyboardPoolToUse.getKeyboards()) {
+        for(Keyboard keyboard : this.keyboards.getKeyboards()) {
             keyboard.makeActive();
         }
     }
 
+    /**
+     *  Deactivates all keyboards except the first one.
+     */
     public void setKeyboardsToMin() {
-        for(int i=1; i<this.keyboardPoolToUse.getKeyboards().size(); i++) {
-            this.keyboardPoolToUse.keyboards.get(i).makeInactive();
+        for(int i=1; i<this.keyboards.getKeyboards().size(); i++) {
+            this.keyboards.getKeyboards().get(i).makeInactive();
         }
     }
 
+    /**
+     * Starts the sequencer, iterating over all keyboards and their patterns to send MIDI signals in real-time.
+     * The sequencer operates as follows:
+     * <ul>
+     *     <li>Each millisecond, it iterates over all keyboards and their patterns, sending MIDI signals if the keyboard is active.</li>
+     *     <li>Keeps track of the current pattern and event indices for each keyboard.</li>
+     *     <li>Monitors tempo changes and adjusts the timing of MIDI events accordingly.</li>
+     *     <li>Handles keyboard activation and deactivation, sending appropriate MIDI messages.</li>
+     *     <li>Stops automatically when the end of the composition is reached, if the user requests it, or if an error occurs.</li>
+     * </ul>
+     */
     public void startPlaying() {
         // Basic idea of the sequencer:
         // Each ms iterate over all the manuals and all the patterns in the manual
@@ -233,12 +256,10 @@ public class OrganSequencer extends Thread {
 
         // create copies of some of the class members, so that the originals can remain unchanged
         // for the next time the sequencer is started
-        //this.keyboardPoolToUse = new KeyboardPool(this.keyboards);
         long currSeqLenInTicks = this.lengthInTicks;
         long currBeatLenInTicks = this.beatLengthInTicks;
 
-
-        int[] currentPatternIndex = new int[this.numberOfKeyboards]; //todo obsolete to be array // used to track which pattern for each keyboard is currently playing
+        int[] currentPatternIndex = new int[this.numberOfKeyboards]; // used to track which pattern for each keyboard is currently playing
         int[] currentEventIndex = new int[this.numberOfKeyboards]; // used to track which MIDI-Event for each pattern currently read
 
         // previous condition of the keyboard is used to track changes in the keyboards
@@ -252,57 +273,24 @@ public class OrganSequencer extends Thread {
         long ticks = 0;
 
         // make first keyboard active
-        keyboardPoolToUse.getKeyboards().getFirst().makeActive();
+        keyboards.getKeyboards().getFirst().makeActive();
 
-        //todo change copy values instead of the original ones
         this.isPlaying = true;
         try {
-
-
-/*
-            MidiDevice.Info outputDevice = Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList().get(4);
-            MidiDevice virtualOutPort = MidiSystem.getMidiDevice(outputDevice); //out
-
-            virtualOutPort.open();
-
-            Receiver receiver = virtualOutPort.getReceiver();
-
-
- */
-
-
-/*
-            Synthesizer synth = MidiSystem.getSynthesizer(); //if you use that again don't forget synth.open and synth.close
-            Receiver receiver = synth.getReceiver();
- */
-
-            //long beatLengthInTicks = (long) (keyboards.getBeatLengthInTicks() * keyboards.getTempoFactor().getValue());
-
-
-
-            // synth.open();
-
-
-
-
-            // int patternIndex = 0;
-            // int currentEventIndex = 0;
-
             while (isPlaying) {
-                // synchronized ()
-                // todo try with synchronized
                 Thread.sleep(1);
 
                 if (ticksSum >= currSeqLenInTicks) { // stop playing if reached end of the composition
                     System.out.println(colorize("Composition ended!", Attribute.BLUE_BACK(), Attribute.BLACK_TEXT(), Attribute.BOLD()));
                     stopPlaying();
                 }
-                if (ticks >= currBeatLenInTicks) { // todo make generic for pattern length (not only for one beat)
+                if (ticks >= currBeatLenInTicks) {
+                    // go to next beat (respectively next pattern)
                     // reset ticks to 0 and go to next pattern
                     ticks = 0;
                     Arrays.fill(currentEventIndex, 0);
-                    for (int i = 0; i < currentPatternIndex.length; i++) {
-                        int numberOfPatternsInKeyboard = keyboardPoolToUse.getKeyboards().get(i).getNumberOfPatterns();
+                    for (int i = 0; i < numberOfKeyboards; i++) {
+                        int numberOfPatternsInKeyboard = keyboards.getKeyboards().get(i).getNumberOfPatterns();
                         if (currentPatternIndex[i] + 1 < numberOfPatternsInKeyboard) {
                             currentPatternIndex[i]++;
                         } else {
@@ -310,29 +298,36 @@ public class OrganSequencer extends Thread {
                             currentPatternIndex[i] = -1;
                         }
                     }
-
                 }
                 // detect tempo changes
                 if (previousTempoFactor != this.currentTempo) {
                     // tempo was changed
 
-                    if (previousTempoFactor.getValue() <this.currentTempo.getValue()) {
+                    if (previousTempoFactor.getValue() < this.currentTempo.getValue()) {
                         // tempo was decreased
-                        setTempoForPatterns(currentPatternIndex[0], false); // todo current pattern index should be the same for all
-                        currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoDecreaseFactor);
-                        currSeqLenInTicks = (long) (currSeqLenInTicks * this.tempoDecreaseFactor);
+
+                        int iterations = this.currentTempo.getValue() - previousTempoFactor.getValue(); // if tempo was previously very fast and now normal, two iterations are needed
+                        for (int i = 0; i < iterations; i++) {
+                            setTempoForPatterns(currentPatternIndex[0], false); // take index from keyboard that is always playing
+                            currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoDecreaseFactor);
+                            currSeqLenInTicks = (long) (currSeqLenInTicks * this.tempoDecreaseFactor);
+                        }
+
                     } else {
-                        setTempoForPatterns(currentPatternIndex[0], true);
-                        currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoIncreaseFactor);
-                        currSeqLenInTicks = (long) (currSeqLenInTicks * this.tempoIncreaseFactor);
+                        int iterations = previousTempoFactor.getValue() - this.currentTempo.getValue(); // if tempo was previously very slow and now normal, two iterations are needed
+                        for (int i = 0; i < iterations; i++) {
+                            setTempoForPatterns(currentPatternIndex[0], true);
+                            currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoIncreaseFactor);
+                            currSeqLenInTicks = (long) (currSeqLenInTicks * this.tempoIncreaseFactor);
+                        }
+
 
                     }
 
-                    // todo mache, dass es erst im neuen pattern in Kraft tritt
                     previousTempoFactor = this.currentTempo;
                 }
-                for (int keyboardIndex = 0; keyboardIndex < keyboardPoolToUse.getKeyboards().size(); keyboardIndex++) {
-                    Keyboard currentKeyboard = keyboardPoolToUse.getKeyboards().get(keyboardIndex);
+                for (int keyboardIndex = 0; keyboardIndex < keyboards.getKeyboards().size(); keyboardIndex++) {
+                    Keyboard currentKeyboard = keyboards.getKeyboards().get(keyboardIndex);
                     if (!currentKeyboard.isActive()) {
                         if (previousCondition[keyboardIndex]) {
                             // if keyboard was active, make all notes on the keyboard off
@@ -362,32 +357,35 @@ public class OrganSequencer extends Thread {
                                     }
                                     else {
                                         sm.setMessage(ShortMessage.NOTE_ON, currentKeyboard.getKeyboardName().getChannelNumber(), sm.getData1(), sm.getData2());
-                                        keyboardPoolToUse.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
+                                        keyboards.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
 
                                     }
                                     receiver.send(currentEvent.getMessage(), currentEvent.getTick());
 
                                 }
                             }
-
                             currentEventIndex[keyboardIndex]++;
                         }
                     }
 
                 }
-                // todo when making inactive all notes off or keep active until next noteoff event
-
                 ticks++;
                 ticksSum++;
             }
-            // synth.close();
-        } catch (Exception e) {
-            e.printStackTrace(); //todo make error catching better
+        } catch (InvalidMidiDataException e) {
+            AppDetailsHelper.displayErrorMessage("InvalidMidiDataException thrown! Make sure that the data is valid!\n" + e.getMessage());
+            isPlaying = false;
+        } catch (InterruptedException e) {
+            AppDetailsHelper.displayErrorMessage("InterruptedException thrown!\n" + e.getMessage());
+            isPlaying = false;
         }
-        resetFields();
-        // todo try with wait and sleep for the thread
     }
 
+    /**
+     * Sends {@code NOTE_OFF} message to all notes that are playing on the {@code keyboard}
+     * @param keyboard keyboard on which the {@code NOTE_OFF} message should be sent
+     * @throws InvalidMidiDataException if the {@code NOTE_OFF} message is invalid
+     */
     private void sendNoteOffToAllPlayingNotesOnKeyboard(Keyboard keyboard) throws InvalidMidiDataException {
         for(int note : keyboard.getNotesOn()) {
             ShortMessage sm = new ShortMessage(ShortMessage.NOTE_OFF, keyboard.getKeyboardName().getChannelNumber(), note, 0); // short message with channels
@@ -396,8 +394,10 @@ public class OrganSequencer extends Thread {
         }
     }
 
-
-
+    /**
+     * Sends {@code NOTE_OFF} message to all notes that are playing on all keyboards
+     * @throws InvalidMidiDataException if the {@code NOTE_OFF} message is invalid
+     */
     private void sendNoteOffToAllPlayingNotes() throws InvalidMidiDataException {
         for(int i=0; i<keyboards.getKeyboards().size(); i++) {
             sendNoteOffToAllPlayingNotesOnKeyboard(keyboards.getKeyboards().get(i));
@@ -408,7 +408,6 @@ public class OrganSequencer extends Thread {
         this.currentTempo = Tempo.NORMAL;
         this.isPlaying = false;
         this.ticksSum = 0;
-        this.keyboardPoolToUse = null;
     }
 
 

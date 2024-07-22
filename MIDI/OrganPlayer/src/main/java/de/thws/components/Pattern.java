@@ -1,4 +1,4 @@
-package de.thws;
+package de.thws.components;
 
 import de.thws.exceptions.OrganSequencerException;
 import lombok.Getter;

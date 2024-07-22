@@ -1,11 +1,15 @@
 package de.thws.helpers;
 
-import de.thws.OrganEvent;
-import de.thws.OrganSequence;
+import de.thws.AppDetails;
+import de.thws.components.OrganEvent;
+import de.thws.components.OrganSequence;
 
 import javax.sound.midi.ShortMessage;
 import java.util.List;
 
+/**
+ * Contains methods used in the {@link de.thws.components.Pattern} class
+ */
 public class PatternHelper {
 
     /**

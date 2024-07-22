@@ -10,12 +10,15 @@ import java.io.*;
 import static com.diogonunes.jcolor.Ansi.colorize;
 import static de.thws.helpers.ConfiguratorHelper.readFileAsStream;
 
-public class Menu {
+/**
+ * Displays the application details. This class uses the {@link AppConfigurator} class to read the application details from the file {@code app-config.json}.
+ */
+public class AppDetails {
 
-
-
-    public static void displayMenu() {
-
+    /**
+     * Displays the application details.
+     */
+    public static void displayDetails() {
         displayLogo();
         displayAppInfo();
         System.out.println("\n");
@@ -25,6 +28,9 @@ public class Menu {
         System.out.println(" to exit the application.\n");
     }
 
+    /**
+     * Reads the application logo from the file {@code ascii-logo.txt} in {@code assets} folder and displays it.
+     */
     private static void displayLogo() {
         File logoFIle = new File("assets/ascii-logo.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(logoFIle))) {
@@ -42,6 +48,9 @@ public class Menu {
         } catch (IOException _) {}
     }
 
+    /**
+     * Reads the application information from the file {@code app-config.json} and displays it using the {@link AppConfigurator} class.
+     */
     private static void displayAppInfo() {
         try {
             AppConfigurator appConfigurator = readAppConfig("app-config.json");
@@ -58,6 +67,12 @@ public class Menu {
         }
     }
 
+    /**
+     * Returns the content of the given file as {@link AppConfigurator} object.
+     * @param path path of the file to be read
+     * @return content of the file as {@link AppConfigurator} object
+     * @throws ConfiguratorException if the file cannot be read
+     */
     private static AppConfigurator readAppConfig(String path) throws ConfiguratorException {
         File file = new File(path);
         FileInputStream fis = readFileAsStream(file);

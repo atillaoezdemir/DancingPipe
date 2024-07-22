@@ -1,10 +1,13 @@
 package de.thws;
 
+import com.diogonunes.jcolor.Attribute;
 import lombok.Getter;
 
 import javax.sound.midi.*;
 import java.util.*;
 import de.thws.helpers.PatternHelper;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 @Getter
 public class OrganSequencer extends Thread {
@@ -78,9 +81,8 @@ public class OrganSequencer extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Thread started");
         startPlaying();
-        System.out.println("Thread terminated");
+        System.out.println(colorize("Sequencer stopped!", Attribute.BLUE_BACK(), Attribute.BLACK_TEXT()));
     }
 
 
@@ -122,8 +124,6 @@ public class OrganSequencer extends Thread {
 
 
     public void setTempoForPatterns(int index, boolean increase) {
-
-        System.out.println(this.currentTempo.name());
         keyboards.keyboards.forEach(keyboard -> {
             for (int i = index; i < keyboard.getNumberOfPatterns(); i++) {
                 Pattern currentPattern = keyboard.getKeyboardPatterns().get(i);
@@ -174,7 +174,7 @@ public class OrganSequencer extends Thread {
         }
     }
 
-    public void setTempoDoDefault() {
+    public void setTempoToDefault() {
         this.currentTempo = Tempo.NORMAL;
     }
 
@@ -294,6 +294,7 @@ public class OrganSequencer extends Thread {
                 Thread.sleep(1);
 
                 if (ticksSum >= currSeqLenInTicks) { // stop playing if reached end of the composition
+                    System.out.println(colorize("Composition ended!", Attribute.BLUE_BACK(), Attribute.BLACK_TEXT(), Attribute.BOLD()));
                     stopPlaying();
                 }
                 if (ticks >= currBeatLenInTicks) { // todo make generic for pattern length (not only for one beat)
@@ -313,7 +314,6 @@ public class OrganSequencer extends Thread {
                 }
                 // detect tempo changes
                 if (previousTempoFactor != this.currentTempo) {
-                    System.out.println("tempo change");
                     // tempo was changed
 
                     if (previousTempoFactor.getValue() <this.currentTempo.getValue()) {

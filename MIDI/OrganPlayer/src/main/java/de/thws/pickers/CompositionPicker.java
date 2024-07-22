@@ -5,7 +5,7 @@ import de.thws.exceptions.ConfiguratorException;
 import de.thws.configurators.CompositionConfigurator;
 import de.thws.exceptions.MenuExitException;
 import de.thws.helpers.ConfiguratorHelper;
-import de.thws.helpers.MenuHelper;
+import de.thws.helpers.AppDetailsHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,14 +61,14 @@ public class CompositionPicker {
                 input = sc.nextInt();
             }
             catch (InputMismatchException e) {
-                MenuHelper.checkIfExitEntered(sc);
+                AppDetailsHelper.checkIfExitEntered(sc);
                 System.out.println(colorize("Invalid Composition Number! Please try again.", Attribute.BLACK_TEXT(), Attribute.BRIGHT_GREEN_BACK()));
                 sc.nextLine();
                 continue;
             }
 
             if(input >= configuratorMap.size() || input < 0) {
-                System.out.println(colorize("ERROR: Composition number out of bonds! Please try again.", Attribute.RED_BACK(), Attribute.BLACK_TEXT()));
+                AppDetailsHelper.displayErrorMessage("ERROR: Composition number out of bonds! Please try again.");
             }
             else {
                 isInputValid = true;

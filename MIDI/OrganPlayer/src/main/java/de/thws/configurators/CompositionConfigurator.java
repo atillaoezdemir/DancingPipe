@@ -1,14 +1,19 @@
 package de.thws.configurators;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.Configurator;
-import de.thws.helpers.ConfiguratorHelper;
 import lombok.Getter;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.Serializable;
 
+/**
+ * Represents the content of a JSON file, used for saving information about a composition.
+ * <p>Class members:
+ * <ul>
+ *     <li> {@code compositionName} - title of the composition as {@link String}.
+ *     <li> {@code cmposer} - composer of the composition as {@link String}.
+ *     <li> {@code lengthInBars} - length of the composition in bars as {@code long}.
+ *     <li> {@code tempoFactor} - the tempo factor, which is used when changing the tempo of the composition as {@code float}.
+ * </ul>
+ */
 @Getter
 public class CompositionConfigurator implements Serializable {
     private String compositionName;

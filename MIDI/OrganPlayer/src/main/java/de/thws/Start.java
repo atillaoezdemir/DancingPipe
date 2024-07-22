@@ -2,20 +2,22 @@ package de.thws;
 
 import de.thws.client.v2.ConsumerTestClient;
 import de.thws.exceptions.MenuExitException;
-import de.thws.helpers.MenuHelper;
+import de.thws.helpers.AppDetailsHelper;
 import de.thws.pickers.CompositionPicker;
+import de.thws.pickers.ModePicker;
 import de.thws.pickers.OutputDevicePicker;
 
 import javax.sound.midi.*;
-import java.util.Arrays;
 
-
+/**
+ * Starting point for the application. Use this class to start the application.
+ */
 public class Start {
     public static void main(String[] args) throws MidiUnavailableException { // todo handle exception
 
         // todo test if empty bars work
 
-        Menu.displayMenu();
+        AppDetails.displayDetails();
 
         try {
             final MidiDevice.Info outputDeviceInfo = OutputDevicePicker.chooseDevice();
@@ -32,20 +34,34 @@ public class Start {
 
                 CompositionPicker cp = new CompositionPicker("sounds");
 
-                    String compositionPath = cp.pickComposition();
-                    if(!compositionPath.isEmpty()) {
-                        ConsumerTestClient client = new ConsumerTestClient(receiver, compositionPath);
-                        client.start();
+                String compositionPath = cp.pickComposition();
+                if (!compositionPath.isEmpty()) {
+                    boolean mode = ModePicker.pickMode();
+                    try {
+                        if (mode) {
+                            ConsumerTestClient client = new ConsumerTestClient(receiver, compositionPath);
+                            client.start();
+                            client.join();
+                        } else {
+                            InputTest inputTest = new InputTest(receiver, compositionPath);
+                            inputTest.start();
+                            inputTest.join();
+                        }
                     }
-                    else throw new MenuExitException("");
-                }
-
+                    catch(InterruptedException e){
+                        System.out.println("Interrupted Exception thrown: " + e.getMessage());
+                        throw new MenuExitException("");
+                    }
+                    throw new MenuExitException("");
+                } else throw new MenuExitException("");
             }
 
-        catch (MenuExitException e) {
-            MenuHelper.displayEndMessage();
+        } catch (MenuExitException e) {
+            AppDetailsHelper.displayEndMessage();
             return;
         }
+
+
 
 
 
@@ -120,7 +136,7 @@ public class Start {
 
          */
 
-            //Thread.sleep(1000);
+        //Thread.sleep(1000);
 
 
 /*

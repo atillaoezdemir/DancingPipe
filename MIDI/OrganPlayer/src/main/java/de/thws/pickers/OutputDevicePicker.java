@@ -1,9 +1,8 @@
 package de.thws.pickers;
 
 import com.diogonunes.jcolor.Attribute;
-import de.thws.Menu;
 import de.thws.exceptions.MenuExitException;
-import de.thws.helpers.MenuHelper;
+import de.thws.helpers.AppDetailsHelper;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
@@ -37,14 +36,14 @@ public class OutputDevicePicker {
                 input = sc.nextInt();
             }
             catch(InputMismatchException e) {
-                MenuHelper.checkIfExitEntered(sc);
+                AppDetailsHelper.checkIfExitEntered(sc);
                 System.out.println(colorize("Invalid MIDI Device number! Please try again.", Attribute.BRIGHT_BLUE_BACK(), Attribute.BLACK_TEXT()));
                 sc.nextLine();
                 continue;
             }
 
             if(input >= outputMidiDevicesInfo.size() || input < 0) {
-                System.out.println(colorize("ERROR: MIDI Device number our of bonds. Please try again.", Attribute.RED_BACK(), Attribute.BLACK_TEXT()));
+                AppDetailsHelper.displayErrorMessage("ERROR: MIDI Device number our of bonds. Please try again.");
             }
             else {
                 isInputValid = true;

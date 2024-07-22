@@ -124,7 +124,7 @@ public class ConsumerTestClient extends Thread {
                 sequencer.decreaseTempo();
                 break;
             case "defaultTempo":
-                sequencer.setTempoDoDefault();
+                sequencer.setTempoToDefault();
                 break;
 
             default:

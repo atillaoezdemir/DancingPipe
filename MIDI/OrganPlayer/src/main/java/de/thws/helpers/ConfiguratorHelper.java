@@ -81,22 +81,11 @@ public class ConfiguratorHelper {
 
 
     /**
-     * Counts the number of JSON files in the given directory.
+     * Gets the first JSON files in the given directory.
      *
      * @param directory directory to look for JSON files in
-     * @return number of JSON files in the directory
+     * @return first JSON file as {@link File} object
      */
-
-    public static int countJsonFilesInDirectory(File directory) {
-        int count = 0;
-        for (File file : directory.listFiles()) {
-            if (file.isFile() && file.getName().endsWith(".json")) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public static File getFirstJsonFileInDirectory(File directory) {
         for (File file : directory.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".json")) {

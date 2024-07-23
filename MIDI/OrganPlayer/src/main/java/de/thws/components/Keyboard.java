@@ -13,6 +13,19 @@ import de.thws.exceptions.OrganSequencerException;
 import de.thws.helpers.ConfiguratorHelper;
 import lombok.Getter;
 
+/**
+ * Class that represents a single keyboard of the organ and containing
+ * the patterns that should be played on this keyboard. It uses {@link KeyboardConfigurator} to
+ * create a {@link Keyboard} object from a user configuration file.
+ * <p>Class members:
+ * <ul>
+ *     <li> {@code keyboardPatterns} - patterns that should be played on this keyboard as {@link List} of {@link Pattern}s.
+ *     <li> {@code numberOfPatterns} - number of patterns to be played on the keyboard as {@code int}.
+ *     <li> {@code active} - {@code boolean}, that shows if the keyboard is currently active (audible) or not.
+ *     <li> {@code keyboardName} - the name of the division of the organ, on which the patterns for this keyboard will be played as {@link KeyboardName}.
+ *     <li> {@code notesOn} - list of all notes, that were played on this keyboard as {@link List} of {@link Integer}s. This list is used by the sequencer  when a keyboard is deactivated.
+ * </ul>
+ */
 @Getter
 public class Keyboard {
     private final List<Pattern> keyboardPatterns;
@@ -58,8 +71,10 @@ public class Keyboard {
     }
 
     /**
+     * Returns the resolution for the keyboard
      * @return resolution for the keyboard
      * @throws OrganSequencerException if some of the patterns in the keyboard has a different resolution from the other ones
+     * @see <i>More about MIDI timing <a href="http://www.harfesoft.de/aixphysik/sound/midi/pages/miditmcn.html">here</a></i>
      */
     public int getResolution() throws OrganSequencerException {
         List<Integer> resolutionsList = keyboardPatterns

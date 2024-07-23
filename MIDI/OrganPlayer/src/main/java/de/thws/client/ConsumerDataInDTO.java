@@ -1,4 +1,4 @@
-package de.thws.client.v2;
+package de.thws.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

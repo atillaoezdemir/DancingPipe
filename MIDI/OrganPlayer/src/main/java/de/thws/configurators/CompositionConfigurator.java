@@ -9,7 +9,7 @@ import java.io.Serializable;
  * <p>Class members:
  * <ul>
  *     <li> {@code compositionName} - title of the composition as {@link String}.
- *     <li> {@code cmposer} - composer of the composition as {@link String}.
+ *     <li> {@code composer} - composer of the composition as {@link String}.
  *     <li> {@code lengthInBars} - length of the composition in bars as {@code long}.
  *     <li> {@code tempoFactor} - the tempo factor, which is used when changing the tempo of the composition as {@code float}.
  * </ul>

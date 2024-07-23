@@ -115,7 +115,7 @@ public class CompositionPicker {
         File[] folderContent = folder.listFiles();
         if(folderContent != null) {
             for(File file : folderContent) {
-                if(file.getName().equals("config.json")) {
+                if(file.getName().equals("composition-config.json")) {
                     return ConfiguratorHelper.convertJsonFileToCompositionConfigurator(file.getPath());
                 }
             }

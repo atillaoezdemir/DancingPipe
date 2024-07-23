@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 
-public class InputTest extends Thread {
+public class UserInput extends Thread {
     private static final String START_INPUT = "start";
     private static final String STOP_INPUT = "stop";
     private static final String ADD_KEYBOARD_INPUT = "+";
@@ -29,7 +29,7 @@ public class InputTest extends Thread {
     Receiver receiver;
     OrganSequencer sequencer;
 
-    public InputTest(Receiver receiver, String pathToComposition) {
+    public UserInput(Receiver receiver, String pathToComposition) {
         this.pathToComposition = pathToComposition;
         this.receiver = receiver;
     }

@@ -1,20 +1,16 @@
 package de.thws.pickers;
 
 import com.diogonunes.jcolor.Attribute;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thws.Configurator;
-import de.thws.configurators.AppConfigurator;
+
 import de.thws.configurators.ServerAddressConfigurator;
 import de.thws.exceptions.ConfiguratorException;
 import de.thws.exceptions.MenuExitException;
 import de.thws.helpers.AppDetailsHelper;
 
-import javax.sound.midi.MidiSystem;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;

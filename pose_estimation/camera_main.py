@@ -50,6 +50,7 @@ NOTE_LOOKUP_TABLE = {
     ((45, 90), (0, 180)): "4",     # ---
     ((0, 45), (0, 180)): "5",      # ---
 }
+
 def determine_note(angle_elbow, angle_shoulder):
     """
     Determines the note based on elbow and shoulder angles.
@@ -274,6 +275,7 @@ def process_video(camera_id):
         # Release resources
         cap.release()
         cv2.destroyAllWindows()
+
 if __name__ == "__main__":
     """
     Main block to start video processing.

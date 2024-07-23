@@ -1,6 +1,6 @@
 # Dancing Pipes - Organ Client 🎹
 
-The organ client connects the pipe organ with the server and the camera.
+The organ client connects the pipe organ with the server and the camera and sends the MIDI signals to the organ.
 
 ### Prerequisites
 

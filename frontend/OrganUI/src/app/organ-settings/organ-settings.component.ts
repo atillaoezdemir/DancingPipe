@@ -86,13 +86,13 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
   getKeyboardName(index: number): string {
     switch (index) {
       case 0:
-        return 'Pedal';
-      case 1:
-        return 'Choir';
-      case 2:
         return 'Great';
-      case 3:
+      case 1:
         return 'Swell';
+      case 2:
+        return 'Choir';
+      case 3:
+        return 'Pedal';
       case 4:
         return 'Solo/Echo';
 

@@ -29,9 +29,18 @@
 }
 
 :host {
-  width: 35%;
   height: 100%;
   padding-right: 5vw;
+}
+@media (max-width: 1199px) {
+  :host{
+    width: 43%;
+  }
+}
+@media (min-width: 1200px) {
+  :host{
+    width: 35%;
+  }
 }
 
 .number-display-content {

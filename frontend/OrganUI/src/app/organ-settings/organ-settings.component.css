@@ -1,8 +1,18 @@
 :host {
-  width: 35%;
   height: fit-content;
   margin-left: 5vw;
 }
+@media (max-width: 1199px) {
+  :host{
+    width: 43%;
+  }
+}
+@media (min-width: 1200px) {
+  :host{
+    width: 35%;
+  }
+}
+
 
 .top-container {
   display: flex;

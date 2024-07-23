@@ -63,6 +63,7 @@ public class ModePicker {
         System.out.print(colorize(CLIENT_MODE_DISPLAY_NAME, Attribute.BRIGHT_YELLOW_TEXT(), Attribute.BOLD()));
         System.out.print(colorize(" lets you connect with the server and use the application with the camera.\nThe ", Attribute.BRIGHT_YELLOW_TEXT()));
         System.out.print(colorize(KEYBOARD_MODE_DISPLAY_NAME, Attribute.BRIGHT_YELLOW_TEXT(), Attribute.BOLD()));
-        System.out.println(colorize(" lets you control the sequencer with keyboard inputs. No connection with the server will be established. ", Attribute.BRIGHT_YELLOW_TEXT()));
+        System.out.println(colorize(" lets you control the sequencer with keyboard inputs. No connection with the server will be established. The frontend won't reflect any changes made by the user. ", Attribute.BRIGHT_YELLOW_TEXT()));
     }
 }
+

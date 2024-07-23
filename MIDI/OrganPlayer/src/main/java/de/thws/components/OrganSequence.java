@@ -1,4 +1,4 @@
-package de.thws;
+package de.thws.components;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -31,6 +31,10 @@ public class AppDetailsHelper {
         System.out.println(colorize("\nThank you for playing! Bye!", Attribute.BOLD(), Attribute.CYAN_TEXT()));
     }
 
+    /**
+     * Display the message {@code msg} with red background
+     * @param msg message to be displayed
+     */
     public static void displayErrorMessage(String msg) {
         System.out.println(colorize(msg, Attribute.RED_BACK(), Attribute.BLACK_TEXT()));
     }

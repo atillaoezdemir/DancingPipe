@@ -1,6 +1,7 @@
 package de.thws;
 
 import com.diogonunes.jcolor.Attribute;
+import de.thws.components.Composition;
 import de.thws.exceptions.ConfiguratorException;
 import de.thws.exceptions.OrganSequencerException;
 import de.thws.helpers.AppDetailsHelper;
@@ -70,12 +71,12 @@ public class InputTest extends Thread {
                             }
                             break;
 
-                        case STOP_INPUT, ADD_KEYBOARD_INPUT, REMOVE_KEYBOARD_INPUT, MAX_KEYBOARDS_INPUT, MIN_KEYBOARDS_INPUT, INCREMENT_TEMPO_INPUT, DECREMENT_TEMPO_INPUT, DEFAULT_TEMPO_INPUT:
+                        case STOP_INPUT, ADD_KEYBOARD_INPUT, REMOVE_KEYBOARD_INPUT, MAX_KEYBOARDS_INPUT, MIN_KEYBOARDS_INPUT, INCREMENT_TEMPO_INPUT, DECREMENT_TEMPO_INPUT, DEFAULT_TEMPO_INPUT, "exit":
                             handleInput(stringInput.toLowerCase());
+                            if(stringInput.equalsIgnoreCase("exit")) {
+                                return;
+                            }
                             break;
-
-                        case "exit":
-                            return;
 
                         default:
                             System.out.println("Invalid input");
@@ -181,7 +182,7 @@ public class InputTest extends Thread {
                     sequencer.setTempoToDefault();
                     break;
 
-                case STOP_INPUT:
+                case STOP_INPUT, "exit":
                     System.out.println("Stopping sequencer...");
                     try {
                         sequencer.stopPlaying();
@@ -189,7 +190,10 @@ public class InputTest extends Thread {
                     } catch (InvalidMidiDataException | InterruptedException e) {
                         AppDetailsHelper.displayErrorMessage("Error when stopping the sequencer: " + e.getMessage());
                     }
-                    System.out.println("Waiting for next start...");
+                    if(!input.equals("exit")) {
+                        System.out.println("Waiting for next start...");
+
+                    }
                     break;
             }
         }

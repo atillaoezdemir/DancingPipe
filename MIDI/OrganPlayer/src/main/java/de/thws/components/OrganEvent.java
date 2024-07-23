@@ -1,9 +1,7 @@
-package de.thws;
+package de.thws.components;
 
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
-import javax.sound.midi.ShortMessage;
 
 import lombok.Getter;
 

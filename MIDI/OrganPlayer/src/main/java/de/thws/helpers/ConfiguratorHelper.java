@@ -2,7 +2,7 @@ package de.thws.helpers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thws.exceptions.ConfiguratorException;
-import de.thws.KeyboardName;
+import de.thws.enums.KeyboardName;
 import de.thws.configurators.CompositionConfigurator;
 import de.thws.configurators.KeyboardConfigurator;
 
@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 
 public class ConfiguratorHelper {
 
@@ -22,15 +23,6 @@ public class ConfiguratorHelper {
     public static KeyboardConfigurator convertJsonFileToKeyboardConfigurator(String filepath) throws ConfiguratorException {
         File file = new File(filepath);
         FileInputStream fis = readFileAsStream(file);
-        /*File file = new File(filepath);
-        FileInputStream fis;
-        try {
-            fis = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            throw new ConfiguratorException("File " + file.getName() + " was not found");
-        }
-
-         */
 
         String json;
         ObjectMapper mapper = new ObjectMapper();

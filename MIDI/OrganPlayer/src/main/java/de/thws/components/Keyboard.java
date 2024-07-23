@@ -1,7 +1,8 @@
-package de.thws;
+package de.thws.components;
 
 import java.util.ArrayList;
 
+import de.thws.enums.KeyboardName;
 import de.thws.configurators.KeyboardConfigurator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,6 @@ import lombok.Getter;
 public class Keyboard {
     private final List<Pattern> keyboardPatterns;
     private final int numberOfPatterns;
-//    private long lastTick;
     private boolean active;
     private final KeyboardName keyboardName;
     private List<Integer> notesOn; // list of all notes, that are currently playing in the sequence
@@ -46,45 +46,6 @@ public class Keyboard {
 
     }
 
-    /*
-
-    Keyboard(File keyboardDirectory) {
-        keyboardName = keyboardDirectory.getName();
-        active = false;
-        if (!keyboardDirectory.isDirectory() || keyboardDirectory.listFiles() == null) {
-            keyboardPatterns = null;
-            numberOfPatterns = 0;
-            lastTick = 0;
-            return;
-        }
-        List<File> files = Arrays.asList(keyboardDirectory.listFiles());
-        numberOfPatterns = files.size();
-
-        keyboardPatterns = files
-                .stream()
-                .sorted(Comparator.comparing(File::getName))
-                .map(f -> {
-                    try {
-                        return new Pattern(f.getAbsoluteFile());
-                    } catch (OrganSequencerException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
-
-
-        long temp;
-        temp = 0;
-        for(Pattern pattern : keyboardPatterns) {
-            int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
-            temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
-        }
-        lastTick = temp;
-        notesOn = new ArrayList<Integer>();
-    }
-
-     */
-
     public List<OrganSequence> getSequences() {
         return keyboardPatterns
                 .stream()
@@ -92,37 +53,7 @@ public class Keyboard {
                 .collect(Collectors.toList());
     }
 
-    /*
-    public List<Sequence> getSequences() {
-        return keyboardPatterns
-                .stream()
-                .map(Pattern::getPatternSequence)
-                .collect(Collectors.toList());
-    }
-
-     */
-
-    /*
-    public Track getFirstTrack() {
-        return getSequences().getFirst().getTracks()[0];
-    }
-
-
-
-    public int getFirstTrackNumberOfEvents() {
-        return getFirstTrack().size();
-    }
-
-    public List<Track> getTracks() {
-        return getSequences()
-                .stream()
-                .map(s -> s.getTracks()[0])
-                .collect(Collectors.toList());
-    }
-
- */
-
-    void addNoteToNotesOn(int note) {
+    public void addNoteToNotesOn(int note) {
         notesOn.add(note);
     }
 
@@ -139,7 +70,6 @@ public class Keyboard {
                     }
                     return 0;
                 })
-               // .map(p -> p.getPatternSequence().getResolution())
                 .toList();
 
         return isResolutionSame(resolutionsList);
@@ -177,19 +107,4 @@ public class Keyboard {
         active = false;
     }
 
-    public long updateLastTick() {
-
-       /* long temp;
-        temp = 0;
-        for(Pattern pattern : keyboardPatterns) {
-            int numberOfMidiEvents = pattern.getNumberOfMidiEvents();
-            temp += pattern.getOrganEvent(numberOfMidiEvents - 1).getTick();
-        }
-        this.lastTick = temp;
-        return this.lastTick;
-
-
-        */
-        return keyboardPatterns.getLast().getOrganSequence().getEvents().getLast().getTick(); // todo not like this
-    }
 }

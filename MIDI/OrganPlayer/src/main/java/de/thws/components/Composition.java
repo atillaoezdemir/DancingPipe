@@ -1,4 +1,4 @@
-package de.thws;
+package de.thws.components;
 
 import de.thws.configurators.CompositionConfigurator;
 import de.thws.exceptions.ConfiguratorException;

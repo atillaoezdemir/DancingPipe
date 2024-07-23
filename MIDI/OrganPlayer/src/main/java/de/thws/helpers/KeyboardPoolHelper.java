@@ -1,10 +1,13 @@
 package de.thws.helpers;
 
-import de.thws.Keyboard;
+import de.thws.components.Keyboard;
 import de.thws.exceptions.OrganSequencerException;
 
 import java.util.List;
 
+/**
+ * Contains methods used in the  {@link de.thws.components.KeyboardPool} class.
+ */
 public class KeyboardPoolHelper {
 
     /**

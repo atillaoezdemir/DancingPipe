@@ -34,52 +34,55 @@ public class OrganSettingsService {
     private boolean wasCommandExecuted = false;
 
 
-
     public void setKeyboardsInUse(int keyboards) {
-        if (emitterService.hasActiveConsumerEmitters()) {
+        if (isConsumerOnline()) {
             this.keyboardsInUse = keyboards;
         }
     }
 
 
     public void setMaxAvailableKeyboards(int keyboards) {
-        if (emitterService.hasActiveConsumerEmitters()) {
+        if (isConsumerOnline()) {
             this.maxAvailableKeyboards = keyboards;
         }
 
     }
 
     public DTOWrapper sendStartCommand() {
-        if (!startCommandReceived) {
+        setCommand("start");
+        if (isConsumerOnline() && !startCommandReceived) {
             setCurrentTempo(3);
             startCommandReceived = true;
-            setCommand("start");
             setWasCommandExecuted(true);
             return getCurrentValues();
         }
+
         setWasCommandExecuted(false);
         return getCurrentValues();
     }
 
     public DTOWrapper sendStopCommand() {
-        if (startCommandReceived) {
+        setCommand("stop");
+        if (isConsumerOnline() && startCommandReceived) {
             setCurrentTempo(3);
             setKeyboardsInUse(0);
             setMaxAvailableKeyboards(0);
             startCommandReceived = false;
-            setCommand("stop");
             setWasCommandExecuted(true);
             return getCurrentValues();
         }
         setWasCommandExecuted(false);
+
         return getCurrentValues();
     }
 
     public DTOWrapper incrementKeyboards() {
+        setCommand("incrementKeyboards");
         if (startCommandReceived) {
             if (keyboardsInUse < maxAvailableKeyboards) {
-                keyboardsInUse++;
-                setCommand("incrementKeyboards");
+                if (isConsumerOnline()) {
+                    keyboardsInUse++;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -89,10 +92,12 @@ public class OrganSettingsService {
     }
 
     public DTOWrapper decrementKeyboards() {
+        setCommand("decrementKeyboards");
         if (startCommandReceived) {
             if (keyboardsInUse > 1) {
-                keyboardsInUse--;
-                setCommand("decrementKeyboards");
+                if (isConsumerOnline()) {
+                    keyboardsInUse--;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -102,10 +107,12 @@ public class OrganSettingsService {
     }
 
     public DTOWrapper useOneKeyboard() {
+        setCommand("minKeyboards");
         if (startCommandReceived) {
             if (keyboardsInUse > 1) {
-                keyboardsInUse = 1;
-                setCommand("minKeyboards");
+                if (isConsumerOnline()) {
+                    keyboardsInUse = 1;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -115,10 +122,12 @@ public class OrganSettingsService {
     }
 
     public DTOWrapper useAllKeyboards() {
+        setCommand("maxKeyboards");
         if (startCommandReceived) {
             if (keyboardsInUse < maxAvailableKeyboards) {
-                keyboardsInUse = maxAvailableKeyboards;
-                setCommand("maxKeyboards");
+                if (isConsumerOnline()) {
+                    keyboardsInUse = maxAvailableKeyboards;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -128,10 +137,12 @@ public class OrganSettingsService {
     }
 
     public DTOWrapper incrementTempo() {
+        setCommand("incrementTempo");
         if (startCommandReceived) {
             if (currentTempo < maxTempo) {
-                currentTempo++;
-                setCommand("incrementTempo");
+                if (isConsumerOnline()) {
+                    currentTempo++;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -141,10 +152,12 @@ public class OrganSettingsService {
     }
 
     public DTOWrapper decrementTempo() {
+        setCommand("decrementTempo");
         if (startCommandReceived) {
             if (currentTempo > minTempo) {
-                currentTempo--;
-                setCommand("decrementTempo");
+                if (isConsumerOnline()) {
+                    currentTempo--;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -154,10 +167,12 @@ public class OrganSettingsService {
     }
 
     public DTOWrapper defaultTempo() {
+        setCommand("defaultTempo");
         if (startCommandReceived) {
             if (currentTempo != defaultTempo) {
-                currentTempo = defaultTempo;
-                setCommand("defaultTempo");
+                if (isConsumerOnline()) {
+                    currentTempo = defaultTempo;
+                }
                 setWasCommandExecuted(true);
                 return getCurrentValues();
             }
@@ -166,16 +181,20 @@ public class OrganSettingsService {
         return getCurrentValues();
     }
 
+    private boolean isConsumerOnline() {
+        return emitterService.hasActiveConsumerEmitters();
+    }
+
     private DTOWrapper getCurrentValues() {
         ToWebClientDTO toWebClientDTO;
         ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), getCommand(), getCurrentTempo());
-        if (emitterService.hasActiveConsumerEmitters()) {
+        if (isConsumerOnline()) {
             toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(),
-                    command, isWasCommandExecuted(),true, isStartCommandReceived(),getBarLength(),
+                    command, isWasCommandExecuted(), true, isStartCommandReceived(), getBarLength(),
                     getTitle(), getComposerName());
         } else {
             toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(),
-                    command, false,false, isStartCommandReceived(),getBarLength(),
+                    command, false, false, isStartCommandReceived(), getBarLength(),
                     getTitle(), getComposerName());
         }
 

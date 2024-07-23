@@ -9,13 +9,12 @@ from camera_main import (calculate_angle, determine_note, combination_result, ma
 
 class TestPoseEstimation(unittest.TestCase):
 
-    def test_calculate_angle():
+    def test_calculate_angle(self):
         # Test cases: (point1, point2, point3, expected_angle)
         test_cases = [
             ([0, 0], [0, 1], [1, 1],  90),
             ([0, 0], [1, 0], [2, 0], 180),
-            ([0, 0], [1, 1], [2, 2],   0),   # Corrected the expected angle to 0 degrees
-            ([0, 0], [1, 1], [2, 0], 135)
+            ([0, 1], [0, 0], [0, 1],   0),
         ]
 
         for i, (a, b, c, expected) in enumerate(test_cases):
@@ -23,7 +22,7 @@ class TestPoseEstimation(unittest.TestCase):
             assert np.isclose(result, expected, atol=1e-2), f"Test case {i+1} failed: expected {expected}, got {result}"
             print(f"Test case {i+1} passed: expected {expected}, got {result}")
 
-    def test_determine_note():
+    def test_determine_note(self):
         # Test cases: (angle_elbow, angle_shoulder, expected_note)
         test_cases = [
             (140, 150, "0"),
@@ -37,7 +36,7 @@ class TestPoseEstimation(unittest.TestCase):
             assert result == expected, f"Test case {i+1} failed: expected {expected}, got {result}"
             print(f"Test case {i+1} passed: expected {expected}, got {result}")
 
-    def test_combination_result():
+    def test_combination_result(self):
         # Test cases: (manuale, tempo, expected_result)
         test_cases = [
             (0, 0, 0),
@@ -52,7 +51,7 @@ class TestPoseEstimation(unittest.TestCase):
             assert result == expected, f"Test case {i+1} failed: expected {expected}, got {result}"
             print(f"Test case {i+1} passed: expected {expected}, got {result}")
 
-    def test_map_values():
+    def test_map_values(self):
         # Test cases: (noteManuale, noteTempo, expected_mappedManuale, expected_mappedTempo)
         test_cases = [
             ("3", "3", "ADD", "PLUS"),
@@ -67,7 +66,7 @@ class TestPoseEstimation(unittest.TestCase):
             assert mapped_mManuale == expected_mManuale and mapped_mTempo == expected_mTempo, f"Test case {i+1} failed: expected ({expected_mManuale}, {expected_mTempo}), got ({mapped_mManuale}, {mapped_mTempo})"
             print(f"Test case {i+1} passed: expected ({expected_mManuale}, {expected_mTempo}), got ({mapped_mManuale}, {mapped_mTempo})")
 
-    def test_display_note_box_2():
+    def test_display_note_box_2(self):
         # Create a blank image (black background)
         image = np.zeros((100, 300, 3), dtype=np.uint8)
 

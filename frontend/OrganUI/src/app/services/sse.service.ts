@@ -34,6 +34,7 @@ export class SseService implements OnDestroy {
         try {
           const data = JSON.parse(event.data) as WebClientDTO;
           this.dataSubject.next(data);
+          console.log(data.composerName)
         } catch (error) {
           console.error('Error parsing loginData:', error);
           this.dataSubject.next(this.dataSubject.value);

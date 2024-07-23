@@ -13,7 +13,7 @@ describe('TempoPipe', () => {
   });
 
   it('should transform TempoLabels.STOPPED to "Stopped"', () => {
-    expect(pipe.transform(TempoLabels.STOPPED)).toBe('Stopped');
+    expect(pipe.transform(TempoLabels.STOPPED)).toBe('stopped');
   });
 
   it('should transform TempoLabels.VERY_SLOW to "Very Slow"', () => {

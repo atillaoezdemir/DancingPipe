@@ -54,12 +54,12 @@ public class ConsumerTestClient {
         switch (command) {
             case "start":
                 //todo add organ sequencer logic.
-                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1,100,"Title placeholder","Composer name placeholder");
+                sendConfiguration(random.nextInt(2) + 3, random.nextInt(2) + 1,100,"Test","Test");
                 break;
             case "stop":
                 //todo add organ sequencer logic.
                 System.out.println("Received stop command. Waiting for next start.");
-                sendConfiguration(0, 0,0,"Title placeholder11","Composer name placeholder11");
+                sendConfiguration(0, 0,0,"stopped","stopped");
                 break;
             case "incrementKeyboards":
                 //todo add organ sequencer logic.

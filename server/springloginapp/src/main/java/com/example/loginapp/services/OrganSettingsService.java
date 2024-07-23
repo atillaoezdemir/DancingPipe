@@ -1,6 +1,7 @@
 package com.example.loginapp.services;
 
 import com.example.loginapp.models.DTOWrapper;
+import com.example.loginapp.models.FromConsumerDTO;
 import com.example.loginapp.models.ToConsumerDTO;
 import com.example.loginapp.models.ToWebClientDTO;
 import lombok.AccessLevel;
@@ -28,6 +29,9 @@ public class OrganSettingsService {
     private int barLength = -1;
     private String title = "stopped";
     private String composerName = "stopped";
+    private ToWebClientDTO message = null;
+    private String command = null;
+    private boolean wasCommandExecuted = false;
 
 
 
@@ -49,9 +53,12 @@ public class OrganSettingsService {
         if (!startCommandReceived) {
             setCurrentTempo(3);
             startCommandReceived = true;
-            return getCurrentValues("start", true);
+            setCommand("start");
+            setWasCommandExecuted(true);
+            return getCurrentValues();
         }
-        return getCurrentValues("start", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper sendStopCommand() {
@@ -60,95 +67,127 @@ public class OrganSettingsService {
             setKeyboardsInUse(0);
             setMaxAvailableKeyboards(0);
             startCommandReceived = false;
-            return getCurrentValues("stop", true);
+            setCommand("stop");
+            setWasCommandExecuted(true);
+            return getCurrentValues();
         }
-        return getCurrentValues("stop", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper incrementKeyboards() {
         if (startCommandReceived) {
             if (keyboardsInUse < maxAvailableKeyboards) {
                 keyboardsInUse++;
-                return getCurrentValues("incrementKeyboards", true);
+                setCommand("incrementKeyboards");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("incrementKeyboards", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper decrementKeyboards() {
         if (startCommandReceived) {
             if (keyboardsInUse > 1) {
                 keyboardsInUse--;
-                return getCurrentValues("decrementKeyboards", true);
+                setCommand("decrementKeyboards");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("decrementKeyboards", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper useOneKeyboard() {
         if (startCommandReceived) {
             if (keyboardsInUse > 1) {
                 keyboardsInUse = 1;
-                return getCurrentValues("minKeyboards", true);
+                setCommand("minKeyboards");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("minKeyboards", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper useAllKeyboards() {
         if (startCommandReceived) {
             if (keyboardsInUse < maxAvailableKeyboards) {
                 keyboardsInUse = maxAvailableKeyboards;
-                return getCurrentValues("maxKeyboards", true);
+                setCommand("maxKeyboards");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("maxKeyboards", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper incrementTempo() {
         if (startCommandReceived) {
             if (currentTempo < maxTempo) {
                 currentTempo++;
-                return getCurrentValues("incrementTempo", true);
+                setCommand("incrementTempo");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("incrementTempo", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper decrementTempo() {
         if (startCommandReceived) {
             if (currentTempo > minTempo) {
                 currentTempo--;
-                return getCurrentValues("decrementTempo", true);
+                setCommand("decrementTempo");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("decrementTempo", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
     public DTOWrapper defaultTempo() {
         if (startCommandReceived) {
             if (currentTempo != defaultTempo) {
                 currentTempo = defaultTempo;
-                return getCurrentValues("defaultTempo", true);
+                setCommand("defaultTempo");
+                setWasCommandExecuted(true);
+                return getCurrentValues();
             }
         }
-        return getCurrentValues("defaultTempo", false);
+        setWasCommandExecuted(false);
+        return getCurrentValues();
     }
 
-
-    private DTOWrapper getCurrentValues(String command, boolean wasCommandExecuted) {
+    private DTOWrapper getCurrentValues() {
         ToWebClientDTO toWebClientDTO;
+        ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), getCommand(), getCurrentTempo());
         if (emitterService.hasActiveConsumerEmitters()) {
             toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(),
-                    command, wasCommandExecuted,true, isStartCommandReceived(),getBarLength(),
+                    command, isWasCommandExecuted(),true, isStartCommandReceived(),getBarLength(),
                     getTitle(), getComposerName());
         } else {
             toWebClientDTO = new ToWebClientDTO(getKeyboardsInUse(), getMaxAvailableKeyboards(), getCurrentTempo(),
                     command, false,false, isStartCommandReceived(),getBarLength(),
                     getTitle(), getComposerName());
         }
-        ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), command, getCurrentTempo());
 
         return new DTOWrapper(toConsumerDTO, toWebClientDTO);
+    }
+
+    public void updateState(FromConsumerDTO config) {
+        setMaxAvailableKeyboards(config.getKeyboardsMax());
+        setKeyboardsInUse(config.getDefaultKeyboards());
+        setTitle(config.getTitle());
+        setBarLength(config.getBarLength());
+        setComposerName(config.getComposerName());
+        setMessage(getCurrentValues().getToWebClientDTO());
     }
 }

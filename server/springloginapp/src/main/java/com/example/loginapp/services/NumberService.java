@@ -8,11 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Service
 public class NumberService {
     private final EmitterService emitterService;
     private final OrganSettingsService organSettingsService;
+
+
 
     public void sendNumber(int number) {
         Action action = Action.getAction(number);
@@ -30,20 +34,33 @@ public class NumberService {
         };
 
         if (message != null) {
-            if (emitterService.hasActiveConsumerEmitters()) {
-                emitterService.sendToConsumer(message.getToConsumerDTO());
-            }
-            emitterService.sendToWebClient(message.getToWebClientDTO());
+            updateAndSend(message);
         }
     }
 
+    private void updateAndSend(DTOWrapper message) {
+
+        if (emitterService.hasActiveConsumerEmitters()) {
+            emitterService.sendToConsumer(message.getToConsumerDTO());
+        }
+        if (sendCheck(message)) {
+            emitterService.sendToWebClient(message.getToWebClientDTO());
+        }
+
+    }
+
+    private static boolean sendCheck(DTOWrapper message) {
+        return !message.getToWebClientDTO().consumerConnected() ||
+                (!Objects.equals(message.getToWebClientDTO().command(), "start") &&
+                        !Objects.equals(message.getToWebClientDTO().command(), "stop"));
+    }
+
     public ResponseEntity<ToConsumerDTO> getResponse(FromConsumerDTO config) {
-        organSettingsService.setMaxAvailableKeyboards(config.getKeyboardsMax());
-        organSettingsService.setKeyboardsInUse(config.getDefaultKeyboards());
-        organSettingsService.setTitle(config.getTitle());
-        organSettingsService.setBarLength(config.getBarLength());
-        organSettingsService.setComposerName(config.getComposerName());
-        ToConsumerDTO toConsumerDTO = new ToConsumerDTO(organSettingsService.getKeyboardsInUse(), "configurationResponse", organSettingsService.getCurrentTempo());
+        organSettingsService.updateState(config);
+        ToConsumerDTO toConsumerDTO = new ToConsumerDTO(organSettingsService.getKeyboardsInUse(),
+                "configurationResponse", organSettingsService.getCurrentTempo());
+        emitterService.sendToWebClient(organSettingsService.getMessage());
         return ResponseEntity.ok(toConsumerDTO);
     }
+
 }

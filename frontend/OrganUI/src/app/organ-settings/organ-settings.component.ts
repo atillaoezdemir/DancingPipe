@@ -18,14 +18,14 @@ import {TempoPipe} from '../pipes/tempo-pipe.pipe';
 })
 export class OrganSettingsComponent implements OnInit, OnDestroy {
   webClientData: WebClientDTO | undefined;
-  // Array length represents number of actual keyboards that Organ has.
+  //In keyboards Array length represents number of actual keyboards that Organ has.
   // If u want to change it -> change getKeyboardName() also!
   keyboards: any[] = Array(5).fill('disabled');
   selectedTempoLabel: number = TempoLabels.NORMAL;
   subscription: Subscription | undefined;
   consumerIsConnected: boolean = false;
   startCommandReceived: boolean = false;
-  barLength: number = -1;
+  barLength: number = 0;
   title: string = 'stopped';
   composerName: string = 'stopped';
 
@@ -46,11 +46,8 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
           this.updateKeyboards();
           this.startCommandReceived = data.startCommandReceived;
           this.barLength = data.barLength;
-          console.log(this.barLength, data.barLength)
           this.title = data.title;
-          console.log(this.title, data.title)
           this.composerName = data.composerName;
-          console.log(this.composerName, data.composerName)
         });
       },
       error: (error) => console.error('Error receiving SSE loginData:', error),

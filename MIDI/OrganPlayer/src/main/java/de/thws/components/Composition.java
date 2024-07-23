@@ -10,7 +10,7 @@ import java.io.File;
 
 /**
  * Represents a composition, which is going to be played on the organ.
- * <p>Class members:
+ * <p><strong>Class members:</strong>
  * <ul>
  *     <li> {@code name} - title of the composition as {@link String}.
  *     <li> {@code composer} - composer of the composition as {@link String}.
@@ -18,6 +18,9 @@ import java.io.File;
  *     <li> {@code tempoFactor} - the tempo factor, which is used when changing the tempo of the composition as {@code float}. <i>Normally the value is between 0.1 and 0.5.</i>
  *     <li> {@code keyboardPool} - the keyboards, which are contained in the composition as {@link KeyboardPool} object.
  * </ul>
+ * @see Keyboard
+ * @see KeyboardPool
+ * @see CompositionConfigurator
  */
 @Getter
 public class Composition {
@@ -63,7 +66,7 @@ public class Composition {
         }
         String jsonFilePath = "";
         for (File f : directoryContent) {
-            if (f.getName().equals("config.json")) {
+            if (f.getName().equals("composition-config.json")) {
                 jsonFilePath = f.getPath();
                 break;
             }

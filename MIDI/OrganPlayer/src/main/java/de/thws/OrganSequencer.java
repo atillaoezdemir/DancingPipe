@@ -14,10 +14,11 @@ import static com.diogonunes.jcolor.Ansi.colorize;
 /**
  * This class represents a MIDI Sequencer for sequentially playing patterns on multiple keyboards. Users can add or remove patterns and keyboards, as well as change the sequence tempo.
  * The sequencer is designed to play a single composition at a time and cannot be paused once it has started. If stopped, it can only be restarted from the beginning with the default tempo and number of keyboards.
+ * The current version of the sequencer only accepts Patterns with <b>length of one bar</b> and compositions in <b>4/4 signature</b>
  *
  * <p>This class extends {@link Thread}, enabling multithreading capabilities to allow real-time user input during sequence playback.</p>
  *
- * <p><strong>Class Members:</strong></p>
+ * <p><strong>Class Members:</strong>
  * <ul>
  *     <li>{@code keyboards} - An instance of {@link KeyboardPool} that contains all the keyboards and their respective patterns.</li>
  *     <li>{@code beatLengthInTicks} - The length of one beat in MIDI ticks, represented as a {@code long}. <i>More information on MIDI ticks can be found <a href="https://www.recordingblogs.com/wiki/midi-tick">here</a>.</i></li>
@@ -102,7 +103,7 @@ public class OrganSequencer extends Thread {
                 for (int ii = 0; ii < currentPattern.getNumberOfMidiEvents(); ii++) {
                     OrganEvent oldEvent = currentPattern.getOrganEvent(ii);
                     MidiMessage oldMessage = oldEvent.getMessage();
-                    int factoredTick = (int) (increase ? oldEvent.getTick() * this.tempoIncreaseFactor : oldEvent.getTick() * this.tempoDecreaseFactor);
+                    int factoredTick = (int) (increase ? oldEvent.getTick() * this.tempoIncreaseFactor : oldEvent.getTick() * this.tempoDecreaseFactor); // updated timestamp for event after tempo change
                     currentPattern.setEvent(ii, new OrganEvent(oldMessage, factoredTick));
                 }
 

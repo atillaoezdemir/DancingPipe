@@ -1,6 +1,6 @@
 package de.thws;
 
-import de.thws.client.v2.ConsumerClient;
+import de.thws.client.ConsumerClient;
 import de.thws.exceptions.MenuExitException;
 import de.thws.helpers.AppDetailsHelper;
 import de.thws.pickers.CompositionPicker;
@@ -55,9 +55,9 @@ public class Start {
                             client.start();
                             client.join();
                         } else {
-                            InputTest inputTest = new InputTest(receiver, compositionPath);
-                            inputTest.start();
-                            inputTest.join();
+                            UserInput userInput = new UserInput(receiver, compositionPath);
+                            userInput.start();
+                            userInput.join();
                         }
                     }
                     catch(InterruptedException e){

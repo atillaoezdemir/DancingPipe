@@ -1,4 +1,4 @@
-package de.thws.client.v2;
+package de.thws.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ public class ConsumerDataOutDTO {
     private int keyboardsMax;
     private int defaultKeyboards;
     private long barLength;
-    private String compositionTitle;
+    private String title;
     private String composerName;
 
 }

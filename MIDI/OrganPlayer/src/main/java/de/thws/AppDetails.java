@@ -45,7 +45,7 @@ public class AppDetails {
             String logo = sb.toString();
             System.out.println(colorize(logo, Attribute.BRIGHT_MAGENTA_TEXT()));
 
-        } catch (IOException _) {}
+        } catch (IOException _) {} // if file not available just don't display logo
     }
 
     /**

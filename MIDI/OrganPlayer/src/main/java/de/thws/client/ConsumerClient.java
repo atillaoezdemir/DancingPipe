@@ -1,4 +1,4 @@
-package de.thws.client.v2;
+package de.thws.client;
 
 import com.diogonunes.jcolor.Attribute;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,12 +8,10 @@ import de.thws.OrganSequencer;
 import de.thws.exceptions.OrganSequencerException;
 
 import javax.sound.midi.InvalidMidiDataException;
-import java.io.IOException;
 import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Random;
 import javax.sound.midi.*;
 
 import static com.diogonunes.jcolor.Ansi.colorize;

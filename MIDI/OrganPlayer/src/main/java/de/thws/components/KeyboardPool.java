@@ -12,10 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 
+/**
+ * Represents all the keyboards, which are going to be used for a single composition.
+ * All keyboards must have the same <a href="http://www.harfesoft.de/aixphysik/sound/midi/pages/miditmcn.html">resolution</a> (See {@link KeyboardPoolHelper}).
+ * Each composition must contain at least one keyboard.
+ * <p><strong>Class members:</strong>
+ * <ul>
+ *     <li> {@code keyboards} - {@link List} of {@link Keyboard}s used in the composition.
+ *     <li> {@code beatLengthInTicks} - length of one beat in the sequence in MIDI ticks as {@code long}.
+ * </ul>
+ * @see Keyboard
+ * @see Composition
+ * @see Pattern
+ */
 @Getter
 public class KeyboardPool {
 
-    List<Keyboard> keyboards;
+    private final List<Keyboard> keyboards;
     private final long beatLengthInTicks;
 
     /**

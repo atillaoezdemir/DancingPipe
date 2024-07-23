@@ -72,18 +72,22 @@ def determine_note(angle_elbow, angle_shoulder):
 
 def combination_result(manuale, tempo):
     """
-    @brief Calculate the angle between three points in a 2D plane.
+    Calculates a combined result based on two integer inputs: `manuale` and `tempo`.
     
-    @param a (list): Coordinates of the first point [x, y].
-    @param b (list): Coordinates of the middle point [x, y].
-    @param c (list): Coordinates of the end point [x, y].
+    Arguments:
+    manuale -- an integer representing a manual input (expected in the range 0-5).
+    tempo -- an integer representing a tempo input (expected in the range 0-5).
     
-    @return float: The angle in degrees between the lines ab and bc.
+    Returns:
+    result -- an integer calculated as (manuale - 1) * 5 + tempo, or 0 if both inputs are 0.
     """
     # Convert inputs to int
     manuale = int(manuale)
     tempo = int(tempo)
 
+    # Special case: if both inputs are zero, return 0
+    if manuale == 0 and tempo == 0:
+        return 0
     # Ensure inputs are within the valid range
     if 1 <= manuale <= 5 and 1 <= tempo <= 5:
         # Calculate the result based on the given formula
@@ -136,6 +140,7 @@ def send_notes_to_server(url, command):
     except requests.exceptions.RequestException as e:
         # Print error message if an exception occurs
         print(f"Error sending notes to server: {e}")
+
 
 def display_note_box(image, noteManuale, noteTempo):
     """
@@ -269,7 +274,6 @@ def process_video(camera_id):
         # Release resources
         cap.release()
         cv2.destroyAllWindows()
-
 if __name__ == "__main__":
     """
     Main block to start video processing.

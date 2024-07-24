@@ -5,7 +5,7 @@ import cv2
 import requests
 import mediapipe as mp
 from collections import deque
-from camera_main import (calculate_angle, determine_note, combination_result, map_values, display_note_box, send_notes_to_server, process_video)
+from camera_main import (calculate_angle, determine_note, combination_result, map_values, display_note_box, send_command_to_server, process_video)
 
 
 class TestPoseEstimation(unittest.TestCase):
@@ -96,11 +96,11 @@ class TestPoseEstimation(unittest.TestCase):
         self.assertIsNotNone(image)
 
     @patch('camera_main.requests.post')
-    def test_send_notes_to_server(self, mock_post):
+    def test_send_command_to_server(self, mock_post):
         mock_post.return_value = MagicMock()
         url = 'http://example.com'
         command = 1
-        send_notes_to_server(url, command)
+        send_command_to_server(url, command)
         mock_post.assert_called_once_with(url, json={'number': command})
 
 if __name__ == '__main__':

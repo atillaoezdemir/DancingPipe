@@ -166,7 +166,7 @@ def display_note_box(image, noteManuale, noteTempo):
     cv2.putText(image, noteTempo, (150, 50),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1, cv2.LINE_AA)
 
-def process_video(camera_id):
+def process_video(camera_id,url):
     """
     Processes video stream from the camera and sends commands to the server based on movements.
     
@@ -174,7 +174,7 @@ def process_video(camera_id):
     camera_id -- the ID of the camera (0 for webcam, 1 for external camera).
     """
     cap = cv2.VideoCapture(camera_id) # Start the camera
-    url = 'http://10.10.35.129:8080/producer' # Define the url for the server
+    url = url # Define the url for the server
     command_history = deque(maxlen=25) # History of comands in form of deque
     command_allowed = False
     last_command = 100
@@ -282,7 +282,6 @@ if __name__ == "__main__":
     """
     print("Please write 0 for web-camera and 1 for external camera:")
     choice = int(input())
-    if choice == 1:
-        process_video(1)
-    else:
-        process_video(0)
+    print("Please write a URL for the server")
+    url = str(input())
+    process_video(choice,url)

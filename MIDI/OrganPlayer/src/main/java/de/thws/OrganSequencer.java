@@ -100,16 +100,19 @@ public class OrganSequencer extends Thread {
      */
     public void setTempoForPatterns(int index, boolean increase) {
         keyboards.getKeyboards().forEach(keyboard -> {
-            for (int i = index; i < keyboard.getNumberOfPatterns(); i++) {
-                Pattern currentPattern = keyboard.getKeyboardPatterns().get(i);
-                for (int ii = 0; ii < currentPattern.getNumberOfMidiEvents(); ii++) {
-                    OrganEvent oldEvent = currentPattern.getOrganEvent(ii);
-                    MidiMessage oldMessage = oldEvent.getMessage();
-                    int factoredTick = (int) (increase ? oldEvent.getTick() * this.tempoIncreaseFactor : oldEvent.getTick() * this.tempoDecreaseFactor); // updated timestamp for event after tempo change
-                    currentPattern.setEvent(ii, new OrganEvent(oldMessage, factoredTick));
-                }
+            if (index != -1) {
+                for (int i = index; i < keyboard.getNumberOfPatterns(); i++) {
+                    Pattern currentPattern = keyboard.getKeyboardPatterns().get(i);
+                    for (int ii = 0; ii < currentPattern.getNumberOfMidiEvents(); ii++) {
+                        OrganEvent oldEvent = currentPattern.getOrganEvent(ii);
+                        MidiMessage oldMessage = oldEvent.getMessage();
+                        int factoredTick = (int) (increase ? oldEvent.getTick() * this.tempoIncreaseFactor : oldEvent.getTick() * this.tempoDecreaseFactor); // updated timestamp for event after tempo change
+                        currentPattern.setEvent(ii, new OrganEvent(oldMessage, factoredTick));
+                    }
 
+                }
             }
+
         });
     }
 
@@ -302,26 +305,23 @@ public class OrganSequencer extends Thread {
 
                     if (previousTempoFactor.getValue() < this.currentTempo.getValue()) {
                         // tempo was decreased
-
                         int iterations = this.currentTempo.getValue() - previousTempoFactor.getValue(); // if tempo was previously very fast and now normal, two iterations are needed
                         for (int i = 0; i < iterations; i++) {
                             setTempoForPatterns(currentPatternIndex[0], false); // take index from keyboard that is always playing
-                            currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoDecreaseFactor);
-                            currSeqLenInTicks = (long) (ticksSum + (currSeqLenInTicks - ticksSum) * this.tempoDecreaseFactor); // calculate corrected length of the sequence
                         }
+                        currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoDecreaseFactor);
+                        currSeqLenInTicks = (long) (ticksSum + (currSeqLenInTicks - ticksSum) * this.tempoDecreaseFactor); // calculate corrected length of the sequence
 
                     } else {
+                        // tempo was increased
                         int iterations = previousTempoFactor.getValue() - this.currentTempo.getValue(); // if tempo was previously very slow and now normal, two iterations are needed
                         for (int i = 0; i < iterations; i++) {
                             setTempoForPatterns(currentPatternIndex[0], true);
-                            currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoIncreaseFactor);
-                            currSeqLenInTicks = (long) (ticksSum + (currSeqLenInTicks - ticksSum) * this.tempoIncreaseFactor); // calculate corrected length of the sequence
-
                         }
-
+                        currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoIncreaseFactor);
+                        currSeqLenInTicks = (long) (ticksSum + (currSeqLenInTicks - ticksSum) * this.tempoIncreaseFactor); // calculate corrected length of the sequence
 
                     }
-
                     previousTempoFactor = this.currentTempo;
                 }
                 for (int keyboardIndex = 0; keyboardIndex < keyboards.getKeyboards().size(); keyboardIndex++) {

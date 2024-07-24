@@ -1,27 +1,83 @@
-# OrganUI
+# Frontend 👁️
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.0.
+Default credentials to login to the frontend are:
 
-## Development server
+- **Admin**
+  - **Login:** admin
+  - **Password:** admin1
+- **Guest**
+  - **Login:** guest
+  - **Password:** guest1
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+If you want to change them or add new ones, you can modify the following file:
+`server/organServer/src/main/resources/credentials.txt`
 
-## Code scaffolding
+## Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Before starting the Angular project:
 
-## Build
+1. **Install Node.js:**
+  - Download and install Node.js from [nodejs.org](https://nodejs.org). This will also install npm, which is Node's package manager.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2. **Install Angular CLI:**
+  - Install the Angular CLI globally using:
+    ```bash
+    npm install -g @angular/cli
+    ```
 
-## Running unit tests
+## Initial Setup
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clone the project from the repository.
+2. Navigate to the project directory: `frontend/OrganUI`
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Running end-to-end tests
+## Development Build and Local Server Configuration
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Running `ng build` prepares your application for local development. This command compiles the Angular application and outputs the files to the `dist/` directory. To serve your application locally on `http://localhost:8080`, you need to configure your Angular development server or the backend server appropriately.
 
-## Further help
+## Production Build for Virtual Machine
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+#### Running version of the frontend
+A running version of the frontend is available on a virtual machine hosted on our university network. You can access the frontend at the following address: `http://10.10.35.129/organ-ui/`.
+
+To access it, you must be connected to the university network.
+The frontend won't work properly unless you also start the server.
+Instructions for that can be found [here](../../server/organServer/README.md).
+
+However, if you want to deploy an updated version on the virtual machine do the following steps:
+
+- To prepare your application for deployment on a production server, such as a virtual machine, use:
+  ```bash
+  ng build --configuration production
+  ```
+  This command creates an optimized build suitable for production environments. 
+- Copy the contents of the `dist/` directory to the virtual server machine. 
+- Configure the application using the Internet Information Services (IIS) on your server.
+
+## Configuring Production Environment in Angular
+
+- **Locate Environment Files:**
+  - Angular projects created with the Angular CLI come with predefined environment files located in the `src/environments` folder. For production, the specific file is `environment.prod.ts`.
+
+- **Modify the Production Environment File:**
+  - Open `src/environments/environment.prod.ts` in your code editor.
+  - Set the `apiUrl` or similar variable to the URL of your virtual machine. Here’s an example of what the file might look like before and after the change:
+
+## Note on Angular Default Port and CORS Configuration
+
+- **Angular Default Port and Host Configuration:**
+  Ensure your Angular application starts at the default port (4200) and default host (localhost). This is important because the server is configured to accept requests from this default port due to established CORS policies.
+
+- **Modifying CORS Policy on the Backend:**
+  If for any reason the Angular application needs to run on a port other than the default (4200) or another host, you must update the CORS configuration on your backend server to allow requests from the new port. For instance, if your Angular application is running on port 4300, you need to add this to your server’s CORS allowed origins.
+
+  Path: `server/organServer/src/main/java/com/example/organServer/OrganServerApplication.java`
+
+  **Default Allowed Origins:**
+  Requests can be accepted from:
+  - `http://localhost:4200`
+  - `http://localhost:8081`
+  - `http://127.0.0.1:8081`

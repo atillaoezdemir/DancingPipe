@@ -51,6 +51,8 @@ This will install MediaPipe, OpenCV, and iPykernel, which are essential for the 
 
 ## Step 3: Open the Jupyter Notebook 📓
 
+### Option 1:
+
 1. **Start Jupyter Notebook:**
 
 Launch Jupyter Notebook by running the following command in your terminal:
@@ -66,6 +68,14 @@ This will open the Jupyter Notebook interface in your default web browser.
 
 In the Jupyter Notebook interface, navigate to the directory ./pose_estimation/ where the project files are located. Click on the Pose_estimation_main.ipynb file to open the project notebook.
 
+### Option 2: Run the camera_main file
+
+Alternatively you can run the camera_main.py fil
+
+```
+python camera_main.py
+```
+Please select the camera number and url value for the server
 
 
 ## Step 4: Run the Notebook ▶️

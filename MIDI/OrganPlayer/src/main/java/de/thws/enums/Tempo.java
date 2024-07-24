@@ -10,14 +10,14 @@ public enum Tempo {
     SLOW(1),
     VERY_SLOW(2);
 
-    private final int factor;
+    private final int adjustment;
 
 
-    Tempo(int factor) {
-        this.factor = factor;
+    Tempo(int adjustment) {
+        this.adjustment = adjustment;
     }
 
     public int getValue() {
-        return this.factor;
+        return this.adjustment;
     }
 }

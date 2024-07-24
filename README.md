@@ -16,7 +16,7 @@ Dancing Pipes is composed of four main components:
 To get started with Dancing Pipes, please follow the instructions provided in the readme files of each individual component. Click on the links below to navigate to each component's detailed setup guide:
 
 1. [Camera and Gesture Recognition (with Client) 👁️](./pose_estimation/README.md)
-2. [Server 🖥️](./server/springloginapp/README.md)
+2. [Server 🖥️](./server/organServer/README.md)
 3. [Frontend Service 🌐](./frontend/OrganUI/README.md)
 4. [Organ Client with MIDI Sequencer 🎵](./MIDI/OrganPlayer/README.md)
 

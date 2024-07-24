@@ -1,0 +1,121 @@
+{
+  "keyboardName": "swell",
+  "patternConfigurators": [
+    {
+      "patternNumber": 1,
+      "patternFile": "Partitur-Man3-Takt1.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 2,
+      "patternFile": "Partitur-Man3-Takt2.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 3,
+      "patternFile": "Partitur-Man3-Takt3.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 4,
+      "patternFile": "Partitur-Man3-Takt4.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 5,
+      "patternFile": "Partitur-Man3-Takt5.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 6,
+      "patternFile": "Partitur-Man3-Takt6.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 7,
+      "patternFile": "Partitur-Man3-Takt7.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 8,
+      "patternFile": "Partitur-Man3-Takt8.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 9,
+      "patternFile": "Partitur-Man3-Takt9.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 10,
+      "patternFile": "Partitur-Man3-Takt10.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 11,
+      "patternFile": "Partitur-Man3-Takt11.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 12,
+      "patternFile": "Partitur-Man3-Takt12.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 13,
+      "patternFile": "Partitur-Man3-Takt13.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 14,
+      "patternFile": "Partitur-Man3-Takt14.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 15,
+      "patternFile": "Partitur-Man3-Takt15.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 16,
+      "patternFile": "Partitur-Man3-Takt16.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    }
+  ]
+}

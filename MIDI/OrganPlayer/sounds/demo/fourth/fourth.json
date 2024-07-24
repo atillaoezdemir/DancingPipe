@@ -1,0 +1,121 @@
+{
+  "keyboardName": "pedal",
+  "patternConfigurators": [
+    {
+      "patternNumber": 1,
+      "patternFile": "Partitur-Ped-Takt1.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 2,
+      "patternFile": "Partitur-Ped-Takt2.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 3,
+      "patternFile": "Partitur-Ped-Takt3.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 4,
+      "patternFile": "Partitur-Ped-Takt4.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 5,
+      "patternFile": "Partitur-Ped-Takt5.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 6,
+      "patternFile": "Partitur-Ped-Takt6.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 7,
+      "patternFile": "Partitur-Ped-Takt7.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 8,
+      "patternFile": "Partitur-Ped-Takt8.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 9,
+      "patternFile": "Partitur-Ped-Takt9.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 10,
+      "patternFile": "Partitur-Ped-Takt10.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 11,
+      "patternFile": "Partitur-Ped-Takt11.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 12,
+      "patternFile": "Partitur-Ped-Takt12.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 13,
+      "patternFile": "Partitur-Ped-Takt13.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 14,
+      "patternFile": "Partitur-Ped-Takt14.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+
+    },
+    {
+      "patternNumber": 15,
+      "patternFile": "Partitur-Ped-Takt15.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    },
+    {
+      "patternNumber": 16,
+      "patternFile": "Partitur-Ped-Takt16.mid",
+      "beginsWithTie": false,
+      "endsWithTie": false,
+      "canBeInterrupted": true
+    }
+  ]
+}

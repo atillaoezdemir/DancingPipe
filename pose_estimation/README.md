@@ -1,7 +1,5 @@
 # Dancing Pipes - Body Recognation with Camera 📷
 
-The organ client connects the pipe organ with the server and the camera and sends the MIDI signals to the organ.
-
 In summary, this part makes the data received from the player processable and sends it to the server.
 This guide will walk you through the steps necessary to download, set up, and run the project smoothly.
 

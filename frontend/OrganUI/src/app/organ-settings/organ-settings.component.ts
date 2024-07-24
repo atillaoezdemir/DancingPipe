@@ -53,7 +53,7 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
           this.composerName = data.composerName;
         });
       },
-      error: (error) => console.error('Error receiving SSE loginData:', error),
+      error: (error) => console.error('Error receiving SSE loginData$:', error),
     });
   }
 

@@ -16,7 +16,7 @@ describe('LoginDataService', () => {
 
  it('should update authentication status', (done: DoneFn) => {
     service.updateAuthentication(true);
-    service.loginData.pipe(take(1)).subscribe((isAuthenticated) => {
+    service.loginData$.pipe(take(1)).subscribe((isAuthenticated) => {
       expect(isAuthenticated).toBeTrue();
       done();
     });
@@ -32,7 +32,7 @@ describe('LoginDataService', () => {
   });
 
   it('should emit initial authentication status as false', (done: DoneFn) => {
-    service.loginData.pipe(take(1)).subscribe((isAuthenticated) => {
+    service.loginData$.pipe(take(1)).subscribe((isAuthenticated) => {
       expect(isAuthenticated).toBeFalse();
       done();
     });

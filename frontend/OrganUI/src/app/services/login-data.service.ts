@@ -9,7 +9,7 @@ export class LoginDataService {
   private isAuthenticated = new BehaviorSubject<boolean>(false);
   private username = new BehaviorSubject<string>('');
 
-  loginData = this.isAuthenticated.asObservable();
+  loginData$ = this.isAuthenticated.asObservable();
   username$ = this.username.asObservable();
 
   //Updates whether the user is authenticated.

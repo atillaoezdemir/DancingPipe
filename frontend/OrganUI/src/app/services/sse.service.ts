@@ -39,7 +39,7 @@ export class SseService implements OnDestroy {
           this.dataSubject.next(data);
           console.log(data.composerName)
         } catch (error) {
-          console.error('Error parsing loginData:', error);
+          console.error('Error parsing loginData$:', error);
           this.dataSubject.next(this.dataSubject.value);
         }
       });

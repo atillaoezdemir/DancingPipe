@@ -47,13 +47,13 @@ export class SseService implements OnDestroy {
         console.error('SSE error:', error);
         this.dataSubject.next({
           command: '',
-          currentTempo: -1,
+          currentTempo: 0,
           wasCommandExecuted: false,
-          keyboardsInUse: -1,
-          maxAvailableKeyboards: -1,
+          keyboardsInUse: 0,
+          maxAvailableKeyboards: 0,
           consumerConnected: false,
           startCommandReceived: false,
-          barLength: -1,
+          barLength: 0,
           title: 'stopped',
           composerName: 'stopped'
         });

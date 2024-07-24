@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
-public class SpringloginappApplication {
+public class OrganServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringloginappApplication.class, args);
+        SpringApplication.run(OrganServerApplication.class, args);
     }
 
     @Bean

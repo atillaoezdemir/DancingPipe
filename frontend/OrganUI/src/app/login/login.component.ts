@@ -28,6 +28,7 @@ import {environment} from "../../environments/environment";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
+//This component responsible for handling user authentication in the frontend of the application.
 export class LoginComponent implements OnInit {
   form!: FormGroup;
   isAuthenticatedFailed: boolean = false;
@@ -41,23 +42,28 @@ export class LoginComponent implements OnInit {
     private router: Router,
   ) {}
 
+// Initializes the form with predefined validators.
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      login: ['guest', Validators.required],
-      password: ['guest1', Validators.required],
+      login: [Validators.required],
+      password: [Validators.required],
     });
   }
 
+  //Toggles the hide property to switch the password input between text and password types.
   toggleVisibility() {
     this.hide = !this.hide;
   }
 
+  //Called when the form is submitted; validates the form and proceeds to check credentials if the form is valid.
   onSubmit() {
     if (this.form.valid) {
       this.checkCredentials(this.form.value);
     }
   }
 
+  //Takes the username and password from the form,
+  // send them to the server, and handles the response.
   checkCredentials(credentials: any) {
     const { login, password } = credentials;
     this.submitCredentials(login, password).subscribe(
@@ -82,6 +88,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  //Directly communicates with the backend to verify user credentials.
   submitCredentials(username: string, password: string): Observable<boolean> {
     const url = `${this.apiUrl}/web/login`;
     const body = { username: username, password: password };

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+//This service responsible for managing the state and settings of an organ simulator.
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -33,21 +34,21 @@ public class OrganSettingsService {
     private String command = null;
     private boolean commandExecuted = false;
 
-
+//Sets the number of keyboards in use if there are active consumer emitters.
     public void setKeyboardsInUse(int keyboards) {
         if (isConsumerOnline()) {
             this.keyboardsInUse = keyboards;
         }
     }
 
-
+//Sets the maximum number of available keyboards if there are active consumer emitters.
     public void setMaxAvailableKeyboards(int keyboards) {
         if (isConsumerOnline()) {
             this.maxAvailableKeyboards = keyboards;
         }
 
     }
-
+//Handles the start command and updates the state accordingly
     public DTOWrapper sendStartCommand() {
         setCommand("start");
         if (isConsumerOnline() && !startCommandReceived) {
@@ -60,7 +61,7 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Handles the stop command and updates the state accordingly.
     public DTOWrapper sendStopCommand() {
         setCommand("stop");
         if (isConsumerOnline() && startCommandReceived) {
@@ -75,7 +76,8 @@ public class OrganSettingsService {
 
         return getCurrentValues();
     }
-
+//Increments the number of keyboards in use
+//if the start command was received and the maximum number of keyboards is not exceeded.
     public DTOWrapper incrementKeyboards() {
         setCommand("incrementKeyboards");
         if (startCommandReceived) {
@@ -90,7 +92,7 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Decrements the number of keyboards in use if the start command was received and more than one keyboard is in use.
     public DTOWrapper decrementKeyboards() {
         setCommand("decrementKeyboards");
         if (startCommandReceived) {
@@ -105,7 +107,7 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Sets the number of keyboards in use to one if the start command was received and more than one keyboard is in use.
     public DTOWrapper useOneKeyboard() {
         setCommand("minKeyboards");
         if (startCommandReceived) {
@@ -120,7 +122,8 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Sets the number of keyboards in use to the maximum available
+//if the start command was received and not all keyboards are in use.
     public DTOWrapper useAllKeyboards() {
         setCommand("maxKeyboards");
         if (startCommandReceived) {
@@ -135,7 +138,7 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Increments the tempo if the start command was received and the maximum tempo is not exceeded.
     public DTOWrapper incrementTempo() {
         setCommand("incrementTempo");
         if (startCommandReceived) {
@@ -150,7 +153,7 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Decrements the tempo if the start command was received and the minimum tempo is not exceeded.
     public DTOWrapper decrementTempo() {
         setCommand("decrementTempo");
         if (startCommandReceived) {
@@ -165,7 +168,7 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Sets the tempo to the default value if the start command was received and the current tempo is not the default.
     public DTOWrapper defaultTempo() {
         setCommand("defaultTempo");
         if (startCommandReceived) {
@@ -180,11 +183,12 @@ public class OrganSettingsService {
         setCommandExecuted(false);
         return getCurrentValues();
     }
-
+//Checks if there are any active consumer emitters connected,
+//indicating whether Organ Sequencer is connected and interacting with the server.
     private boolean isConsumerOnline() {
         return emitterService.hasActiveConsumerEmitters();
     }
-
+//Retrieves the current state of the organ settings, wrapping them in a DTOWrapper.
     private DTOWrapper getCurrentValues() {
         ToWebClientDTO toWebClientDTO;
         ToConsumerDTO toConsumerDTO = new ToConsumerDTO(getKeyboardsInUse(), getCommand(), getCurrentTempo());
@@ -200,7 +204,7 @@ public class OrganSettingsService {
 
         return new DTOWrapper(toConsumerDTO, toWebClientDTO);
     }
-
+//Updates the state of the organ settings based on the provided configuration.
     public void updateState(FromConsumerDTO config) {
         setMaxAvailableKeyboards(config.getKeyboardsMax());
         setKeyboardsInUse(config.getDefaultKeyboards());

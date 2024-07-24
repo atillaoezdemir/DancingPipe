@@ -9,4 +9,5 @@ import { OrganSettingsComponent } from '../organ-settings/organ-settings.compone
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
+//designed to serve as a container that embeds the OrganSettingsComponent and the NumberDisplayComponent.
 export class DashboardComponent {}

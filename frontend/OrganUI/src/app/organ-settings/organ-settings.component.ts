@@ -16,6 +16,7 @@ import {TempoPipe} from '../pipes/tempo-pipe.pipe';
   imports: [MatSlider, MatSliderThumb, NgForOf, FormsModule, NgClass, MatDivider, TempoPipe],
   standalone: true,
 })
+//This component dedicated to displaying and managing settings related to the organ's operational parameters.
 export class OrganSettingsComponent implements OnInit, OnDestroy {
   webClientData: WebClientDTO | undefined;
   //In keyboards Array length represents number of actual keyboards that Organ has.
@@ -36,6 +37,8 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  //Initiates a subscription to the SseService to receive updates on the organ settings.
+  //Processes incoming data within Angular's NgZone to ensure proper UI rendering and state management.
   ngOnInit(): void {
     this.subscription = this.sseService.getWebClientData().subscribe({
       next: (data: WebClientDTO) => {
@@ -54,6 +57,7 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  //Dynamically adjusts the visual representation of the keyboards based on the current data.
   updateKeyboards(): void {
     this.keyboards = Array(5).fill('disabled');
 
@@ -70,6 +74,8 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  //Returns the appropriate image path based on the keyboard's status,
+  //aiding in creating a visually intuitive interface.
   getKeyboardImage(index: number): string {
     const status = this.keyboards[index];
     switch (status) {
@@ -82,7 +88,7 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
     }
 
   }
-
+//Maps each keyboard index to its corresponding name.
   getKeyboardName(index: number): string {
     switch (index) {
       case 0:
@@ -101,6 +107,7 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  //manage cleanup logic for component
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();

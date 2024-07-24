@@ -12,6 +12,7 @@ import {CommandDisplayNamePipe} from "../pipes/command-display-name.pipe";
   imports: [NgClass, MatButton, NgForOf, NgIf,CommandDisplayNamePipe],
   standalone: true,
 })
+//This component designed to display real-time command data related to the operation of the Organ Sequencer.
 export class NumberDisplayComponent implements OnInit {
   webClientData: WebClientDTO[] = [];
   displayedData: WebClientDTO[] = [];
@@ -23,6 +24,7 @@ export class NumberDisplayComponent implements OnInit {
     private zone: NgZone,
   ) {}
 
+  //Sets up the subscription to the SSE data stream, initializing the component's state with live data from the server.
   ngOnInit() {
     this.sseService.getWebClientData().subscribe({
       next: (dto: WebClientDTO) => {
@@ -37,16 +39,19 @@ export class NumberDisplayComponent implements OnInit {
     });
   }
 
+  //Sets up the subscription to the SSE data stream, initializing the component's state with live data from the server.
   toggleView() {
     this.showAll = !this.showAll;
     this.updateDisplayedData();
   }
 
+  //Clears the current command data from the display, offering a way to reset the view or manage data visibility.
   clearData() {
     this.webClientData = [];
     this.displayedData = [];
   }
 
+  //Manages which data is shown based on user interactions, such as toggling between full and limited views.
   private updateDisplayedData() {
     this.displayedData = this.showAll ? [...this.webClientData] : this.webClientData.slice(0, this.maxDisplay);
   }

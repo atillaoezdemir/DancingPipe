@@ -62,20 +62,20 @@ jupyter notebook
 ```
 
 This will open the Jupyter Notebook interface in your default web browser.
-### Option 2: Run the camera_main file
-
-Alternatively you can run the camera_main.py fil
-
-```
-python main.py
-```
-Please select the camera number and url value for the server
 
 
 2. **Open the Project Notebook:**
 
 In the Jupyter Notebook interface, navigate to the directory ./pose_estimation/ where the project files are located. Click on the Pose_estimation_main.ipynb file to open the project notebook.
 
+### Option 2: Run the camera_main file
+
+Alternatively you can run the camera_main.py fil
+
+```
+python camera_main.py
+```
+Please select the camera number and url value for the server
 
 
 ## Step 4: Run the Notebook ▶️

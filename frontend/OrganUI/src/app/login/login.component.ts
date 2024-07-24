@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit {
 // Initializes the form with predefined validators.
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      login: [Validators.required],
-      password: [Validators.required],
+      login: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 

@@ -28,7 +28,7 @@ export class NumberDisplayComponent implements OnInit {
   ngOnInit() {
     this.sseService.getWebClientData().subscribe({
       next: (dto: WebClientDTO) => {
-        if (dto.keyboardsInUse <1) {
+        if (dto.keyboardsInUse >0||dto.command==="stop") {
           this.zone.run(() => {
             this.webClientData.unshift(dto);
             this.updateDisplayedData();

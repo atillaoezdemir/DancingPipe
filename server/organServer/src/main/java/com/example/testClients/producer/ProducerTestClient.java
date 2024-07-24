@@ -8,15 +8,15 @@ import java.util.concurrent.TimeUnit;
 
 public class ProducerTestClient {
     private static final String SERVER_URL = "http://localhost:8080/producer";
-    private static final int DELAY_MIN_VALUE = 2500;
-    private static final int DELAY_MAX_VALUE = 2500;
+    private static final int DELAY_MIN_VALUE = 500;
+    private static final int DELAY_MAX_VALUE = 500;
     private static final int NUMBER_CAP = 255;
     private static final String MODE = "sequence"; // "random" or "sequence"
 
     public static void main(String[] args) {
         HttpClient client = HttpClient.newHttpClient();
         if (MODE.equals("sequence")) {
-            int[] sequence = {26,0,3,3,2,2,2,2,5,0,0,26};
+            int[] sequence = {0,3,3,3,2,2,2,5,11,11,11,11,6,6,6,6,6,16,21,26};
             sendNumbers(client, sequence);
         } else {
             sendRandomNumbers(client);

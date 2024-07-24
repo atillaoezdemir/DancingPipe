@@ -8,8 +8,8 @@ This guide will walk you through the steps necessary to download, set up, and ru
 
 Before proceeding with the installation, make sure you have the following software installed on your machine:
 
-    - Python 3.x (3.9 recommended) with pip
-    - Jupyter Notebook or JupyterLab
+    * Python 3.x (3.9 recommended) with pip
+    * Jupyter Notebook or JupyterLab
 
 
 

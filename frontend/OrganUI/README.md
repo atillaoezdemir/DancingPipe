@@ -35,9 +35,24 @@ If you want to change them or add new ones, you can modify the following file:
    ```
 
 ## Development Build and Local Server Configuration
-
-- Running `ng build` prepares your application for local development. This command compiles the Angular application and outputs the files to the `dist/` directory. To serve your application locally on `http://localhost:8080`, you need to configure your Angular development server or the backend server appropriately.
-
+ 1. **Build the Application**
+  - Run the build command using:
+    ```bash
+    ng build
+    ```
+2. **Serve Using a Simple HTTP Server**
+  - Install http-server globally using:
+    ```bash
+    npm install -g http-server
+    ```
+  - Navigate to the dist/ directory using:
+    ```bash
+    cd dist/organ-ui
+    ```
+  - Start the server using:
+    ```bash
+    http-server -p 8080
+    ```
 ## Production Build for Virtual Machine
 
 #### Running version of the frontend
@@ -49,13 +64,13 @@ Instructions for that can be found [here](../../server/organServer/README.md).
 
 However, if you want to deploy an updated version on the virtual machine do the following steps:
 
-- To prepare your application for deployment on a production server, such as a virtual machine, use:
+- To prepare application for deployment on a production server, such as a virtual machine, use:
   ```bash
   ng build --configuration production
   ```
   This command creates an optimized build suitable for production environments. 
 - Copy the contents of the `dist/` directory to the virtual server machine. 
-- Configure the application using the Internet Information Services (IIS) on your server.
+- Configure the application using the Internet Information Services (IIS) on server.
 
 ## Configuring Production Environment in Angular
 
@@ -69,10 +84,10 @@ However, if you want to deploy an updated version on the virtual machine do the 
 ## Note on Angular Default Port and CORS Configuration
 
 - **Angular Default Port and Host Configuration:**
-  Ensure your Angular application starts at the default port (4200) and default host (localhost). This is important because the server is configured to accept requests from this default port due to established CORS policies.
+  Ensure Angular application starts at the default port (4200) and default host (localhost). This is important because the server is configured to accept requests from this default port due to established CORS policies.
 
 - **Modifying CORS Policy on the Backend:**
-  If for any reason the Angular application needs to run on a port other than the default (4200) or another host, you must update the CORS configuration on your backend server to allow requests from the new port. For instance, if your Angular application is running on port 4300, you need to add this to your server’s CORS allowed origins.
+  If for any reason the Angular application needs to run on a port other than the default (4200) or another host, you must update the CORS configuration on backend server to allow requests from the new port. For instance, if Angular application is running on port 4300, you need to add this to server’s CORS allowed origins.
 
   Path: `server/organServer/src/main/java/com/example/organServer/OrganServerApplication.java`
 

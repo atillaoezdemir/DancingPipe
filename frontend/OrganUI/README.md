@@ -4,7 +4,7 @@ Default credentials to login to the frontend are:
 
 - **Admin**
   - **Login:** admin
-  - **Password:** admin1
+  - **Password:** password1
 - **Guest**
   - **Login:** guest
   - **Password:** guest1

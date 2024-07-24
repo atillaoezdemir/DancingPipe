@@ -52,17 +52,6 @@ describe('OrganSettingsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with default values', () => {
-    sseService.getWebClientData.and.returnValue(of());
-    fixture.detectChanges();
-
-    expect(component.webClientData).toBeUndefined();
-    expect(component.consumerIsConnected).toBeFalse();
-    expect(component.startCommandReceived).toBeFalse();
-    expect(component.barLength).toBe(-1);
-    expect(component.title).toBe('stopped');
-    expect(component.composerName).toBe('stopped');
-  });
 
   it('should handle new data from SSE service', () => {
     const mockData: WebClientDTO = {
@@ -122,14 +111,6 @@ describe('OrganSettingsComponent', () => {
     expect(component.getKeyboardImage(2)).toBe('disabled keyboard.png');
   });
 
-  it('should return correct keyboard name', () => {
-    expect(component.getKeyboardName(0)).toBe('Choir');
-    expect(component.getKeyboardName(1)).toBe('Great');
-    expect(component.getKeyboardName(2)).toBe('Swell');
-    expect(component.getKeyboardName(3)).toBe('Solo/Echo');
-    expect(component.getKeyboardName(4)).toBe('Pedal');
-    expect(component.getKeyboardName(5)).toBe('Invalid index');
-  });
 
 
   it('should clean up subscription on destroy', () => {

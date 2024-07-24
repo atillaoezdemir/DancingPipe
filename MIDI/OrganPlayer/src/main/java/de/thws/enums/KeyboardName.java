@@ -1,15 +1,22 @@
 package de.thws.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum KeyboardName {
-    PEDAL(1),
-    CHOIR(2),
-    GREAT(3),
-    SWELL(4),
-    SOLO(5);
+    PEDAL(1, 4),
+    CHOIR(2, 3),
+    GREAT(3, 1),
+    SWELL(4, 2),
+    SOLO(5, 5);
 
-    KeyboardName(int channelNumber) {}
 
-    public int getChannelNumber() {
-        return ordinal();
+    private final int channelNumber;
+    private final int orderToPlay;
+
+    KeyboardName(int channelNumber, int orderToPlay) {
+        this.channelNumber = channelNumber;
+        this.orderToPlay = orderToPlay;
     }
+
 }

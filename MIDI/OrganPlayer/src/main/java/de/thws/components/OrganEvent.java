@@ -2,11 +2,9 @@ package de.thws.components;
 
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
-import javax.sound.midi.Sequence;
 
 import lombok.Getter;
 
-import java.util.List;
 
 /**
  * Represents a single event in a pattern.

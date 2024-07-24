@@ -5,10 +5,12 @@ import de.thws.configurators.KeyboardConfiguratorWithPath;
 import de.thws.exceptions.ConfiguratorException;
 import de.thws.exceptions.OrganSequencerException;
 import de.thws.helpers.ConfiguratorHelper;
+import de.thws.helpers.KeyboardComparator;
 import de.thws.helpers.KeyboardPoolHelper;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.io.File;
 
@@ -57,6 +59,10 @@ public class KeyboardPool {
                 }
             }
         }
+
+
+        KeyboardComparator keyboardComparator = new KeyboardComparator();
+        this.keyboards.sort(keyboardComparator);
 
         int resolution = KeyboardPoolHelper.getKeyboardPoolResolution(this.keyboards); // resolution = number of ticks per quarter note
         this.beatLengthInTicks = resolution * 4L; // only works for time signature 4/4!, improve on future versions

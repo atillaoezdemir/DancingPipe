@@ -17,14 +17,33 @@ import javax.sound.midi.*;
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 /**
+ * Client class that connects with the server and processes commands from it. This class extends
+ * {@link Thread} to allow real-time control of the {@link Sequencer}.
  *
+ * <p><strong>Class members</strong>:
+ * <ul>
+ *     <li>{@code serverURI} - the server address as {@link String}.
+ *     <li>{@code SERVER_ENDPOINT} - endpoint for the server, default is {@code /consumer}.
+ *     <li>{@code objectMapper} - {@link ObjectMapper} object used for serializing and deserializing the messages from the server.
+ *     <li>{@code pathToComposition} - path to the composition that is about to be played as {@link String}.
+ *     <li>{@code receiver} - MIDI device, on which the MIDI signals will be sent. The required type is {@link Receiver}.
+ *     <li>{@code sequencer} - The {@link Sequencer} object used by the server. In this implementation, we are using {@link OrganSequencer}.
+ * </ul>
+ *
+ * <p>This class extends {@link Thread} to allow asynchronous handling of MIDI events and server commands. The thread functionality is
+ * necessary to ensure that the {@link Sequencer} is controlled in real-time.
+ *
+ * @see Thread
+ * @see Sequencer
+ * @see Receiver
+ * @see OrganSequencer
  */
 public class ConsumerClient extends Thread {
     //private static String serverURI = "http://localhost:8080";
     private static String serverURI = "http://10.10.35.129:8080";
     private static final String SERVER_ENDPOINT = "/consumer";
     private static final ObjectMapper objectMapper = new ObjectMapper(); // deserializes JSON
-    private String pathToComposition;
+    private final String pathToComposition;
     Receiver receiver;
     OrganSequencer sequencer;
 
@@ -34,6 +53,9 @@ public class ConsumerClient extends Thread {
         ConsumerClient.serverURI = serverURI;
     }
 
+    /**
+     * Starts the client.
+     */
     public void run() {
         System.out.println(colorize("Connecting server on " + serverURI + " ...", Attribute.YELLOW_TEXT(), Attribute.BOLD()));
 
@@ -60,6 +82,10 @@ public class ConsumerClient extends Thread {
         }
     }
 
+    /**
+     * Handles commands from the server.
+     * @param json message from server as {@link String}
+     */
     private void parseAndHandleCommand(String json) {
         try {
             ConsumerDataInDTO commandData = objectMapper.readValue(json, ConsumerDataInDTO.class);
@@ -73,6 +99,10 @@ public class ConsumerClient extends Thread {
         }
     }
 
+    /**
+     * Handle commands received from the server and trigger the corresponding commands on the sequencer.
+     * @param command command received from the server
+     */
     private void handleCommand(String command) {
         String title = "";
         String composer = "";
@@ -92,7 +122,7 @@ public class ConsumerClient extends Thread {
                 this.sequencer = new OrganSequencer(composition, this.receiver);
                 sequencer.start();
 
-                sendConfiguration(3, 3, lengthInBars, title, composer);
+                sendConfiguration(composition.getKeyboardPool().getKeyboards().size(), 1, lengthInBars, title, composer);
 
                 break;
             case "stop":
@@ -101,27 +131,23 @@ public class ConsumerClient extends Thread {
                     sequencer.join();
                 } catch (InvalidMidiDataException | InterruptedException e) {
                     System.err.println("Error when stopping the sequencer: " + e.getMessage());
-                    sendConfiguration(0, 0, lengthInBars, title, composer); // todo from Kirill
+                    sendConfiguration(0, 0, 0, "stopped", "stopped");
                     return;
                 }
                 System.out.println("Received stop command. Waiting for next start.");
-                sendConfiguration(0, 0,lengthInBars, title, composer); // todo from Kirill
+                sendConfiguration(0, 0, 0, "stopped", "stopped");
                 break;
             case "incrementKeyboards":
                 sequencer.incrementKeyboards();
-                //todo add organ sequencer logic.
                 break;
             case "decrementKeyboards":
                 sequencer.decrementKeyboards();
-                //todo add organ sequencer logic.
                 break;
             case "maxKeyboards":
                 sequencer.setKeyboardsToMax();
-                //todo add organ sequencer logic.
                 break;
             case "minKeyboards":
                 sequencer.setKeyboardsToMin();
-                //todo add organ sequencer logic.
                 break;
             case "incrementTempo":
                 sequencer.increaseTempo();
@@ -134,12 +160,20 @@ public class ConsumerClient extends Thread {
                 break;
 
             default:
-                //todo add organ sequencer logic.
                 System.out.println("Unhandled command: " + command);
                 break;
         }
     }
 
+    /**
+     * Sends configuration message to the server.
+     * This message is used in the frontend to display information about the composition to the user.
+     * @param keyboardsMax the maximal number of keyboards used in the composition as {@code int}
+     * @param keyboardsInUse the initial number of keyboards that are active when starting the sequencer as {@code int}. (Normally {@code 1})
+     * @param barLength the length of the composition in bars as {@code long}
+     * @param title title of the composition as {@link String}
+     * @param composerName composer's name as {@link String}
+     */
     private static void sendConfiguration(int keyboardsMax, int keyboardsInUse,long barLength,String title,String composerName) {
         try {
             ConsumerDataOutDTO config = new ConsumerDataOutDTO(keyboardsMax, keyboardsInUse, barLength, title, composerName);

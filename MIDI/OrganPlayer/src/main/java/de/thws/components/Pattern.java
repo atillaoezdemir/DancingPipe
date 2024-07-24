@@ -61,6 +61,9 @@ public class Pattern {
             else if (e.getClass().getName().equals("IOException")) {
                 throw new OrganSequencerException("IOException thrown when reading file '" + path.getAbsolutePath() + "'. \nPlease make sure that the folder with the MIDI files is not empty and the MIDI files are not damaged.");
             }
+            else if(e.getClass().getName().equals("de.thws.exceptions.OrganSequencerException")) {
+                throw new OrganSequencerException(e.getMessage());
+            }
             else {
                 throw new OrganSequencerException("NullPointerException thrown when reading file '" + path.getAbsolutePath() + "'. \nPlease make sure that the right MIDI file is referenced or exists.");
             }

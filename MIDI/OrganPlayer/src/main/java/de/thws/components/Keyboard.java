@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import de.thws.enums.KeyboardName;
 import de.thws.configurators.KeyboardConfigurator;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,13 +13,14 @@ import de.thws.configurators.PatternConfigurator;
 import de.thws.exceptions.ConfiguratorException;
 import de.thws.exceptions.OrganSequencerException;
 import de.thws.helpers.ConfiguratorHelper;
+import de.thws.helpers.PatternComparator;
 import lombok.Getter;
 
 /**
  * Class that represents a single keyboard of the organ and containing
  * the patterns that should be played on this keyboard. It uses {@link KeyboardConfigurator} to
  * create a {@link Keyboard} object from a user configuration file.
- * <p>Class members:
+ * <p><strong>Class members</strong>:
  * <ul>
  *     <li> {@code keyboardPatterns} - patterns that should be played on this keyboard as {@link List} of {@link Pattern}s.
  *     <li> {@code numberOfPatterns} - number of patterns to be played on the keyboard as {@code int}.
@@ -26,6 +29,7 @@ import lombok.Getter;
  *     <li> {@code notesOn} - list of all notes, that were played on this keyboard as {@link List} of {@link Integer}s. This list is used by the sequencer  when a keyboard is deactivated.
  * </ul>
  */
+
 @Getter
 public class Keyboard {
     private final List<Pattern> keyboardPatterns;
@@ -50,12 +54,14 @@ public class Keyboard {
         }
         this.numberOfPatterns = this.keyboardPatterns.size();
 
-        notesOn = new ArrayList<Integer>();
+        //sort patterns by id
+        PatternComparator patternComparator = new PatternComparator();
+        this.keyboardPatterns.sort(patternComparator);
+
+        notesOn = new ArrayList<>();
         this.active = false;
 
         this.keyboardName = ConfiguratorHelper.convertStringToKeyboardName(configurator.getKeyboardName());
-
-
 
     }
 
@@ -71,10 +77,10 @@ public class Keyboard {
     }
 
     /**
-     * Returns the resolution for the keyboard
+     * Returns the resolution for the keyboard.
+     * <br><i>More about MIDI timing <a href="http://www.harfesoft.de/aixphysik/sound/midi/pages/miditmcn.html">here</a></i>
      * @return resolution for the keyboard
      * @throws OrganSequencerException if some of the patterns in the keyboard has a different resolution from the other ones
-     * @see <i>More about MIDI timing <a href="http://www.harfesoft.de/aixphysik/sound/midi/pages/miditmcn.html">here</a></i>
      */
     public int getResolution() throws OrganSequencerException {
         List<Integer> resolutionsList = keyboardPatterns

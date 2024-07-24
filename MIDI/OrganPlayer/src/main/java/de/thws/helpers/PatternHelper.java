@@ -1,6 +1,5 @@
 package de.thws.helpers;
 
-import de.thws.AppDetails;
 import de.thws.components.OrganEvent;
 import de.thws.components.OrganSequence;
 

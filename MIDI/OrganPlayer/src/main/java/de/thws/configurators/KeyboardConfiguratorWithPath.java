@@ -1,7 +1,5 @@
 package de.thws.configurators;
 
-import java.util.Arrays;
-
 public class KeyboardConfiguratorWithPath extends KeyboardConfigurator {
 
     public KeyboardConfiguratorWithPath(KeyboardConfigurator keyboardConfigurator, String path) {

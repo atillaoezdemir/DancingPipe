@@ -64,8 +64,8 @@ public class Start {
                         System.out.println("Interrupted Exception thrown: " + e.getMessage());
                         throw new MenuExitException("");
                     }
-                    throw new MenuExitException("");
-                } else throw new MenuExitException("");
+                }
+                throw new MenuExitException("");
             }
 
         } catch (MenuExitException e) {

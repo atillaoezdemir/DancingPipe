@@ -7,6 +7,16 @@ import lombok.Getter;
 import java.io.File;
 import java.io.Serializable;
 
+/**
+ * Used for reading configuration information about a single pattern from a JSON file.
+ * <p>Class members:
+ * <ul>
+ *     <li> {@code compositionName} - title of the composition as {@link String}.
+ *     <li> {@code composer} - composer of the composition as {@link String}.
+ *     <li> {@code lengthInBars} - length of the composition in bars as {@code long}.
+ *     <li> {@code tempoFactor} - the tempo factor, which is used when changing the tempo of the composition as {@code float}.
+ * </ul>
+ */
 @Getter
 public class PatternConfigurator implements Serializable {
     int patternNumber;
@@ -17,7 +27,7 @@ public class PatternConfigurator implements Serializable {
 
     public PatternConfigurator() {}
 
-    public PatternConfigurator (int patternNumber, String patternFile, boolean beginsWithTie, boolean endsWithTie, boolean canBeInterrupted) throws OrganSequencerException {
+    public PatternConfigurator (int patternNumber, String patternFile, boolean beginsWithTie, boolean endsWithTie, boolean canBeInterrupted) {
         this.patternNumber = patternNumber;
         this.patternFile = patternFile;
         this.beginsWithTie = beginsWithTie;
@@ -53,7 +63,7 @@ public class PatternConfigurator implements Serializable {
                 }
             }
             if(this.canBeInterrupted) {
-                result.setCanBeInterrupted(this.canBeInterrupted);
+                result.setCanBeInterrupted(true);
             }
 
         }

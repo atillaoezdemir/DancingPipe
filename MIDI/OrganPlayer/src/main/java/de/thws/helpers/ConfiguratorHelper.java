@@ -97,7 +97,7 @@ public class ConfiguratorHelper {
 
     /**
      * Converts the given string to KeyboardName enum.
-     * @param string
+     * @param string keyboard name
      * @return manual name as enum object
      * @throws ConfiguratorException if the given name is not a valid manual name
      */

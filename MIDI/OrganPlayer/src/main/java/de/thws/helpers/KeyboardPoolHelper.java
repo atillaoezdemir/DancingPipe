@@ -3,6 +3,7 @@ package de.thws.helpers;
 import de.thws.components.Keyboard;
 import de.thws.exceptions.OrganSequencerException;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**

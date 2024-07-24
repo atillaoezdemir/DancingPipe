@@ -38,12 +38,11 @@ public class OrganSequence {
      */
     public OrganSequence(Sequence sequence) throws OrganSequencerException {
         // if the sequence has more than one track throw exception
-        int numberOfTracks = sequence.getTracks().length;
-        if(numberOfTracks > 1) {
+       int numberOfTracks = sequence.getTracks().length;
+         if(numberOfTracks > 1) {
             throw new OrganSequencerException("The Sequence cannot have more than one track.");
         }
-
-        this.events = new ArrayList<OrganEvent>();
+        this.events = new ArrayList<>();
 
         Track track = sequence.getTracks()[0];
         int numberOfMIDIEvents = track.size();

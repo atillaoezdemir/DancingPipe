@@ -8,9 +8,11 @@ import lombok.Getter;
 
 import javax.sound.midi.*;
 import java.util.*;
+
 import de.thws.helpers.PatternHelper;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
+
 /**
  * This class represents a MIDI Sequencer for sequentially playing patterns on multiple keyboards. Users can add or remove patterns and keyboards, as well as change the sequence tempo.
  * The sequencer is designed to play a single composition at a time and cannot be paused once it has started. If stopped, it can only be restarted from the beginning with the default tempo and number of keyboards.
@@ -56,7 +58,7 @@ public class OrganSequencer extends Thread {
      * Constructs an instance of {@link OrganSequencer} using the specified {@link Composition} and {@link Receiver}.
      *
      * @param composition The {@link Composition} object that provides the sequence of patterns to be played by the sequencer.
-     * @param receiver The {@link Receiver} object representing the MIDI device to which all MIDI signals will be sent.
+     * @param receiver    The {@link Receiver} object representing the MIDI device to which all MIDI signals will be sent.
      */
     public OrganSequencer(Composition composition, Receiver receiver) {
         super("OrganSequencer");
@@ -93,7 +95,7 @@ public class OrganSequencer extends Thread {
      * Adjusts the tempo for all MIDI patterns beginning from the specified index.
      * The distance between MIDI messages in each pattern is altered to either increase or decrease the tempo.
      *
-     * @param index The starting index in each keyboard's pattern list from which the tempo adjustment will begin.
+     * @param index    The starting index in each keyboard's pattern list from which the tempo adjustment will begin.
      * @param increase A boolean flag indicating whether to increase ({@code true}) or decrease ({@code false}) the tempo.
      */
     public void setTempoForPatterns(int index, boolean increase) {
@@ -124,18 +126,14 @@ public class OrganSequencer extends Thread {
      */
     public void increaseTempo() {
         switch (this.currentTempo) {
-            case FAST -> {
-                this.currentTempo = Tempo.VERY_FAST;
-            }
-            case NORMAL -> {
-                this.currentTempo = Tempo.FAST;
-            }
-            case SLOW -> {
-                this.currentTempo = Tempo.NORMAL;
-            }
-            case VERY_SLOW -> {
-                this.currentTempo = Tempo.SLOW;
-            }
+            case FAST -> this.currentTempo = Tempo.VERY_FAST;
+
+            case NORMAL -> this.currentTempo = Tempo.FAST;
+
+            case SLOW -> this.currentTempo = Tempo.NORMAL;
+
+            case VERY_SLOW -> this.currentTempo = Tempo.SLOW;
+
         }
     }
 
@@ -151,18 +149,14 @@ public class OrganSequencer extends Thread {
      */
     public void decreaseTempo() {
         switch (this.currentTempo) {
-            case VERY_FAST -> {
-                this.currentTempo = Tempo.FAST;
-            }
-            case FAST -> {
-                this.currentTempo = Tempo.NORMAL;
-            }
-            case NORMAL -> {
-                this.currentTempo = Tempo.SLOW;
-            }
-            case SLOW -> {
-                this.currentTempo = Tempo.VERY_SLOW;
-            }
+            case VERY_FAST -> this.currentTempo = Tempo.FAST;
+
+            case FAST -> this.currentTempo = Tempo.NORMAL;
+
+            case NORMAL -> this.currentTempo = Tempo.SLOW;
+
+            case SLOW -> this.currentTempo = Tempo.VERY_SLOW;
+
         }
     }
 
@@ -175,12 +169,13 @@ public class OrganSequencer extends Thread {
 
     /**
      * Counts the number of active keyboards in the sequencer.
+     *
      * @return The number of active keyboards as an {@code int}.
      */
     public int getKeyboardsInUse() {
         int result = 0;
-        for(Keyboard keyboard : this.keyboards.getKeyboards()) {
-            if(keyboard.isActive()) {
+        for (Keyboard keyboard : this.keyboards.getKeyboards()) {
+            if (keyboard.isActive()) {
                 result++;
             }
         }
@@ -188,33 +183,33 @@ public class OrganSequencer extends Thread {
     }
 
     /**
-     *  Activates the next first inactive keyboard if one exists.
-     *  If all keyboards are already active, the number of active keyboards remains unchanged.
+     * Activates the next first inactive keyboard if one exists.
+     * If all keyboards are already active, the number of active keyboards remains unchanged.
      */
     public void incrementKeyboards() {
         int keyboardIndex = 0;
-        for(keyboardIndex = 0; keyboardIndex < this.keyboards.getKeyboards().size(); keyboardIndex++) {
-            if(!this.keyboards.getKeyboards().get(keyboardIndex).isActive()) {
+        for (keyboardIndex = 0; keyboardIndex < this.keyboards.getKeyboards().size(); keyboardIndex++) {
+            if (!this.keyboards.getKeyboards().get(keyboardIndex).isActive()) {
                 break;
             }
         }
-        if(keyboardIndex < this.keyboards.getKeyboards().size()) {
+        if (keyboardIndex < this.keyboards.getKeyboards().size()) {
             this.keyboards.getKeyboards().get(keyboardIndex).makeActive();
         }
     }
 
     /**
-     *  Deactivates the next first active keyboard, except the first one.
-     *  If only the first keyboard is active, the number of active keyboards remains unchanged.
+     * Deactivates the next first active keyboard, except the first one.
+     * If only the first keyboard is active, the number of active keyboards remains unchanged.
      */
     public void decrementKeyboards() {
         int keyboardIndex;
-        for(keyboardIndex = 0; keyboardIndex < this.keyboards.getKeyboards().size(); keyboardIndex++) {
-            if(!this.keyboards.getKeyboards().get(keyboardIndex).isActive()) {
+        for (keyboardIndex = 0; keyboardIndex < this.keyboards.getKeyboards().size(); keyboardIndex++) {
+            if (!this.keyboards.getKeyboards().get(keyboardIndex).isActive()) {
                 break;
             }
         }
-        if(keyboardIndex != 1) {
+        if (keyboardIndex != 1) {
             keyboardIndex--;
             this.keyboards.getKeyboards().get(keyboardIndex).makeInactive();
         }
@@ -222,19 +217,19 @@ public class OrganSequencer extends Thread {
     }
 
     /**
-     *  Activates all keyboards in the sequencer.
+     * Activates all keyboards in the sequencer.
      */
     public void setKeyboardsToMax() {
-        for(Keyboard keyboard : this.keyboards.getKeyboards()) {
+        for (Keyboard keyboard : this.keyboards.getKeyboards()) {
             keyboard.makeActive();
         }
     }
 
     /**
-     *  Deactivates all keyboards except the first one.
+     * Deactivates all keyboards except the first one.
      */
     public void setKeyboardsToMin() {
-        for(int i=1; i<this.keyboards.getKeyboards().size(); i++) {
+        for (int i = 1; i < this.keyboards.getKeyboards().size(); i++) {
             this.keyboards.getKeyboards().get(i).makeInactive();
         }
     }
@@ -286,6 +281,7 @@ public class OrganSequencer extends Thread {
                     stopPlaying();
                 }
                 if (ticks >= currBeatLenInTicks) {
+                    sendNoteOffToAllPlayingNotes();
                     // go to next beat (respectively next pattern)
                     // reset ticks to 0 and go to next pattern
                     ticks = 0;
@@ -311,7 +307,7 @@ public class OrganSequencer extends Thread {
                         for (int i = 0; i < iterations; i++) {
                             setTempoForPatterns(currentPatternIndex[0], false); // take index from keyboard that is always playing
                             currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoDecreaseFactor);
-                            currSeqLenInTicks = (long) (currSeqLenInTicks * this.tempoDecreaseFactor);
+                            currSeqLenInTicks = (long) (ticksSum + (currSeqLenInTicks - ticksSum) * this.tempoDecreaseFactor); // calculate corrected length of the sequence
                         }
 
                     } else {
@@ -319,7 +315,8 @@ public class OrganSequencer extends Thread {
                         for (int i = 0; i < iterations; i++) {
                             setTempoForPatterns(currentPatternIndex[0], true);
                             currBeatLenInTicks = (long) (currBeatLenInTicks * this.tempoIncreaseFactor);
-                            currSeqLenInTicks = (long) (currSeqLenInTicks * this.tempoIncreaseFactor);
+                            currSeqLenInTicks = (long) (ticksSum + (currSeqLenInTicks - ticksSum) * this.tempoIncreaseFactor); // calculate corrected length of the sequence
+
                         }
 
 
@@ -353,10 +350,9 @@ public class OrganSequencer extends Thread {
                             //MidiEvent currentEvent = currentPattern.getMidiEvent(currentEventIndex[keyboardIndex]);
                             if (currentEvent.getMessage() instanceof ShortMessage sm) {
                                 if (PatternHelper.isNoteEvent(sm)) {
-                                    if(PatternHelper.isNoteOffEvent(sm)) {
+                                    if (PatternHelper.isNoteOffEvent(sm)) {
                                         sm.setMessage(ShortMessage.NOTE_OFF, currentKeyboard.getKeyboardName().getChannelNumber(), sm.getData1(), sm.getData2());
-                                    }
-                                    else {
+                                    } else {
                                         sm.setMessage(ShortMessage.NOTE_ON, currentKeyboard.getKeyboardName().getChannelNumber(), sm.getData1(), sm.getData2());
                                         keyboards.getKeyboards().get(keyboardIndex).addNoteToNotesOn(sm.getData1());
 
@@ -384,11 +380,12 @@ public class OrganSequencer extends Thread {
 
     /**
      * Sends {@code NOTE_OFF} message to all notes that are playing on the {@code keyboard}
+     *
      * @param keyboard keyboard on which the {@code NOTE_OFF} message should be sent
      * @throws InvalidMidiDataException if the {@code NOTE_OFF} message is invalid
      */
     private void sendNoteOffToAllPlayingNotesOnKeyboard(Keyboard keyboard) throws InvalidMidiDataException {
-        for(int note : keyboard.getNotesOn()) {
+        for (int note : keyboard.getNotesOn()) {
             ShortMessage sm = new ShortMessage(ShortMessage.NOTE_OFF, keyboard.getKeyboardName().getChannelNumber(), note, 0); // short message with channels
             receiver.send(sm, ticksSum);
 
@@ -397,10 +394,11 @@ public class OrganSequencer extends Thread {
 
     /**
      * Sends {@code NOTE_OFF} message to all notes that are playing on all keyboards
+     *
      * @throws InvalidMidiDataException if the {@code NOTE_OFF} message is invalid
      */
     private void sendNoteOffToAllPlayingNotes() throws InvalidMidiDataException {
-        for(int i=0; i<keyboards.getKeyboards().size(); i++) {
+        for (int i = 0; i < keyboards.getKeyboards().size(); i++) {
             sendNoteOffToAllPlayingNotesOnKeyboard(keyboards.getKeyboards().get(i));
         }
     }

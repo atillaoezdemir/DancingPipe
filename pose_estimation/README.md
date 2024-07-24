@@ -51,6 +51,8 @@ This will install MediaPipe, OpenCV, and iPykernel, which are essential for the 
 
 ## Step 3: Open the Jupyter Notebook 📓
 
+### Option 1:
+
 1. **Start Jupyter Notebook:**
 
 Launch Jupyter Notebook by running the following command in your terminal:
@@ -60,6 +62,14 @@ jupyter notebook
 ```
 
 This will open the Jupyter Notebook interface in your default web browser.
+### Option 2: Run the camera_main file
+
+Alternatively you can run the camera_main.py fil
+
+```
+python main.py
+```
+Please select the camera number and url value for the server
 
 
 2. **Open the Project Notebook:**

@@ -1,7 +1,7 @@
 package de.thws.exceptions;
 
 /**
- * Used when the application must be terminated.
+ * Thrown when the application must be terminated.
  */
 public class MenuExitException extends Exception {
     public MenuExitException(String errorMessage) {

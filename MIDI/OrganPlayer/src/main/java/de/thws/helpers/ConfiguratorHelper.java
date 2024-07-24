@@ -1,6 +1,7 @@
 package de.thws.helpers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thws.AppDetails;
 import de.thws.exceptions.ConfiguratorException;
 import de.thws.enums.KeyboardName;
 import de.thws.configurators.CompositionConfigurator;
@@ -11,7 +12,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-
+/**
+ * Contains methods used in some configurators.
+ * @see KeyboardConfigurator
+ * @see CompositionConfigurator
+ */
 public class ConfiguratorHelper {
 
     /**

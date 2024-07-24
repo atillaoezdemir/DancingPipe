@@ -7,12 +7,44 @@ import de.thws.exceptions.OrganSequencerException;
 import de.thws.helpers.AppDetailsHelper;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 import java.io.IOException;
 import java.util.Scanner;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 
+/**
+ * Allows the user to control the sequencer by manually writing commands.
+ * This class is used internally in the application and does not provide a connection to the server, camera, or frontend.
+ * It can be utilized for testing purposes, such as verifying a successful connection to the organ without needing to start other system components.
+ *
+ * <p><strong>Class members:</strong></p>
+ * <ul>
+ *   <li>{@code pathToComposition} - The path to the composition that is to be played, represented as a {@link String}.</li>
+ *   <li>{@code receiver} - The MIDI device to which MIDI signals will be sent. This field must be of type {@link Receiver}.</li>
+ *   <li>{@code sequencer} - The {@link OrganSequencer} object used by the server.</li>
+ * </ul>
+ *
+ * <p>This class extends {@link Thread} to facilitate asynchronous handling of MIDI events and user commands.
+ * This threading functionality is essential to ensure that the {@link OrganSequencer} is controlled in real-time.</p>
+ *
+ * <p><strong>Command Constants:</strong></p>
+ * <ul>
+ *   <li>{@code START_INPUT} - Command to start the sequencer.</li>
+ *   <li>{@code STOP_INPUT} - Command to stop the sequencer.</li>
+ *   <li>{@code ADD_KEYBOARD_INPUT} - Command to add a keyboard.</li>
+ *   <li>{@code REMOVE_KEYBOARD_INPUT} - Command to remove a keyboard.</li>
+ *   <li>{@code MAX_KEYBOARDS_INPUT} - Command to set the number of keyboards to maximum.</li>
+ *   <li>{@code MIN_KEYBOARDS_INPUT} - Command to set the number of keyboards to minimum.</li>
+ *   <li>{@code INCREMENT_TEMPO_INPUT} - Command to increase the tempo.</li>
+ *   <li>{@code DECREMENT_TEMPO_INPUT} - Command to decrease the tempo.</li>
+ *   <li>{@code DEFAULT_TEMPO_INPUT} - Command to reset the tempo to default.</li>
+ * </ul>
+ *
+ * @see OrganSequencer
+ * @see Receiver
+ */
 public class UserInput extends Thread {
     private static final String START_INPUT = "start";
     private static final String STOP_INPUT = "stop";

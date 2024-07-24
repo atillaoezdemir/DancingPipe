@@ -127,7 +127,7 @@ def map_values(noteManuale, noteTempo):
     return ('ON/OFF' if noteManuale == '0' and noteTempo == '0' else mapped_noteManuale,
             'ON/OFF' if noteManuale == '0' and noteTempo == '0' else mapped_noteTempo)
 
-def send_notes_to_server(url, command):
+def send_command_to_server(url, command):
     """
     Sends a command to the server at the specified URL.
     
@@ -234,22 +234,21 @@ def process_video(camera_id):
                         # Send commands based on the toggle state
                         if command_allowed:
                             print("ready")
-                            threading.Thread(target=send_notes_to_server, args=(url, 0)).start()
+                            threading.Thread(target=send_command_to_server, args=(url, 0)).start()
                         else:
                             print("end")
-                            threading.Thread(target=send_notes_to_server, args=(url, 26)).start()
+                            threading.Thread(target=send_command_to_server, args=(url, 26)).start()
                         command_history.clear()
 
                     # Send command if it filled out the history and allowed
                     if command_allowed:
                         if len(command_history) == 25 and all(cmd == command_history[0] for cmd in command_history) and last_command != command:
                             command_history.clear()
-                            threading.Thread(target=send_notes_to_server, args=(url, command)).start()
+                            threading.Thread(target=send_command_to_server, args=(url, command)).start()
                             last_command = command
                             print(command)
                 else:
-                    last_command = command
-                    
+                    last_command=command
             except Exception as e:
                 # Default values in case of error
                 noteManuale, noteTempo = "NoN", "NoN"

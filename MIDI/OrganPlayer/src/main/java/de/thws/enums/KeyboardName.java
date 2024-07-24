@@ -2,6 +2,9 @@ package de.thws.enums;
 
 import lombok.Getter;
 
+/**
+ * Enum used to store the names of the organ's keyboards, the corresponding MIDI channel and the order in which the keyboards are played.
+ */
 @Getter
 public enum KeyboardName {
     PEDAL(1, 4),
@@ -9,7 +12,6 @@ public enum KeyboardName {
     GREAT(3, 1),
     SWELL(4, 2),
     SOLO(5, 5);
-
 
     private final int channelNumber;
     private final int orderToPlay;

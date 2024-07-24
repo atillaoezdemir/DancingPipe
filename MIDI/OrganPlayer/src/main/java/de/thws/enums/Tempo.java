@@ -1,5 +1,8 @@
 package de.thws.enums;
 
+/**
+ * Enum for tempo.
+ */
 public enum Tempo {
     VERY_FAST(-2),
     FAST(-1),

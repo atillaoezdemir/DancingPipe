@@ -7,6 +7,7 @@ import mediapipe as mp
 from collections import deque
 from camera_main import (calculate_angle, determine_note, combination_result, map_values, display_note_box, send_notes_to_server, process_video)
 
+
 class TestPoseEstimation(unittest.TestCase):
 
     def test_calculate_angle(self):

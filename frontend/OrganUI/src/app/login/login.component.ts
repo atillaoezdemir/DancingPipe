@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { LoginDataService } from '../services/login-data.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {LoginDataService} from '../services/login-data.service';
 
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import {MatFormFieldModule, MatLabel} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {NgIf} from '@angular/common';
+import {MatIcon} from '@angular/material/icon';
+import {Router} from '@angular/router';
 import {environment} from "../../environments/environment";
 
 @Component({
@@ -40,7 +40,8 @@ export class LoginComponent implements OnInit {
     private http: HttpClient,
     private loginDataService: LoginDataService,
     private router: Router,
-  ) {}
+  ) {
+  }
 
 // Initializes the form with predefined validators.
   ngOnInit(): void {
@@ -65,7 +66,7 @@ export class LoginComponent implements OnInit {
   //Takes the username and password from the form,
   // send them to the server, and handles the response.
   checkCredentials(credentials: any) {
-    const { login, password } = credentials;
+    const {login, password} = credentials;
     this.submitCredentials(login, password).subscribe(
       (isAuthenticated: boolean) => {
         if (isAuthenticated) {
@@ -91,7 +92,7 @@ export class LoginComponent implements OnInit {
   //Directly communicates with the backend to verify user credentials.
   submitCredentials(username: string, password: string): Observable<boolean> {
     const url = `${this.apiUrl}/web/login`;
-    const body = { username: username, password: password };
+    const body = {username: username, password: password};
     return this.http.post<boolean>(url, body);
   }
 }

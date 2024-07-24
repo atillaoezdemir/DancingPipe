@@ -9,7 +9,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {provideRouter, Router} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginDataService} from '../services/login-data.service';
-import {environment} from "../../environments/environment";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -17,7 +16,6 @@ describe('LoginComponent', () => {
   let httpTestingController: HttpTestingController;
   let loginDataService: jasmine.SpyObj<LoginDataService>;
   let router: Router;
-  const apiUrl = environment.apiUrl;
 
   beforeEach(async () => {
     const loginDataServiceSpy = jasmine.createSpyObj('LoginDataService', ['updateAuthentication', 'updateUsername']);
@@ -33,9 +31,9 @@ describe('LoginComponent', () => {
         LoginComponent
       ],
       providers: [
-        { provide: LoginDataService, useValue: loginDataServiceSpy },
+        {provide: LoginDataService, useValue: loginDataServiceSpy},
         provideHttpClientTesting(),
-        provideRouter([{ path: 'dashboard', redirectTo: '' }])
+        provideRouter([{path: 'dashboard', redirectTo: ''}])
       ],
     }).compileComponents();
 
@@ -52,21 +50,10 @@ describe('LoginComponent', () => {
     httpTestingController.verify();
   });
 
-  function mockHttpRequest(response: boolean | string, status: number = 200) {
-    const req = httpTestingController.expectOne(`${apiUrl}/web/login`);
-    expect(req.request.method).toBe('POST');
-    req.flush(response, { status, statusText: 'OK' });
-  }
-
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize the form with default values', () => {
-    expect(component.form).toBeDefined();
-    expect(component.form.controls['login'].value).toBe('guest');
-    expect(component.form.controls['password'].value).toBe('guest1');
-  });
 
   it('should toggle password visibility', () => {
     expect(component.hide).toBeTrue();
@@ -82,8 +69,6 @@ describe('LoginComponent', () => {
     expect(component.form.valid).toBeFalse();
     expect(component.isAuthenticatedFailed).toBeFalse(); // No change
   });
-
-
 
 
 });

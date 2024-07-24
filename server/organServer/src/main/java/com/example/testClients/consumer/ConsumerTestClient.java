@@ -7,7 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Random;
-
+//used only it test purposes.
 public class ConsumerTestClient {
     private static final String SERVER_URI = "http://localhost:8080";
     private static final String SERVER_ENDPOINT = "/consumer";
@@ -60,25 +60,25 @@ public class ConsumerTestClient {
                 sendConfiguration(0, 0, 0, "stopped", "stopped");
                 break;
             case "incrementKeyboards":
-
+                System.out.println("incrementKeyboards");
                 break;
             case "decrementKeyboards":
-
+                System.out.println("decrementKeyboards");
                 break;
             case "maxKeyboards":
-
+                System.out.println("maxKeyboards");
                 break;
             case "minKeyboards":
-
+                System.out.println("minKeyboards");
                 break;
             case "incrementTempo":
-
+                System.out.println("incrementTempo");
                 break;
             case "decrementTempo":
-
+                System.out.println("decrementTempo");
                 break;
             case "defaultTempo":
-
+                System.out.println("defaultTempo");
                 break;
 
             default:
@@ -103,9 +103,6 @@ public class ConsumerTestClient {
                     .thenAccept(response -> {
                         System.out.println("Configuration status: " + response.statusCode());
                         System.out.println("Response body: " + response.body());
-//                        System.out.println("Length in bars: " + response.body());
-//                        System.out.println("Title: " + response.body());
-//                        System.out.println("Composer name: " + response.body());
                     })
                     .join();
         } catch (Exception e) {

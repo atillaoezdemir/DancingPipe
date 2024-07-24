@@ -1,15 +1,15 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { SseService } from '../services/sse.service';
-import { WebClientDTO } from '../models/web-client-dto';
+import {Component, NgZone, OnInit} from '@angular/core';
+import {SseService} from '../services/sse.service';
+import {WebClientDTO} from '../models/web-client-dto';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {CommandDisplayNamePipe} from "../pipes/command-display-name.pipe";
 
 @Component({
   selector: 'app-number-display',
   templateUrl: './number-display.component.html',
   styleUrls: ['./number-display.component.css'],
-  imports: [NgClass, MatButton, NgForOf, NgIf,CommandDisplayNamePipe],
+  imports: [NgClass, MatButton, NgForOf, NgIf, CommandDisplayNamePipe],
   standalone: true,
 })
 //This component designed to display real-time command data related to the operation of the Organ Sequencer.
@@ -22,13 +22,14 @@ export class NumberDisplayComponent implements OnInit {
   constructor(
     private sseService: SseService,
     private zone: NgZone,
-  ) {}
+  ) {
+  }
 
   //Sets up the subscription to the SSE data stream, initializing the component's state with live data from the server.
   ngOnInit() {
     this.sseService.getWebClientData().subscribe({
       next: (dto: WebClientDTO) => {
-        if (dto.keyboardsInUse >0||dto.command==="stop") {
+        if (dto.keyboardsInUse > 0 || dto.command === "stop") {
           this.zone.run(() => {
             this.webClientData.unshift(dto);
             this.updateDisplayedData();

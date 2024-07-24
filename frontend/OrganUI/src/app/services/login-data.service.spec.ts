@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { LoginDataService } from './login-data.service';
-import { take } from 'rxjs/operators';
+import {TestBed} from '@angular/core/testing';
+import {LoginDataService} from './login-data.service';
+import {take} from 'rxjs/operators';
 
 describe('LoginDataService', () => {
   let service: LoginDataService;
@@ -14,7 +14,7 @@ describe('LoginDataService', () => {
     expect(service).toBeTruthy();
   });
 
- it('should update authentication status', (done: DoneFn) => {
+  it('should update authentication status', (done: DoneFn) => {
     service.updateAuthentication(true);
     service.loginData$.pipe(take(1)).subscribe((isAuthenticated) => {
       expect(isAuthenticated).toBeTrue();

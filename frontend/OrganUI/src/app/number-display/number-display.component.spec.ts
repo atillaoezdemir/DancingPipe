@@ -21,7 +21,7 @@ describe('NumberDisplayComponent', () => {
         MatButtonModule
       ],
       providers: [
-        { provide: SseService, useValue: sseServiceSpy },
+        {provide: SseService, useValue: sseServiceSpy},
         provideHttpClientTesting()
       ],
     }).compileComponents();
@@ -93,7 +93,7 @@ describe('NumberDisplayComponent', () => {
 
   it('should toggle view correctly', () => {
     component.showAll = false;
-    component.webClientData = Array.from({ length: 15 }, (_, i) => ({
+    component.webClientData = Array.from({length: 15}, (_, i) => ({
       keyboardsInUse: i,
       maxAvailableKeyboards: 10,
       currentTempo: 120 + i,

@@ -27,6 +27,7 @@ public class EmitterService {
         consumerEmitter.onError(e -> consumerEmitter = null);
         return consumerEmitter;
     }
+
     //Initializes and returns a new SSE emitter for a frontend client.
     //Returns: SseEmitter - a new emitter instance configured with maximum timeout
     //and event handlers for completion, timeout, and error.
@@ -61,7 +62,6 @@ public class EmitterService {
     }
 
     //Checks if there are any active consumer emitters.
-    //
     public boolean hasActiveConsumerEmitters() {
         return consumerEmitter != null;
     }

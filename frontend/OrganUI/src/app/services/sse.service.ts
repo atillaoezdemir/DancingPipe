@@ -1,6 +1,6 @@
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { WebClientDTO } from '../models/web-client-dto';
+import {Injectable, NgZone, OnDestroy} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {WebClientDTO} from '../models/web-client-dto';
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -18,7 +18,7 @@ export class SseService implements OnDestroy {
     currentTempo: 0,
     wasCommandExecuted: false,
     consumerConnected: false,
-    startCommandReceived:false,
+    startCommandReceived: false,
     barLength: 0,
     title: 'stopped',
     composerName: 'stopped'

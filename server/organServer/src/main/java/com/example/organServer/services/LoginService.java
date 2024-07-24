@@ -33,6 +33,7 @@ public class LoginService {
             System.out.println("Failed to load credentials from file: " + e.getMessage());
         }
     }
+
     // Loads user credentials from credentials.txt, encodes passwords, and stores them in a map.
     private void loadCredentialsFromFile() throws IOException {
         ClassPathResource resource = new ClassPathResource(CREDENTIALS_FILE);
@@ -49,6 +50,7 @@ public class LoginService {
                     });
         }
     }
+
     // Verifies the provided username and password.
     public boolean login(String username, String password) {
         if (username == null || password == null) {

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { NumberDisplayComponent } from '../number-display/number-display.component';
-import { OrganSettingsComponent } from '../organ-settings/organ-settings.component';
+import {Component} from '@angular/core';
+import {NumberDisplayComponent} from '../number-display/number-display.component';
+import {OrganSettingsComponent} from '../organ-settings/organ-settings.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,4 +10,5 @@ import { OrganSettingsComponent } from '../organ-settings/organ-settings.compone
   styleUrls: ['./dashboard.component.css'],
 })
 //designed to serve as a container that embeds the OrganSettingsComponent and the NumberDisplayComponent.
-export class DashboardComponent {}
+export class DashboardComponent {
+}

@@ -1,7 +1,7 @@
-import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
-import { LoginDataService } from '../services/login-data.service';
-import { map } from 'rxjs/operators';
+import {CanActivateFn, Router} from '@angular/router';
+import {inject} from '@angular/core';
+import {LoginDataService} from '../services/login-data.service';
+import {map} from 'rxjs/operators';
 
 //This guard ensures that only authenticated users can access dashboard.
 export const authGuard: CanActivateFn = () => {

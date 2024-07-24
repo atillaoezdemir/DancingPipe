@@ -16,16 +16,17 @@ body {
 }
 
 
-
-@media  (max-width:1199px) {
+@media (max-width: 1199px) {
   div {
     font-size: 14px !important;
     line-height: 1 !important;
   }
+
   h1 {
     font-size: 24px !important;
     line-height: 1.1 !important;
   }
+
   h2 {
     font-size: 20px !important;
     line-height: 1.1 !important;
@@ -37,10 +38,12 @@ body {
     font-size: 16px !important;
     line-height: 1.1 !important;
   }
+
   h1 {
     font-size: 30px !important;
     line-height: 1.1 !important;
   }
+
   h2 {
     font-size: 26px !important;
     line-height: 1.1 !important;

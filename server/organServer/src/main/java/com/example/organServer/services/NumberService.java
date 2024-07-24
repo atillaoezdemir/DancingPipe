@@ -18,7 +18,7 @@ public class NumberService {
     private final OrganSettingsService organSettingsService;
 
 
-//Determines the action based on the number using the Action enum
+    //Determines the action based on the number using the Action enum
     public void sendNumber(int number) {
         Action action = Action.getAction(number);
         DTOWrapper message = switch (action) {
@@ -38,7 +38,8 @@ public class NumberService {
             updateAndSend(message);
         }
     }
-//Sends the message to the consumer and web client emitters if it is needed.
+
+    //Sends the message to the consumer and web client emitters if it is needed.
     private void updateAndSend(DTOWrapper message) {
 
         if (emitterService.hasActiveConsumerEmitters()) {
@@ -49,13 +50,15 @@ public class NumberService {
         }
 
     }
-//Checks whether the message should be sent to the web client.
+
+    //Checks whether the message should be sent to the web client.
     private static boolean sendCheck(DTOWrapper message) {
         return !message.getToWebClientDTO().consumerConnected() ||
                 (!Objects.equals(message.getToWebClientDTO().command(), "start") &&
                         !Objects.equals(message.getToWebClientDTO().command(), "stop"));
     }
-//Updates organ settings based on the provided configuration and returns the updated settings
+
+    //Updates organ settings based on the provided configuration and returns the updated settings
 // to the response to the "Organ Sequencer" client.
     public ResponseEntity<ToConsumerDTO> getResponse(FromConsumerDTO config) {
         organSettingsService.updateState(config);

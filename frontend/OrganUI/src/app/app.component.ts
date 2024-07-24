@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs';
-import { LoginDataService } from './services/login-data.service';
-import { map } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {filter} from 'rxjs';
+import {LoginDataService} from './services/login-data.service';
+import {map} from 'rxjs/operators';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private loginDataService: LoginDataService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loginDataService.username$

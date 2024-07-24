@@ -1,4 +1,4 @@
-import { CommandDisplayNamePipe } from './command-display-name.pipe';
+import {CommandDisplayNamePipe} from './command-display-name.pipe';
 
 describe('CommandDisplayNamePipe', () => {
   it('create an instance', () => {

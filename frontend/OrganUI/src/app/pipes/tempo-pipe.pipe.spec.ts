@@ -1,5 +1,5 @@
-import { TempoPipe } from './tempo-pipe.pipe';
-import { TempoLabels } from '../models/tempo-labels';
+import {TempoPipe} from './tempo-pipe.pipe';
+import {TempoLabels} from '../models/tempo-labels';
 
 describe('TempoPipe', () => {
   let pipe: TempoPipe;

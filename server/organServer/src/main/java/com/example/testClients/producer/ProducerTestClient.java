@@ -5,7 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
-
+//used only it test purposes.
 public class ProducerTestClient {
     private static final String SERVER_URL = "http://localhost:8080/producer";
     private static final int DELAY_MIN_VALUE = 500;

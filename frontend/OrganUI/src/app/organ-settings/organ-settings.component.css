@@ -2,13 +2,15 @@
   height: fit-content;
   margin-left: 5vw;
 }
+
 @media (max-width: 1199px) {
-  :host{
+  :host {
     width: 43%;
   }
 }
+
 @media (min-width: 1200px) {
-  :host{
+  :host {
     width: 35%;
   }
 }

@@ -88,6 +88,7 @@ export class OrganSettingsComponent implements OnInit, OnDestroy {
     }
 
   }
+
 //Maps each keyboard index to its corresponding name.
   getKeyboardName(index: number): string {
     switch (index) {

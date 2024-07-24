@@ -29,7 +29,7 @@ describe('OrganSettingsComponent', () => {
         TempoPipe
       ],
       providers: [
-        { provide: SseService, useValue: sseServiceSpy },
+        {provide: SseService, useValue: sseServiceSpy},
         provideHttpClientTesting()
       ],
     }).compileComponents();
@@ -130,7 +130,6 @@ describe('OrganSettingsComponent', () => {
     expect(component.getKeyboardName(4)).toBe('Pedal');
     expect(component.getKeyboardName(5)).toBe('Invalid index');
   });
-
 
 
   it('should clean up subscription on destroy', () => {

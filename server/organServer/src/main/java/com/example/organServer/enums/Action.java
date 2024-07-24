@@ -1,4 +1,5 @@
 package com.example.organServer.enums;
+
 public enum Action {
     INCREMENT_KEYBOARDS,
     DECREMENT_KEYBOARDS,

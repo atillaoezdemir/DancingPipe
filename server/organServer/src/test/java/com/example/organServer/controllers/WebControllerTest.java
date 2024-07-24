@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -49,6 +50,13 @@ public class WebControllerTest {
                 .andExpect(status().isOk());
         verify(emitterService).addWebClientEmitter();
     }
+    @Test
+    public void streamWebNumbers_ShouldReturnError_WhenEmitterServiceThrowsException() throws Exception {
+        when(emitterService.addWebClientEmitter()).thenThrow(new RuntimeException("Emitter failure"));
+
+        mockMvc.perform(get("/web"))
+                .andExpect(status().isInternalServerError());
+    }
 
     @Test
     public void testLogin_Success() throws Exception {
@@ -72,5 +80,30 @@ public class WebControllerTest {
                         .content(objectMapper.writeValueAsString(new UserCredentialsDTO("user", "wrongpassword"))))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("false"));
+    }
+
+
+    @Test
+    public void login_NullRequestBody_ShouldReturnBadRequest() throws Exception {
+        mockMvc.perform(post("/web/login")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+
+
+    @Test
+    public void login_ValidRequestResponseDetails() throws Exception {
+        String username = "admin";
+        String password = "adminPass";
+        when(loginService.login(username, password)).thenReturn(true);
+
+        MockHttpServletResponse response = mockMvc.perform(post("/web/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"" + username + "\", \"password\":\"" + password + "\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+
     }
 }

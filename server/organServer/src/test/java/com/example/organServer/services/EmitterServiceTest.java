@@ -5,8 +5,6 @@ import com.example.organServer.models.ToWebClientDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -28,9 +26,6 @@ class EmitterServiceTest {
 
     @Mock
     private SseEmitter mockWebClientEmitter;
-
-    @Captor
-    private ArgumentCaptor<Runnable> runnableCaptor;
 
     @BeforeEach
     void setUp() {
@@ -56,9 +51,7 @@ class EmitterServiceTest {
         ToConsumerDTO message = new ToConsumerDTO(5, "START", 120);
         String jsonMessage = "{\"keyboardsInUse\":5,\"command\":\"START\",\"currentTempo\":120}";
         when(objectMapper.writeValueAsString(message)).thenReturn(jsonMessage);
-
         emitterService.sendToConsumer(message);
-
         verify(mockConsumerEmitter, times(1)).send(any(SseEmitter.SseEventBuilder.class));
     }
 
@@ -66,7 +59,6 @@ class EmitterServiceTest {
     void sendToConsumer_WhenEmitterIsNotActive() {
         setPrivateField(emitterService, "consumerEmitter", null);
         ToConsumerDTO message = new ToConsumerDTO(5, "START", 120);
-
         assertDoesNotThrow(() -> emitterService.sendToConsumer(message));
     }
 
@@ -76,14 +68,9 @@ class EmitterServiceTest {
                 3, 5, 3, "START", true, true, true, 40, "Symphony", "Mozart");
         String jsonData = "{\"keyboardsInUse\":3,\"maxAvailableKeyboards\":5,\"currentTempo\":3,\"command\":\"START\",\"wasCommandExecuted\":true,\"consumerConnected\":true,\"startCommandReceived\":true,\"barLength\":40,\"title\":\"Symphony\",\"composerName\":\"Mozart\"}";
         when(objectMapper.writeValueAsString(message)).thenReturn(jsonData);
-
         emitterService.sendToWebClient(message);
-
         verify(mockWebClientEmitter, times(1)).send(any(SseEmitter.SseEventBuilder.class));
     }
-
-
-
 
 
     @Test
@@ -93,25 +80,33 @@ class EmitterServiceTest {
     }
 
 
-
-    
-
     @Test
-    void sendToConsumer_WhenEmitterIsInactiveAndHandlesExceptions() throws Exception {
+    void sendToConsumer_WhenEmitterIsInactiveAndHandlesExceptions()  {
         setPrivateField(emitterService, "consumerEmitter", null);
-
         ToConsumerDTO message = new ToConsumerDTO(5, "START", 120);
-
         assertDoesNotThrow(() -> emitterService.sendToConsumer(message));
     }
 
     @Test
-    void sendToWebClient_WhenEmitterIsInactiveAndHandlesExceptions() throws Exception {
+    void sendToWebClient_WhenEmitterIsInactiveAndHandlesExceptions()  {
         setPrivateField(emitterService, "webClientEmitter", null);
 
         ToWebClientDTO message = new ToWebClientDTO(
                 3, 5, 3, "START", true, true, true, 40, "Symphony", "Mozart");
 
         assertDoesNotThrow(() -> emitterService.sendToWebClient(message));
+    }
+
+
+    @Test
+    void checkNewEmitterConfiguration() {
+        SseEmitter newEmitter = emitterService.addConsumerEmitter();
+        assertNotNull(newEmitter);
+        assertEquals(Long.MAX_VALUE, newEmitter.getTimeout());
+        Runnable completion = mock(Runnable.class);
+        newEmitter.onCompletion(completion);
+        completion.run();
+        verify(completion, times(1)).run();
+
     }
 }

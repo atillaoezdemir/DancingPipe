@@ -1,7 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { TempoLabels } from '../models/tempo-labels';
+import {Pipe, PipeTransform} from '@angular/core';
+import {TempoLabels} from '../models/tempo-labels';
 
-@Pipe({ name: 'tempo', standalone: true })
+@Pipe({name: 'tempo', standalone: true})
 export class TempoPipe implements PipeTransform {
   transform(tempo: TempoLabels) {
     switch (tempo) {

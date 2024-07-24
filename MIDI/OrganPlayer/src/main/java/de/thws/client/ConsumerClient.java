@@ -27,11 +27,11 @@ import static com.diogonunes.jcolor.Ansi.colorize;
  *     <li>{@code objectMapper} - {@link ObjectMapper} object used for serializing and deserializing the messages from the server.
  *     <li>{@code pathToComposition} - path to the composition that is about to be played as {@link String}.
  *     <li>{@code receiver} - MIDI device, on which the MIDI signals will be sent. The required type is {@link Receiver}.
- *     <li>{@code sequencer} - The {@link Sequencer} object used by the server. In this implementation, we are using {@link OrganSequencer}.
+ *     <li>{@code sequencer} - The {@link OrganSequencer} object used by the server.
  * </ul>
  *
  * <p>This class extends {@link Thread} to allow asynchronous handling of MIDI events and server commands. The thread functionality is
- * necessary to ensure that the {@link Sequencer} is controlled in real-time.
+ * necessary to ensure that the {@link OrganSequencer} is controlled in real-time.
  *
  * @see Thread
  * @see Sequencer

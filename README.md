@@ -1,6 +1,6 @@
-# Dancing Pipes 🎹🕺
+# Dancing Pipes 🎹
 
-> **⚠️ This project is no longer actively maintained.**
+> **This project is no longer actively maintained.**
 > It was developed as an academic project at [THWS](https://www.thws.de/) during Summer Semester 2024 and is archived here for reference.
 
 A multimodal interaction system that enables non-expert users to play a pipe organ using intuitive body gestures and hand movements captured via camera. The system translates recognized gestures into MIDI signals and sends them to a real pipe organ in real-time.
@@ -15,10 +15,10 @@ The system consists of four main components that communicate over a network:
 
 | Component | Description | Tech |
 |---|---|---|
-| 📷 **Pose Estimation** | Captures body & hand gestures via camera | Python, MediaPipe, OpenCV |
-| 🖥️ **Server** | Central hub — routes commands between components | Java 17, Spring Boot, Gradle |
-| 🌐 **Frontend** | Web UI for system control & visualization | Angular, TypeScript |
-| 🎵 **Organ Client (MIDI)** | Sends MIDI signals to the pipe organ | Java 8+, Maven, javax.sound.midi |
+| **Pose Estimation** | Captures body & hand gestures via camera | Python, MediaPipe, OpenCV |
+| **Server** | Central hub — routes commands between components | Java 17, Spring Boot, Gradle |
+| **Frontend** | Web UI for system control & visualization | Angular, TypeScript |
+| **Organ Client (MIDI)** | Sends MIDI signals to the pipe organ | Java 8+, Maven, javax.sound.midi |
 
 ---
 
@@ -41,27 +41,23 @@ DancingPipes/
 │   ├── Diagrams/
 │   ├── Documentation.pdf
 │   └── Documentation.docx
-└── README.md              # ← You are here
+└── README.md
 ```
 
 ---
 
-## Getting Started 🚀
+## Getting Started
 
-Each component has its own setup guide. Click the links below:
+Each component has its own setup guide:
 
-1. [📷 Pose Estimation (Camera Client)](./pose_estimation/README.md)
-2. [🖥️ Server](./server/organServer/README.md)
-3. [🌐 Frontend](./frontend/OrganUI/README.md)
-4. [🎵 Organ Client (MIDI Sequencer)](./MIDI/OrganPlayer/README.md)
+1. [Pose Estimation (Camera Client)](./pose_estimation/README.md)
+2. [Server](./server/organServer/README.md)
+3. [Frontend](./frontend/OrganUI/README.md)
+4. [Organ Client (MIDI Sequencer)](./MIDI/OrganPlayer/README.md)
 
 ---
 
-## Supervisors 🙌
+## Supervisors
 
 - **Prof. Dr. Frank-Michael Schleif** — THWS
 - **Prof. Dr. Hannes Ritschel** — Würzburg University of Music
-
----
-
-Happy playing! 🎶

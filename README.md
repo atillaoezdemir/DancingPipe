@@ -59,5 +59,5 @@ Each component has its own setup guide:
 
 ## Supervisors
 
-- **Prof. Dr. Frank-Michael Schleif** — THWS
-- **Prof. Dr. Hannes Ritschel** — Würzburg University of Music
+- **Prof. Dr. Frank-Michael Schleif** — Technical University of Applied Sciences Würzburg-Schweinfurt (THWS)
+- **Prof. Dr. Hannes Ritschel** — University of Music Würzburg (HfM)
